@@ -1,6 +1,8 @@
-const express = require("express")
-const router = express.Router()
+const { Router } = require("express")
+const router = Router()
 
+const kategoriRouter = require("./kategori_route")
 
+router.use("/kategori", kategoriRouter)
 
 module.exports = router

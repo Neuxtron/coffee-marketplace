@@ -8,7 +8,7 @@ const PORT = 3000
 
 app.use(express.json())
 app.use(cors({ origin: "*" }))
-app.use(routes)
+app.use("/api", routes)
 app.use("/images", express.static("./images/"))
 
 sequelize.sync({ alter: true }).then(() => {
