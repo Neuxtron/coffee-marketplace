@@ -1,19 +1,20 @@
+const { defaultExclude } = require("../constants")
 const KategoriModel = require("../models/kategori_model")
 
 class KategoriController {
   static allKategori(req, res) {
-    KategoriModel.findAll()
-      .then((listKategori) => {
-        const data = listKategori.map(({ id, icon, nama }) => {
-          return { id, icon, nama }
-        })
-        
+    KategoriModel.findAll({
+      attributes: defaultExclude
+    })
+
+      .then((data) => {
         res.status(200).json({
           status: true,
           message: "Berhasil mengambil data kategori",
-          data: data,
+          data,
         })
       })
+
       .catch((err) => {
         console.log(err)
         res.status(500).json({

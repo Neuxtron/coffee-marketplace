@@ -1,19 +1,19 @@
-const { DataTypes, UUIDV4 } = require("sequelize")
+const { UUIDV4, STRING } = require("sequelize")
 const sequelize = require("../config/database")
 
 const KategoriModel = sequelize.define("kategori", {
   id: {
-    type: DataTypes.STRING,
+    type: STRING,
     defaultValue: UUIDV4,
     allowNull: false,
     primaryKey: true,
   },
   icon: {
-    type: DataTypes.STRING,
+    type: STRING,
     allowNull: false,
   },
   nama: {
-    type: DataTypes.STRING,
+    type: STRING,
     allowNull: false,
   },
 }, {
