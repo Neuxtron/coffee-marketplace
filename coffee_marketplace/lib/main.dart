@@ -1,5 +1,5 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
-import 'package:coffee_marketplace/views/home/home_page.dart';
+import 'package:coffee_marketplace/views/layouts/main_layout.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: {
         // TODO: auth
-        "/": (context) => const HomePage(),
+        "/": (context) => const MainLayout(),
       },
     );
   }
