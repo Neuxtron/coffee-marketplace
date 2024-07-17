@@ -10,7 +10,7 @@ class KategoriModel {
   });
 }
 
-final List<KategoriModel> dummyKategori = [
+final List<KategoriModel> dummyListKategori = [
   KategoriModel(id: "1", icon: "assets/icons/ic_coffee.svg", nama: "Coffee"),
   KategoriModel(id: "2", icon: "assets/icons/ic_coffee.svg", nama: "Coffee"),
   KategoriModel(id: "3", icon: "assets/icons/ic_coffee.svg", nama: "Coffee"),

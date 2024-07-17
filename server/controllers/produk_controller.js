@@ -42,6 +42,8 @@ class ProdukController {
     if (listGambar.length === 0) return null
     return listGambar[0]
   }
+
+  // TODO: best seller
 }
 
 module.exports = ProdukController

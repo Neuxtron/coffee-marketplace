@@ -13,7 +13,7 @@ class _MainLayoutState extends State<MainLayout> {
   int _currentIndex = 0;
   final _pages = [
     const HomePage(),
-    const Center(child: const Text("Keranjang")),
+    const Center(child: Text("Keranjang")),
     const Center(child: Text("Saya")),
   ];
 
@@ -26,9 +26,11 @@ class _MainLayoutState extends State<MainLayout> {
         showUnselectedLabels: false,
         currentIndex: _currentIndex,
         backgroundColor: AppConstants.secondaryAlt,
-        iconSize: 33,
+        iconSize: 35,
         selectedItemColor: Colors.black,
         onTap: (index) => setState(() => _currentIndex = index),
+        selectedFontSize: 0,
+        unselectedFontSize: 0,
         items: const [
           BottomNavigationBarItem(
             label: "Home",
@@ -39,8 +41,8 @@ class _MainLayoutState extends State<MainLayout> {
           BottomNavigationBarItem(
             label: "Keranjang",
             tooltip: "Keranjang",
-            icon: Icon(Icons.shopping_cart_outlined),
-            activeIcon: Icon(Icons.shopping_cart_rounded),
+            icon: Icon(Icons.shopping_basket_outlined),
+            activeIcon: Icon(Icons.shopping_basket_rounded),
           ),
           BottomNavigationBarItem(
             label: "Saya",

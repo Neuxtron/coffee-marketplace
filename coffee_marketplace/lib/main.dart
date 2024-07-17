@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        fontFamily: "Abhaya Libre",
+        fontFamily: "Lato",
         scaffoldBackgroundColor: AppConstants.background,
         colorScheme: ColorScheme.fromSeed(
           seedColor: AppConstants.primary,

@@ -1,4 +1,5 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/views/home/best_seller_section.dart';
 import 'package:coffee_marketplace/views/home/kategori_section.dart';
 import 'package:flutter/material.dart';
 
@@ -15,6 +16,7 @@ class HomePage extends StatelessWidget {
           color: AppConstants.primary,
         ),
         const KategoriSection(),
+        const BestSellerSection(),
       ],
     );
   }

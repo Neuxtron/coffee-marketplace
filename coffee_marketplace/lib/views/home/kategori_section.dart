@@ -8,15 +8,17 @@ class KategoriSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<KategoriModel> listKategori = dummyListKategori;
+
     return SizedBox(
       height: 60,
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-        itemCount: dummyKategori.length,
+        itemCount: listKategori.length,
         itemBuilder: (context, index) {
-          final kategori = dummyKategori[index];
+          final kategori = listKategori[index];
 
           return Container(
             padding: const EdgeInsets.symmetric(horizontal: 13),
@@ -36,13 +38,7 @@ class KategoriSection extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 10),
-                Text(
-                  kategori.nama,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 16,
-                  ),
-                ),
+                Text(kategori.nama),
               ],
             ),
           );
