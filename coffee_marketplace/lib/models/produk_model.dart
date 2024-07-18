@@ -6,7 +6,7 @@ class ProdukModel {
   final String nama;
   final String deskripsi;
   final int harga;
-  final String idKatgegori;
+  final String idKategori;
   final int beratProduk;
   final String merk;
   final List<String> gambar;
@@ -18,12 +18,33 @@ class ProdukModel {
     required this.nama,
     required this.deskripsi,
     required this.harga,
-    required this.idKatgegori,
+    required this.idKategori,
     required this.beratProduk,
     required this.merk,
     required this.gambar,
     required this.variasi,
   });
+
+  factory ProdukModel.fromJson(Map<String, dynamic> json) {
+    final gambar = (json["gambar"] as List).map((item) {
+      final fileName = item["fileName"];
+      return "${AppConstants.baseUrl}/images/$fileName";
+    }).toList();
+
+    final variasi = json["variasi"] as List;
+
+    return ProdukModel(
+      id: json["id"],
+      nama: json["nama"],
+      deskripsi: json["deskripsi"],
+      harga: json["harga"],
+      idKategori: json["idKategori"],
+      beratProduk: json["beratProduk"],
+      merk: json["merk"],
+      gambar: gambar,
+      variasi: variasi.map((e) => VariasiModel.fromJson(e)).toList(),
+    );
+  }
 
   // TODO: get thumbnail
 }
@@ -34,7 +55,7 @@ final dummyProduk = ProdukModel(
   deskripsi:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore autem magnam libero quos aspernatur dolores neque? Perferendis cumque porro labore, temporibus soluta quo voluptatum natus iure ullam doloribus voluptatem eum aspernatur cum, eveniet blanditiis suscipit! Velit culpa fugiat illum minima blanditiis sapiente incidunt officia eveniet aspernatur, necessitatibus voluptatum animi totam, facilis voluptatem nostrum vitae nulla hic natus! Debitis temporibus odio, doloribus incidunt molestias impedit.",
   harga: 110999,
-  idKatgegori: "1",
+  idKategori: "1",
   beratProduk: 200,
   merk: "PRESO",
   gambar: ["${AppConstants.baseUrl}/images/contoh.jpg"],
@@ -45,14 +66,14 @@ final dummyProduk = ProdukModel(
     VariasiModel(id: "4", nama: "Bubuk Kasar", stok: 999),
   ],
 );
-final List<ProdukModel> dummyListProduk = [
-  dummyProduk,
-  dummyProduk,
-  dummyProduk,
-  dummyProduk,
-  dummyProduk,
-  dummyProduk,
-];
+// final List<ProdukModel> dummyListProduk = [
+//   dummyProduk,
+//   dummyProduk,
+//   dummyProduk,
+//   dummyProduk,
+//   dummyProduk,
+//   dummyProduk,
+// ];
 final List<ProdukModel> dummyBestSellerProduk = [
   dummyProduk,
   dummyProduk,

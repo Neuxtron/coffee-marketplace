@@ -3,6 +3,7 @@ const ProdukModel = require("../models/produk_model")
 
 class ProdukController {
   static allProduk = (req, res) => {
+    // TODO: pagination
     ProdukModel.findAll({
       include: [
         {

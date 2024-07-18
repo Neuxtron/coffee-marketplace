@@ -1,6 +1,7 @@
-import 'package:coffee_marketplace/models/produk_model.dart';
+import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/views/home/produk_item.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AllMenuSection extends StatelessWidget {
   const AllMenuSection({super.key});
@@ -8,7 +9,7 @@ class AllMenuSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const shadowSize = 150.0;
-    final listProduk = dummyListProduk;
+    final listProduk = context.watch<ProdukViewModel>().listProduk;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
