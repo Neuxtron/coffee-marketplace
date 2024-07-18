@@ -10,8 +10,6 @@ class DeskripsiSection extends StatelessWidget {
       deskripsi,
       textAlign: TextAlign.justify,
       style: const TextStyle(
-        fontFamily: "Abhaya Libre",
-        fontWeight: FontWeight.w800,
         fontSize: 16,
       ),
     );

@@ -2,6 +2,7 @@ import 'package:coffee_marketplace/models/produk_model.dart';
 import 'package:coffee_marketplace/views/detail/deskripsi_section.dart';
 import 'package:coffee_marketplace/views/detail/gambar_section.dart';
 import 'package:coffee_marketplace/views/detail/judul_section.dart';
+import 'package:coffee_marketplace/views/detail/variasi_section.dart';
 import 'package:flutter/material.dart';
 
 class DetailsPage extends StatelessWidget {
@@ -14,16 +15,21 @@ class DetailsPage extends StatelessWidget {
     return Scaffold(
       appBar: buildAppBar(),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
-          child: Column(
-            children: [
-              const SizedBox(height: 30),
-              JudulSection(nama: produk.nama, harga: produk.harga),
-              GambarSection(gambar: produk.gambar[0]),
-              DeskripsiSection(deskripsi: produk.deskripsi),
-            ],
-          ),
+        child: Column(
+          children: [
+            const SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                children: [
+                  JudulSection(nama: produk.nama, harga: produk.harga),
+                  GambarSection(gambar: produk.gambar[0]),
+                  DeskripsiSection(deskripsi: produk.deskripsi),
+                ],
+              ),
+            ),
+            VariasiSection(listVariasi: produk.variasi),
+          ],
         ),
       ),
     );

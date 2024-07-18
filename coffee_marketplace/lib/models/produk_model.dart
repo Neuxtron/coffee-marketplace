@@ -1,3 +1,4 @@
+import 'package:coffee_marketplace/models/variasi_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 
 class ProdukModel {
@@ -9,7 +10,7 @@ class ProdukModel {
   final int beratProduk;
   final String merk;
   final List<String> gambar;
-  // TODO: variasi
+  final List<VariasiModel> variasi;
   // TODO: id penjual
 
   ProdukModel({
@@ -21,6 +22,7 @@ class ProdukModel {
     required this.beratProduk,
     required this.merk,
     required this.gambar,
+    required this.variasi,
   });
 
   // TODO: get thumbnail
@@ -36,6 +38,12 @@ final dummyProduk = ProdukModel(
   beratProduk: 200,
   merk: "PRESO",
   gambar: ["${AppConstants.baseUrl}/images/contoh.jpg"],
+  variasi: [
+    VariasiModel(id: "1", nama: "Biji Kopi", stok: 999),
+    VariasiModel(id: "2", nama: "Bubuk Halus", stok: 999),
+    VariasiModel(id: "3", nama: "Bubuk Sedang", stok: 999),
+    VariasiModel(id: "4", nama: "Bubuk Kasar", stok: 999),
+  ],
 );
 final List<ProdukModel> dummyListProduk = [
   dummyProduk,
