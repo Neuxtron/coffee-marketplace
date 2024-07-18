@@ -1,39 +1,34 @@
+const { Sequelize } = require("sequelize")
 const { defaultExclude } = require("../constants")
 const ProdukModel = require("../models/produk_model")
+
+const getInclude = [
+  {
+    association: "gambar",
+    attributes: {
+      exclude: [...defaultExclude.exclude, "idProduk"]
+    },
+  },
+  {
+    association: "variasi",
+    attributes: {
+      exclude: [...defaultExclude.exclude, "idProduk"]
+    },
+  },
+  {
+    association: "penjual",
+    attributes: ["id", "nama"],
+  },
+]
 
 class ProdukController {
   static allProduk = (req, res) => {
     // TODO: pagination
+    // TODO: thumbnail
     ProdukModel.findAll({
-      include: [
-        {
-          association: "gambar",
-          attributes: {
-            exclude: [...defaultExclude.exclude, "idProduk"]
-          },
-        },
-        {
-          association: "variasi",
-          attributes: {
-            exclude: [...defaultExclude.exclude, "idProduk"]
-          },
-        },
-        {
-          association: "penjual",
-          attributes: {
-            exclude: [
-              ...defaultExclude.exclude,
-              "email",
-              "noHp",
-              "alamat",
-              "token",
-              "password",
-              "idKecamatan",
-            ],
-          },
-        },
-      ],
-      attributes: defaultExclude
+      include: getInclude,
+      attributes: defaultExclude,
+      order: [["createdAt", "DESC"]]
     })
 
       .then((data) => {
@@ -58,7 +53,9 @@ class ProdukController {
     return listGambar[0]
   }
 
-  // TODO: best seller
+  static bestSellers = (req, res) => {
+    // TODO: produk terbanyak terjual
+  }
 }
 
 module.exports = ProdukController

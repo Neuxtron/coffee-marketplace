@@ -10,6 +10,7 @@ app.use(express.json())
 app.use(cors({ origin: "*" }))
 app.use("/api", routes)
 app.use("/images", express.static("./images/"))
+app.use("/icons", express.static("./icons/"))
 
 sequelize.sync({ alter: true }).then(() => {
   app.listen(PORT, () => {

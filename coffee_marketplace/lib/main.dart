@@ -1,4 +1,5 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/views/detail/details_page.dart';
 import 'package:coffee_marketplace/views/layouts/main_layout.dart';
@@ -17,6 +18,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ProdukViewModel()),
+        ChangeNotifierProvider(create: (context) => KategoriViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

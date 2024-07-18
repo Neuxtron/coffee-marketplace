@@ -4,7 +4,8 @@ const KategoriModel = require("../models/kategori_model")
 class KategoriController {
   static allKategori(req, res) {
     KategoriModel.findAll({
-      attributes: defaultExclude
+      attributes: defaultExclude,
+      order: [["nama", "ASC"]]
     })
 
       .then((data) => {

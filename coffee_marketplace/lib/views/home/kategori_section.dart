@@ -1,14 +1,15 @@
-import 'package:coffee_marketplace/models/kategori_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class KategoriSection extends StatelessWidget {
   const KategoriSection({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<KategoriModel> listKategori = dummyListKategori;
+    final listKategori = context.watch<KategoriViewModel>().listKategori;
 
     return SizedBox(
       height: 60,
@@ -29,7 +30,7 @@ class KategoriSection extends StatelessWidget {
             ),
             child: Row(
               children: [
-                SvgPicture.asset(
+                SvgPicture.network(
                   kategori.icon,
                   width: 25,
                   colorFilter: const ColorFilter.mode(
