@@ -3,6 +3,7 @@ const sequelize = require("../config/database")
 const KategoriModel = require("./kategori_model")
 const GambarProdukModel = require("./gambar_produk_model")
 const VariasiModel = require("./variasi_model")
+const UserModel = require("./users_model")
 
 const ProdukModel = sequelize.define("produk", {
   id: {
@@ -35,12 +36,16 @@ const ProdukModel = sequelize.define("produk", {
     type: STRING,
     allowNull: true,
   },
-  // TODO: id penjual (idUser)
+  idPenjual: {
+    type: STRING,
+    allowNull: false,
+  },
 }, {
   freezeTableName: true,
 })
 
 ProdukModel.belongsTo(KategoriModel, { foreignKey: "idKategori", onDelete: "CASCADE" })
+ProdukModel.belongsTo(UserModel, { as: "penjual", foreignKey: "idPenjual", onDelete: "RESTRICT" })
 ProdukModel.hasMany(GambarProdukModel, {
   as: "gambar",
   foreignKey: "idProduk",

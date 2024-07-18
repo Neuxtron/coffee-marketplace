@@ -17,6 +17,20 @@ class ProdukController {
             exclude: [...defaultExclude.exclude, "idProduk"]
           },
         },
+        {
+          association: "penjual",
+          attributes: {
+            exclude: [
+              ...defaultExclude.exclude,
+              "email",
+              "noHp",
+              "alamat",
+              "token",
+              "password",
+              "idKecamatan",
+            ],
+          },
+        },
       ],
       attributes: defaultExclude
     })
