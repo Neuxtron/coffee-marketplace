@@ -1,4 +1,6 @@
 import 'package:coffee_marketplace/models/produk_model.dart';
+import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/views/detail/actions_section.dart';
 import 'package:coffee_marketplace/views/detail/deskripsi_section.dart';
 import 'package:coffee_marketplace/views/detail/gambar_section.dart';
 import 'package:coffee_marketplace/views/detail/judul_section.dart';
@@ -8,12 +10,26 @@ import 'package:flutter/material.dart';
 class DetailsPage extends StatelessWidget {
   const DetailsPage({super.key});
 
+  static late ProdukModel produk;
+  static String? selectedVariasi;
+
+  void addToCart(int amount) {
+    print("Variasi id: $selectedVariasi");
+    print("amount: $amount");
+    print("Produk id: ${produk.id}");
+  }
+
   @override
   Widget build(BuildContext context) {
-    final produk = ModalRoute.of(context)!.settings.arguments as ProdukModel;
+    produk = ModalRoute.of(context)!.settings.arguments as ProdukModel;
 
     return Scaffold(
       appBar: buildAppBar(),
+      bottomNavigationBar: Container(
+        color: AppConstants.secondaryAlt,
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        child: ActionsSection(addToCart: addToCart),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -28,7 +44,10 @@ class DetailsPage extends StatelessWidget {
                 ],
               ),
             ),
-            VariasiSection(listVariasi: produk.variasi),
+            VariasiSection(
+              listVariasi: produk.variasi,
+              selectVariasi: (variasiId) => selectedVariasi = variasiId,
+            ),
           ],
         ),
       ),

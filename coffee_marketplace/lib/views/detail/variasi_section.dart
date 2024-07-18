@@ -4,14 +4,20 @@ import 'package:flutter/material.dart';
 
 class VariasiSection extends StatefulWidget {
   final List<VariasiModel> listVariasi;
-  const VariasiSection({super.key, required this.listVariasi});
+  final Function(String variasiId) selectVariasi;
+
+  const VariasiSection({
+    super.key,
+    required this.listVariasi,
+    required this.selectVariasi,
+  });
 
   @override
   State<VariasiSection> createState() => _VariasiSectionState();
 }
 
 class _VariasiSectionState extends State<VariasiSection> {
-  String? selectedId = null;
+  String? selectedId;
 
   void selectVariasi(String id) {
     if (id == selectedId) {
@@ -19,6 +25,7 @@ class _VariasiSectionState extends State<VariasiSection> {
       return;
     }
     setState(() => selectedId = id);
+    widget.selectVariasi(id);
   }
 
   @override
