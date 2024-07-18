@@ -1,10 +1,12 @@
-import 'package:coffee_marketplace/models/produk_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 
 class GambarSection extends StatelessWidget {
-  final ProdukModel produk;
-  const GambarSection({super.key, required this.produk});
+  final String gambar;
+  const GambarSection({
+    super.key,
+    required this.gambar,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class GambarSection extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 clipBehavior: Clip.hardEdge,
                 child: Image.network(
-                  produk.gambar[0],
+                  gambar,
                   height: 260,
                   width: 260,
                 ),
