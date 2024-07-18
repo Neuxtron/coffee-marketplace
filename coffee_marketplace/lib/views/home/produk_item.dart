@@ -1,7 +1,7 @@
 import 'package:coffee_marketplace/models/produk_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class ProdukItem extends StatelessWidget {
   final double shadowSize;
@@ -15,10 +15,12 @@ class ProdukItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final hargaString = NumberFormat("Rp###,###,###").format(produk.harga);
+    final hargaString = AppHelpers.formatHarga(produk.harga);
 
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.pushNamed(context, "/details", arguments: produk);
+      },
       child: Center(
         child: Stack(
           children: [

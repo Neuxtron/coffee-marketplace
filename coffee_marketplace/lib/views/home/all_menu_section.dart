@@ -13,7 +13,7 @@ class AllMenuSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 20),
+        const SizedBox(height: 40),
         const Padding(
           padding: EdgeInsets.only(left: 20),
           child: Text(

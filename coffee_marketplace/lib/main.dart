@@ -1,4 +1,5 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/views/detail/details_page.dart';
 import 'package:coffee_marketplace/views/layouts/main_layout.dart';
 import 'package:flutter/material.dart';
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       routes: {
         // TODO: auth
         "/": (context) => const MainLayout(),
+        "/details": (context) => const DetailsPage(),
       },
     );
   }
