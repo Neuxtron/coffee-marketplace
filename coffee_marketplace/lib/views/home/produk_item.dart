@@ -17,45 +17,55 @@ class ProdukItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final hargaString = NumberFormat("Rp###,###,###").format(produk.harga);
 
-    return Stack(
-      children: [
-        Container(
-          height: shadowSize,
-          width: shadowSize,
-          margin: const EdgeInsets.fromLTRB(5, 25, 5, 0),
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: AppConstants.secondary,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(produk.nama),
-              Text(
-                hargaString,
-                style: const TextStyle(fontSize: 12),
+    return InkWell(
+      onTap: () {},
+      child: Center(
+        child: Stack(
+          children: [
+            Container(
+              height: shadowSize,
+              width: shadowSize,
+              margin: const EdgeInsets.fromLTRB(5, 40, 5, 0),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: AppConstants.secondary,
+                borderRadius: BorderRadius.circular(20),
               ),
-            ],
-          ),
-        ),
-        SizedBox(
-          width: shadowSize + 10,
-          child: Align(
-            alignment: Alignment.topCenter,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              clipBehavior: Clip.hardEdge,
-              child: Image.network(
-                produk.gambar[0],
-                height: 100,
-                width: 100,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    produk.nama,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    hargaString,
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                ],
               ),
             ),
-          ),
+            SizedBox(
+              width: shadowSize + 10,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  clipBehavior: Clip.hardEdge,
+                  child: Image.network(
+                    produk.gambar[0],
+                    height: 120,
+                    width: 120,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

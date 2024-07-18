@@ -8,7 +8,7 @@ class BestSellerSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<ProdukModel> listBestSellerProduk = dummyBestSellerProduk;
-    const shadowSize = 130.0;
+    const shadowSize = 150.0;
     const verticalPadding = 10.0;
 
     return Column(
@@ -27,7 +27,7 @@ class BestSellerSection extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: shadowSize + (verticalPadding * 2) + 30,
+          height: shadowSize + (verticalPadding * 2) + 40,
           child: ListView.builder(
             padding: const EdgeInsets.symmetric(
               vertical: verticalPadding,
