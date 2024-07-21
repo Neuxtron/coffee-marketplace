@@ -31,7 +31,7 @@ class _VariasiSectionState extends State<VariasiSection> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.only(bottom: 20, top: 50),
       child: Column(
         children: [
           const Text(

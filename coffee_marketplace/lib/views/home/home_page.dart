@@ -1,4 +1,4 @@
-import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/views/home/home_banner.dart';
 import 'package:coffee_marketplace/views/home/home_body.dart';
 import 'package:flutter/material.dart';
 
@@ -7,15 +7,12 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            height: 200,
-            color: AppConstants.primary,
-          ),
-          const HomeBody(),
+          HomeBanner(),
+          HomeBody(),
         ],
       ),
     );
