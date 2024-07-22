@@ -38,6 +38,7 @@ const UserModel = sequelize.define("user", {
     type: STRING,
     allowNull: false,
   },
+  // TODO: saldo
 }, {
   freezeTableName: true,
   hooks: {
