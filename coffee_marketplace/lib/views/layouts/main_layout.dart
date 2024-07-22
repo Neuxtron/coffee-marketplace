@@ -16,11 +16,20 @@ class _MainLayoutState extends State<MainLayout> {
     const Center(child: Text("Keranjang")),
     const Center(child: Text("Saya")),
   ];
+  final _appBars = [
+    AppBar(
+      toolbarHeight: 0,
+      backgroundColor: AppConstants.secondaryAlt,
+    ),
+    null,
+    null,
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_currentIndex],
+      appBar: _appBars[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,

@@ -1,5 +1,5 @@
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
-import 'package:coffee_marketplace/views/home/produk_item.dart';
+import 'package:coffee_marketplace/views/widgets/produk_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,7 +8,6 @@ class AllMenuSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const shadowSize = 150.0;
     final listProduk = context.watch<ProdukViewModel>().listProduk;
 
     return Column(
@@ -26,22 +25,8 @@ class AllMenuSection extends StatelessWidget {
             ),
           ),
         ),
-        GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 3 / 4,
-          ),
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          itemCount: listProduk.length,
-          itemBuilder: (context, index) {
-            final produk = listProduk[index];
-            return ProdukItem(
-              shadowSize: shadowSize,
-              produk: produk,
-            );
-          },
+        ProdukGridView(
+          listProduk: listProduk,
         ),
       ],
     );

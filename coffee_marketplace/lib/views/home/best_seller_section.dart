@@ -1,5 +1,5 @@
 import 'package:coffee_marketplace/models/produk_model.dart';
-import 'package:coffee_marketplace/views/home/produk_item.dart';
+import 'package:coffee_marketplace/views/widgets/produk_item.dart';
 import 'package:flutter/material.dart';
 
 class BestSellerSection extends StatelessWidget {

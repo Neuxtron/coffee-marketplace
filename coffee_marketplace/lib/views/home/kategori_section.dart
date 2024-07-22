@@ -21,26 +21,27 @@ class KategoriSection extends StatelessWidget {
         itemBuilder: (context, index) {
           final kategori = listKategori[index];
 
-          return Container(
-            padding: const EdgeInsets.symmetric(horizontal: 13),
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            decoration: BoxDecoration(
-              color: AppConstants.secondary,
-              borderRadius: BorderRadius.circular(999),
-            ),
-            child: Row(
-              children: [
-                SvgPicture.network(
-                  kategori.icon,
-                  width: 25,
-                  colorFilter: const ColorFilter.mode(
-                    Colors.black,
-                    BlendMode.srcIn,
+          return InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, "/kategori", arguments: kategori);
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 13),
+              margin: const EdgeInsets.symmetric(horizontal: 5),
+              decoration: BoxDecoration(
+                color: AppConstants.secondary,
+                borderRadius: BorderRadius.circular(999),
+              ),
+              child: Row(
+                children: [
+                  SvgPicture.network(
+                    kategori.icon,
+                    width: 25,
                   ),
-                ),
-                const SizedBox(width: 10),
-                Text(kategori.nama),
-              ],
+                  const SizedBox(width: 10),
+                  Text(kategori.nama),
+                ],
+              ),
             ),
           );
         },

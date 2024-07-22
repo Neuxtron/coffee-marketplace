@@ -56,6 +56,7 @@ class DetailsPage extends StatelessWidget {
 
   AppBar buildAppBar() {
     return AppBar(
+      centerTitle: true,
       title: const Text(
         "Detail",
         style: TextStyle(

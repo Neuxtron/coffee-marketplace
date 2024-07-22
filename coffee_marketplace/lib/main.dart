@@ -2,6 +2,7 @@ import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/views/detail/details_page.dart';
+import 'package:coffee_marketplace/views/kategori/kategori_page.dart';
 import 'package:coffee_marketplace/views/layouts/main_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
           // TODO: auth
           "/": (context) => const MainLayout(),
           "/details": (context) => const DetailsPage(),
+          "/kategori": (context) => const KategoriPage(),
         },
       ),
     );

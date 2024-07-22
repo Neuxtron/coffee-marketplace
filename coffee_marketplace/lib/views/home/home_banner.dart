@@ -18,20 +18,18 @@ class HomeBanner extends StatelessWidget {
 
     return Container(
       color: AppConstants.secondaryAlt,
-      child: SafeArea(
-        child: CarouselSlider(
-          items: listBanner.map((banner) {
-            return Image.network(
-              "${AppConstants.baseUrl}/images/banner/$banner",
-              height: 200,
-              fit: BoxFit.cover,
-            );
-          }).toList(),
-          options: CarouselOptions(
+      child: CarouselSlider(
+        items: listBanner.map((banner) {
+          return Image.network(
+            "${AppConstants.baseUrl}/images/banner/$banner",
             height: 200,
-            viewportFraction: 1,
-            autoPlay: true,
-          ),
+            fit: BoxFit.cover,
+          );
+        }).toList(),
+        options: CarouselOptions(
+          height: 200,
+          viewportFraction: 1,
+          autoPlay: true,
         ),
       ),
     );
