@@ -35,22 +35,21 @@ class KategoriPage extends StatelessWidget {
       backgroundColor: AppConstants.background,
       titleSpacing: 0,
       title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           SvgPicture.network(
             kategori.icon,
             width: 25,
-            colorFilter: const ColorFilter.mode(
-              Colors.black,
-              BlendMode.srcIn,
-            ),
           ),
-          const SizedBox(width: 10),
-          Text(
-            kategori.nama,
-            style: const TextStyle(
-              fontFamily: "Abhaya Libre",
-              fontWeight: FontWeight.w800,
-              fontSize: 20,
+          Padding(
+            padding: const EdgeInsets.only(left: 10, right: 50),
+            child: Text(
+              kategori.nama,
+              style: const TextStyle(
+                fontFamily: "Abhaya Libre",
+                fontWeight: FontWeight.w800,
+                fontSize: 20,
+              ),
             ),
           ),
         ],

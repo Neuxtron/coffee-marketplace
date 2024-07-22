@@ -46,7 +46,10 @@ class ProdukModel {
     );
   }
 
-  // TODO: get thumbnail
+  // TODO: thumbnail
+  String get thumbnail {
+    return gambar[0];
+  }
 }
 
 final dummyProduk = ProdukModel(

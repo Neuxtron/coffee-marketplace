@@ -1,5 +1,7 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/views/home/home_page.dart';
+import 'package:coffee_marketplace/views/keranjang/keranjang_page.dart';
+import 'package:coffee_marketplace/views/widgets/nav_item.dart';
 import 'package:flutter/material.dart';
 
 class MainLayout extends StatefulWidget {
@@ -13,7 +15,7 @@ class _MainLayoutState extends State<MainLayout> {
   int _currentIndex = 0;
   final _pages = [
     const HomePage(),
-    const Center(child: Text("Keranjang")),
+    const KeranjangPage(),
     const Center(child: Text("Saya")),
   ];
   final _appBars = [
@@ -21,7 +23,21 @@ class _MainLayoutState extends State<MainLayout> {
       toolbarHeight: 0,
       backgroundColor: AppConstants.secondaryAlt,
     ),
-    null,
+    AppBar(
+      elevation: 0,
+      backgroundColor: AppConstants.background,
+      title: const Text(
+        "Keranjang",
+        style: TextStyle(
+          fontFamily: "Abhaya Libre",
+          fontWeight: FontWeight.w800,
+          fontSize: 18,
+        ),
+      ),
+      surfaceTintColor: Colors.transparent,
+      titleSpacing: 0,
+      centerTitle: true,
+    ),
     null,
   ];
 
@@ -44,20 +60,38 @@ class _MainLayoutState extends State<MainLayout> {
           BottomNavigationBarItem(
             label: "Home",
             tooltip: "Home",
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home_rounded),
+            icon: NavItem(
+              iconPath: "assets/icons/ic_nav_home.svg",
+              isActive: false,
+            ),
+            activeIcon: NavItem(
+              iconPath: "assets/icons/ic_nav_home.svg",
+              isActive: true,
+            ),
           ),
           BottomNavigationBarItem(
             label: "Keranjang",
             tooltip: "Keranjang",
-            icon: Icon(Icons.shopping_basket_outlined),
-            activeIcon: Icon(Icons.shopping_basket_rounded),
+            icon: NavItem(
+              iconPath: "assets/icons/ic_nav_keranjang.svg",
+              isActive: false,
+            ),
+            activeIcon: NavItem(
+              iconPath: "assets/icons/ic_nav_keranjang.svg",
+              isActive: true,
+            ),
           ),
           BottomNavigationBarItem(
             label: "Saya",
             tooltip: "Saya",
-            icon: Icon(Icons.person_outlined),
-            activeIcon: Icon(Icons.person_rounded),
+            icon: NavItem(
+              iconPath: "assets/icons/ic_nav_profil.svg",
+              isActive: false,
+            ),
+            activeIcon: NavItem(
+              iconPath: "assets/icons/ic_nav_profil.svg",
+              isActive: true,
+            ),
           ),
         ],
       ),

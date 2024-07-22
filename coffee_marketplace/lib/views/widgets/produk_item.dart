@@ -1,7 +1,10 @@
 import 'package:coffee_marketplace/models/produk_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/app_helpers.dart';
+import 'package:coffee_marketplace/views/widgets/error_image.dart';
+import 'package:coffee_marketplace/views/widgets/loading_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class ProdukItem extends StatelessWidget {
   final double shadowSize;
@@ -33,19 +36,36 @@ class ProdukItem extends StatelessWidget {
                 color: AppConstants.secondary,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text(
-                    produk.nama,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          produk.nama,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          hargaString,
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      ],
+                    ),
                   ),
-                  Text(
-                    hargaString,
-                    style: const TextStyle(fontSize: 12),
+                  IconButton(
+                    padding: EdgeInsets.zero,
+                    // TODO: tambah keranjang
+                    onPressed: () {},
+                    icon: SvgPicture.asset(
+                      "assets/icons/ic_keranjang.svg",
+                      height: 20,
+                      width: 20,
+                    ),
                   ),
                 ],
               ),
@@ -58,9 +78,22 @@ class ProdukItem extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   clipBehavior: Clip.hardEdge,
                   child: Image.network(
-                    produk.gambar[0],
+                    produk.thumbnail,
                     height: 120,
                     width: 120,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const LoadingImage(
+                        height: 120,
+                        width: 120,
+                      );
+                    },
+                    errorBuilder: (context, error, stackTrace) {
+                      return const ErrorImage(
+                        height: 120,
+                        width: 120,
+                      );
+                    },
                   ),
                 ),
               ),

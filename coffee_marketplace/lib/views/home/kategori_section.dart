@@ -12,7 +12,7 @@ class KategoriSection extends StatelessWidget {
     final listKategori = context.watch<KategoriViewModel>().listKategori;
 
     return SizedBox(
-      height: 60,
+      height: 50,
       child: ListView.builder(
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
@@ -36,7 +36,7 @@ class KategoriSection extends StatelessWidget {
                 children: [
                   SvgPicture.network(
                     kategori.icon,
-                    width: 25,
+                    width: 20,
                   ),
                   const SizedBox(width: 10),
                   Text(kategori.nama),
