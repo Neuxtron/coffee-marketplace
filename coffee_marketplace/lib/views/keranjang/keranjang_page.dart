@@ -1,5 +1,7 @@
+import 'package:coffee_marketplace/utils/server_status.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
 import 'package:coffee_marketplace/views/keranjang/keranjang_item.dart';
+import 'package:coffee_marketplace/views/widgets/server_error_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +11,11 @@ class KeranjangPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final listKeranjang = context.watch<KeranjangViewModel>().listKeranjang;
+    final status = context.watch<KeranjangViewModel>().status;
+
+    if (status == ServerStatus.error) {
+      return ServerErrorBuilder(onRetry: () {});
+    }
 
     return ListView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 20),

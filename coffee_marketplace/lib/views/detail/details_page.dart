@@ -1,4 +1,5 @@
 import 'package:coffee_marketplace/models/produk_model.dart';
+import 'package:coffee_marketplace/models/variasi_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/views/detail/actions_section.dart';
 import 'package:coffee_marketplace/views/detail/deskripsi_section.dart';
@@ -11,10 +12,10 @@ class DetailsPage extends StatelessWidget {
   const DetailsPage({super.key});
 
   static late ProdukModel produk;
-  static String? selectedVariasi;
+  static VariasiModel? selectedVariasi;
 
   void addToCart(int amount) {
-    print("Variasi id: $selectedVariasi");
+    print("Variasi id: ${selectedVariasi?.id}");
     print("amount: $amount");
     print("Produk id: ${produk.id}");
   }
@@ -46,7 +47,7 @@ class DetailsPage extends StatelessWidget {
             ),
             VariasiSection(
               listVariasi: produk.variasi,
-              selectVariasi: (variasiId) => selectedVariasi = variasiId,
+              selectVariasi: (variasi) => selectedVariasi = variasi,
             ),
           ],
         ),

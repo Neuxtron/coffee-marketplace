@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
         initialRoute: "/",
         routes: {
           // TODO: auth
+          // TODO: login & register
           "/": (context) => const MainLayout(),
           "/details": (context) => const DetailsPage(),
           "/kategori": (context) => const KategoriPage(),
