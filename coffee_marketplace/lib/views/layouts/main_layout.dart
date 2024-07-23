@@ -1,6 +1,7 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/views/home/home_page.dart';
 import 'package:coffee_marketplace/views/keranjang/keranjang_page.dart';
+import 'package:coffee_marketplace/views/profil/profil_page.dart';
 import 'package:coffee_marketplace/views/widgets/nav_item.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class _MainLayoutState extends State<MainLayout> {
   final _pages = [
     const HomePage(),
     const KeranjangPage(),
-    const Center(child: Text("Saya")),
+    const ProfilPage(),
   ];
   final _appBars = [
     AppBar(

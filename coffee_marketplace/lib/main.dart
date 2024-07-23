@@ -5,6 +5,7 @@ import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/views/detail/details_page.dart';
 import 'package:coffee_marketplace/views/kategori/kategori_page.dart';
 import 'package:coffee_marketplace/views/layouts/main_layout.dart';
+import 'package:coffee_marketplace/views/login/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        title: "Coffee Marketplace",
         theme: ThemeData(
           fontFamily: "Lato",
           scaffoldBackgroundColor: AppConstants.background,
@@ -39,6 +41,7 @@ class MyApp extends StatelessWidget {
           "/": (context) => const MainLayout(),
           "/details": (context) => const DetailsPage(),
           "/kategori": (context) => const KategoriPage(),
+          "/login": (context) => const LoginPage(),
         },
       ),
     );
