@@ -14,4 +14,22 @@ class KeranjangModel {
     this.id,
     this.amount = 1,
   });
+
+  factory KeranjangModel.fromJson(Map<String, dynamic> json) {
+    return KeranjangModel(
+      id: json["id"],
+      produk: ProdukModel.fromJson(json["produk"]),
+      variasi: VariasiModel.fromJson(json["variasi"]),
+      amount: json["amount"],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "idProduk": produk,
+      "idVariasi": variasi,
+      "amount": amount,
+    };
+  }
 }

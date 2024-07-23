@@ -5,6 +5,8 @@ class KeranjangController {
   static keranjangRiwayatByUser(req, res) {
     const idUser = req.idUser
 
+    // TODO: default exclude
+    // TODO: include variasi
     KeranjangModel.findAll({
       include: [{
         model: ProdukModel,
