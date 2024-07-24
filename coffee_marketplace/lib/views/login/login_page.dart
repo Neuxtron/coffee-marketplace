@@ -1,6 +1,9 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
-import 'package:coffee_marketplace/views/widgets/auth_input.dart';
+import 'package:coffee_marketplace/views/layouts/auth_layout.dart';
+import 'package:coffee_marketplace/views/login/login_actions.dart';
+import 'package:coffee_marketplace/views/widgets/auth_input/auth_input.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -52,82 +55,34 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 5),
-                child: AuthInput(
-                  controller: _emailController,
-                  validator: emailValidator,
-                  hintText: "Email",
-                  iconPath: "assets/icons/ic_email.svg",
-                ),
-              ),
-              AuthInput(
-                controller: _passwordController,
-                validator: passwordValidator,
-                hintText: "Password",
-                isPassword: true,
-                iconPath: "assets/icons/ic_password.svg",
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 50),
-                  child: TextButton(
-                    onPressed: () {},
-                    child: const Text(
-                      "Lupa password?",
-                      textAlign: TextAlign.right,
-                    ),
-                  ),
-                ),
-              ),
-              MaterialButton(
-                onPressed: login,
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                color: AppConstants.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(999),
-                ),
-                child: const Text(
-                  "Login",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Belum punya akun?"),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 3,
-                      horizontal: 5,
-                    ),
-                    child: TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        "Daftar",
-                        style: TextStyle(decoration: TextDecoration.underline),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            ],
+    return AuthLayout(
+      formKey: _formKey,
+      title: "Masuk",
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: SvgPicture.asset(
+            "assets/icons/ic_kopi.svg",
+            height: 70,
           ),
         ),
-      ),
+        AuthInput(
+          controller: _emailController,
+          validator: emailValidator,
+          hintText: "Email",
+          icon: SvgPicture.asset("assets/icons/ic_email.svg"),
+          keyboardType: TextInputType.emailAddress,
+        ),
+        AuthInput(
+          controller: _passwordController,
+          validator: passwordValidator,
+          hintText: "Password",
+          isPassword: true,
+          icon: SvgPicture.asset("assets/icons/ic_password.svg"),
+          margin: EdgeInsets.zero,
+        ),
+        LoginActions(onLogin: login),
+      ],
     );
   }
 
