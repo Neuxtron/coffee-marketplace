@@ -1,4 +1,5 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/viewmodels/daerah_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => ProdukViewModel()),
         ChangeNotifierProvider(create: (context) => KategoriViewModel()),
         ChangeNotifierProvider(create: (context) => KeranjangViewModel()),
+        ChangeNotifierProvider(create: (context) => DaerahViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

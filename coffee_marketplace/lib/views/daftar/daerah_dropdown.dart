@@ -6,6 +6,8 @@ class DaerahDropdown extends StatelessWidget {
   final String? value;
   final List<DaerahModel> listDaerah;
   final String title;
+  final bool show;
+  final bool isLoading;
 
   const DaerahDropdown({
     super.key,
@@ -13,10 +15,24 @@ class DaerahDropdown extends StatelessWidget {
     required this.value,
     required this.listDaerah,
     required this.title,
+    this.show = true,
+    required this.isLoading,
   });
 
   @override
   Widget build(BuildContext context) {
+    if (!show) return const SizedBox();
+    if (isLoading) {
+      return const Padding(
+        padding: EdgeInsets.only(bottom: 20),
+        child: SizedBox(
+          height: 30,
+          width: 30,
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [

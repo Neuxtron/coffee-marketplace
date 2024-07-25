@@ -1,11 +1,13 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/utils/server_status.dart';
+import 'package:coffee_marketplace/viewmodels/daerah_view_model.dart';
 import 'package:coffee_marketplace/views/daftar/daerah_dropdown.dart';
 import 'package:coffee_marketplace/views/daftar/daftar_actions.dart';
 import 'package:coffee_marketplace/views/layouts/auth_layout.dart';
 import 'package:coffee_marketplace/views/widgets/auth_input/auth_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:coffee_marketplace/models/daerah_model.dart';
+import 'package:provider/provider.dart';
 
 class DaftarPage extends StatefulWidget {
   const DaftarPage({super.key});
@@ -23,10 +25,16 @@ class _DaftarPageState extends State<DaftarPage> {
   final _kPasswordController = TextEditingController();
   final _alamatController = TextEditingController();
 
-  List<DaerahModel> _listProvinsi = dummyProvinsi;
-  List<DaerahModel> _listKecamatan = dummyKecamatan;
   String? _idProvinsi;
   String? _idKecamatan;
+  DaerahViewModel get _viewModel => context.read<DaerahViewModel>();
+  DaerahViewModel get _viewModelWatch => context.watch<DaerahViewModel>();
+
+  bool get _isLoading {
+    if (_viewModel.provinsiStatus == ServerStatus.loading) return true;
+    if (_viewModel.kecamatanStatus == ServerStatus.loading) return true;
+    return false;
+  }
 
   void daftar() {
     if (_formKey.currentState?.validate() ?? false) {
@@ -79,6 +87,29 @@ class _DaftarPageState extends State<DaftarPage> {
       return "Kedua password tidak sama";
     }
     return null;
+  }
+
+  void setProvinsi(String idProvinsi) async {
+    setState(() => _idProvinsi = idProvinsi);
+    await _viewModel.getKecamatan(idProvinsi);
+    if (_viewModel.listKecamatan.isEmpty) return;
+    setState(() => _idKecamatan = _viewModel.listKecamatan[0].id);
+  }
+
+  void getData() async {
+    await _viewModel.getProvinsi();
+    if (_viewModel.listProvinsi.isEmpty) return;
+    setState(() => _idProvinsi = _viewModel.listProvinsi[0].id);
+
+    await _viewModel.getKecamatan(_idProvinsi!);
+    if (_viewModel.listKecamatan.isEmpty) return;
+    setState(() => _idKecamatan = _viewModel.listKecamatan[0].id);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
   }
 
   @override
@@ -146,19 +177,30 @@ class _DaftarPageState extends State<DaftarPage> {
           margin: const EdgeInsets.only(bottom: 20),
           multiline: true,
         ),
-        DaerahDropdown(
-          onChange: (value) => setState(() => _idProvinsi = value),
-          value: _idProvinsi,
-          listDaerah: _listProvinsi,
-          title: "Provinsi",
+        Column(
+          children: [
+            DaerahDropdown(
+              onChange: (value) => setProvinsi(value!),
+              value: _idProvinsi,
+              listDaerah: _viewModelWatch.listProvinsi,
+              title: "Provinsi",
+              isLoading: _viewModelWatch.provinsiStatus == ServerStatus.loading,
+            ),
+            DaerahDropdown(
+              onChange: (value) => setState(() => _idKecamatan = value),
+              value: _idKecamatan,
+              listDaerah: _viewModelWatch.listKecamatan,
+              title: "Kecamatan",
+              show: _viewModelWatch.provinsiStatus == ServerStatus.normal,
+              isLoading:
+                  _viewModelWatch.kecamatanStatus == ServerStatus.loading,
+            ),
+          ],
         ),
-        DaerahDropdown(
-          onChange: (value) => setState(() => _idKecamatan = value),
-          value: _idKecamatan,
-          listDaerah: _listKecamatan,
-          title: "Kecamatan",
+        DaftarActions(
+          onDaftar: daftar,
+          isLoading: _isLoading,
         ),
-        DaftarActions(onDaftar: daftar),
       ],
     );
   }

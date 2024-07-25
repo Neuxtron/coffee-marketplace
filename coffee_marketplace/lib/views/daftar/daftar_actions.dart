@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 
 class DaftarActions extends StatelessWidget {
   final Function() onDaftar;
-  const DaftarActions({super.key, required this.onDaftar});
+  final bool isLoading;
+
+  const DaftarActions({
+    super.key,
+    required this.onDaftar,
+    required this.isLoading,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -11,12 +17,13 @@ class DaftarActions extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         MaterialButton(
-          onPressed: onDaftar,
+          onPressed: isLoading ? null : onDaftar,
           padding: const EdgeInsets.symmetric(vertical: 8),
           color: AppConstants.primary,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(999),
           ),
+          disabledColor: AppConstants.primary.withOpacity(.6),
           child: const Text(
             "Daftar",
             style: TextStyle(
