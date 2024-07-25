@@ -166,6 +166,7 @@ class UserViewModel extends ChangeNotifier {
       );
       log("Logout user:\n${response.body}");
       token = null;
+      _currentUser = null;
       if (response.statusCode == 200) {
         return true;
       }

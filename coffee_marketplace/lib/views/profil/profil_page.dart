@@ -3,31 +3,35 @@ import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class ProfilPage extends StatelessWidget {
+class ProfilPage extends StatefulWidget {
   const ProfilPage({super.key});
 
-  static late BuildContext _context;
+  @override
+  State<ProfilPage> createState() => _ProfilPageState();
+}
+
+class _ProfilPageState extends State<ProfilPage> {
+  bool get _loggedIn => AppHelpers.token != null;
+  String get _email => context.watch<UserViewModel>().currentUser?.email ?? "";
 
   void login() {
-    Navigator.pushNamed(_context, "/login");
+    Navigator.pushNamed(context, "/login");
   }
 
-  void logout() {}
+  void logout() {
+    context.read<UserViewModel>().logout().then((_) => setState(() {}));
+  }
 
   @override
   Widget build(BuildContext context) {
-    _context = context;
-    final loggedIn = AppHelpers.token != null;
-    final email = context.watch<UserViewModel>().currentUser?.email ?? "";
-
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Logged in as: $email"),
+          Text("Logged in as: $_email"),
           ElevatedButton(
-            onPressed: loggedIn ? logout : login,
-            child: Text(loggedIn ? "logout" : "login"),
+            onPressed: _loggedIn ? logout : login,
+            child: Text(_loggedIn ? "logout" : "login"),
           ),
         ],
       ),
