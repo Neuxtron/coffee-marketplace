@@ -3,7 +3,13 @@ import 'package:flutter/material.dart';
 
 class LoginActions extends StatelessWidget {
   final Function() onLogin;
-  const LoginActions({super.key, required this.onLogin});
+  final bool enabled;
+
+  const LoginActions({
+    super.key,
+    required this.onLogin,
+    required this.enabled,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +35,10 @@ class LoginActions extends StatelessWidget {
           ),
         ),
         MaterialButton(
-          onPressed: onLogin,
+          onPressed: enabled ? onLogin : null,
           padding: const EdgeInsets.symmetric(vertical: 8),
           color: AppConstants.primary,
+          disabledColor: AppConstants.primary.withOpacity(.6),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(999),
           ),

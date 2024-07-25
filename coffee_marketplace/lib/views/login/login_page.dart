@@ -1,9 +1,12 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/utils/server_status.dart';
+import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/layouts/auth_layout.dart';
 import 'package:coffee_marketplace/views/login/login_actions.dart';
 import 'package:coffee_marketplace/views/widgets/auth_input/auth_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,13 +20,19 @@ class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  String get _error => context.watch<UserViewModel>().error;
+  bool get _isLoading {
+    return context.watch<UserViewModel>().status == ServerStatus.loading;
+  }
+
   void login() {
-    if (_formKey.currentState?.validate() ?? false) {
-      // TODO: Process data.
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Processing Data')),
-      );
-    }
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    context
+        .read<UserViewModel>()
+        .login(_emailController.text.trim(), _passwordController.text)
+        .then((_) {
+      Navigator.pop(context);
+    });
   }
 
   String? emailValidator(String? value) {
@@ -66,6 +75,10 @@ class _LoginPageState extends State<LoginPage> {
             height: 70,
           ),
         ),
+        Text(
+          _error,
+          style: const TextStyle(color: Colors.red),
+        ),
         AuthInput(
           controller: _emailController,
           validator: emailValidator,
@@ -81,7 +94,10 @@ class _LoginPageState extends State<LoginPage> {
           icon: SvgPicture.asset("assets/icons/ic_password.svg"),
           margin: EdgeInsets.zero,
         ),
-        LoginActions(onLogin: login),
+        LoginActions(
+          onLogin: login,
+          enabled: !_isLoading,
+        ),
       ],
     );
   }

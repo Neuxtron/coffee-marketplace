@@ -26,6 +26,7 @@ class UserViewModel extends ChangeNotifier {
   Future register(UserModel user) async {
     if (_status == ServerStatus.loading) return;
     _status = ServerStatus.loading;
+    _error = "";
     notifyListeners();
 
     try {
@@ -60,6 +61,7 @@ class UserViewModel extends ChangeNotifier {
   Future login(String email, String password) async {
     if (_status == ServerStatus.loading) return;
     _status = ServerStatus.loading;
+    _error = "";
     notifyListeners();
 
     try {
@@ -76,8 +78,7 @@ class UserViewModel extends ChangeNotifier {
       log("Login user:\n${response.body}");
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)["data"];
-        final jsonUser = data["user"];
-        _currentUser = UserModel.fromJson(jsonUser);
+        _currentUser = UserModel.fromJson(data);
         token = data["token"];
         _status = ServerStatus.normal;
         notifyListeners();
@@ -97,6 +98,7 @@ class UserViewModel extends ChangeNotifier {
   void getProfile() async {
     if (_status == ServerStatus.loading) return;
     _status = ServerStatus.loading;
+    _error = "";
     notifyListeners();
 
     try {
@@ -126,6 +128,7 @@ class UserViewModel extends ChangeNotifier {
   Future updateProfil(UserModel user) async {
     if (_status == ServerStatus.loading) return;
     _status = ServerStatus.loading;
+    _error = "";
     notifyListeners();
 
     try {
