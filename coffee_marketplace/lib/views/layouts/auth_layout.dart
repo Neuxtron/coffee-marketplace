@@ -5,12 +5,14 @@ class AuthLayout extends StatelessWidget {
   final Key formKey;
   final List<Widget> children;
   final String title;
+  final ScrollController? scrollController;
 
   const AuthLayout({
     super.key,
     required this.formKey,
     required this.children,
     required this.title,
+    this.scrollController,
   });
 
   @override
@@ -18,6 +20,7 @@ class AuthLayout extends StatelessWidget {
     return Scaffold(
       appBar: buildAppBar(),
       body: SingleChildScrollView(
+        controller: scrollController,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Form(

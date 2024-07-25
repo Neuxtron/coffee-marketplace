@@ -3,6 +3,7 @@ import 'package:coffee_marketplace/viewmodels/daerah_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/daftar/daftar_page.dart';
 import 'package:coffee_marketplace/views/detail/details_page.dart';
 import 'package:coffee_marketplace/views/kategori/kategori_page.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => KategoriViewModel()),
         ChangeNotifierProvider(create: (context) => KeranjangViewModel()),
         ChangeNotifierProvider(create: (context) => DaerahViewModel()),
+        ChangeNotifierProvider(create: (context) => UserViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

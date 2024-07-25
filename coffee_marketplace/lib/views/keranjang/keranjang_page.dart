@@ -14,7 +14,10 @@ class KeranjangPage extends StatelessWidget {
     final status = context.watch<KeranjangViewModel>().status;
 
     if (status == ServerStatus.error) {
-      return ServerErrorBuilder(onRetry: () {});
+      return Align(
+        alignment: Alignment.topCenter,
+        child: ServerErrorBuilder(onRetry: () {}),
+      );
     }
 
     return ListView.builder(

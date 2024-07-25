@@ -17,6 +17,7 @@ class ProdukViewModel extends ChangeNotifier {
   ServerStatus get status => _status;
 
   Future getProduk() async {
+    if (_status == ServerStatus.loading) return;
     _status = ServerStatus.loading;
     notifyListeners();
 

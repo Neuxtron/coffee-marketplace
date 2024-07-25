@@ -3,29 +3,38 @@ import 'package:flutter/material.dart';
 
 class ServerErrorBuilder extends StatelessWidget {
   final Function() onRetry;
-  const ServerErrorBuilder({super.key, required this.onRetry});
+  final EdgeInsets margin;
+  final String text;
+
+  const ServerErrorBuilder({
+    super.key,
+    required this.onRetry,
+    this.margin = const EdgeInsets.only(top: 30),
+    this.text = "Terjadi kesalahan, silahkan coba lagi",
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topCenter,
+    return Padding(
+      padding: margin,
       child: Column(
         children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 30, bottom: 10),
-            child: Icon(
-              Icons.error_outline,
-              color: AppConstants.primary,
-              size: 30,
-            ),
+          const Icon(
+            Icons.error_outline,
+            color: AppConstants.primary,
+            size: 30,
           ),
-          const Text("Terjadi kesalahan, silahkan coba lagi"),
+          const SizedBox(height: 10),
+          Text(text, textAlign: TextAlign.center),
           MaterialButton(
             onPressed: onRetry,
             color: AppConstants.primary,
             child: const Text(
               "Coba lagi",
-              style: TextStyle(color: Colors.white),
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],

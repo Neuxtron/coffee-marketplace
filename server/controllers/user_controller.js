@@ -34,17 +34,15 @@ class UserController {
     try {
 
       const data = req.body
-      const { email, noHp } = data
+      const { email } = data
 
       const existingUser = await UserModel.findOne({
-        where: {
-          [Op.or]: [{ email }, { noHp }]
-        }
+        where: { email }
       })
       if (existingUser) {
         res.status(409).json({
           status: false,
-          message: "Email atau handphone sudah terdaftar",
+          message: "Email sudah terdaftar",
           data: {},
         })
         return

@@ -1,10 +1,13 @@
+import 'package:coffee_marketplace/models/user_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/server_status.dart';
 import 'package:coffee_marketplace/viewmodels/daerah_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/daftar/daerah_dropdown.dart';
 import 'package:coffee_marketplace/views/daftar/daftar_actions.dart';
 import 'package:coffee_marketplace/views/layouts/auth_layout.dart';
 import 'package:coffee_marketplace/views/widgets/auth_input/auth_input.dart';
+import 'package:coffee_marketplace/views/widgets/server_error_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -20,29 +23,51 @@ class _DaftarPageState extends State<DaftarPage> {
   final _formKey = GlobalKey<FormState>();
   final _namaController = TextEditingController();
   final _emailController = TextEditingController();
-  final _hpController = TextEditingController();
+  final _noHpController = TextEditingController();
   final _passwordController = TextEditingController();
   final _kPasswordController = TextEditingController();
   final _alamatController = TextEditingController();
+  final _scrollController = ScrollController();
 
   String? _idProvinsi;
   String? _idKecamatan;
+  String get _error => context.watch<UserViewModel>().error;
   DaerahViewModel get _viewModel => context.read<DaerahViewModel>();
   DaerahViewModel get _viewModelWatch => context.watch<DaerahViewModel>();
 
   bool get _isLoading {
-    if (_viewModel.provinsiStatus == ServerStatus.loading) return true;
-    if (_viewModel.kecamatanStatus == ServerStatus.loading) return true;
+    if (_viewModelWatch.provinsiStatus == ServerStatus.loading) return true;
+    if (_viewModelWatch.kecamatanStatus == ServerStatus.loading) return true;
+    if (context.watch<UserViewModel>().status == ServerStatus.loading) {
+      return true;
+    }
+    return false;
+  }
+
+  bool get _isError {
+    if (_viewModel.provinsiStatus == ServerStatus.error) return true;
+    if (_viewModel.kecamatanStatus == ServerStatus.error) return true;
     return false;
   }
 
   void daftar() {
-    if (_formKey.currentState?.validate() ?? false) {
-      // TODO: Process data.
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Processing Data')),
-      );
-    }
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    final user = UserModel(
+      nama: _namaController.text.trim(),
+      email: _emailController.text.trim(),
+      noHp: _noHpController.text,
+      alamat: _alamatController.text.trim(),
+      password: _passwordController.text,
+      idKecamatan: _idKecamatan!,
+    );
+    context.read<UserViewModel>().register(user).then((_) {
+      if (context.read<UserViewModel>().status == ServerStatus.normal) {
+        Navigator.pop(context);
+        Navigator.pop(context);
+        return;
+      }
+      _scrollController.jumpTo(0);
+    });
   }
 
   String? namaValidator(String? value) {
@@ -123,6 +148,7 @@ class _DaftarPageState extends State<DaftarPage> {
   Widget build(BuildContext context) {
     return AuthLayout(
       formKey: _formKey,
+      scrollController: _scrollController,
       title: "Daftar",
       children: [
         Padding(
@@ -131,6 +157,10 @@ class _DaftarPageState extends State<DaftarPage> {
             "assets/icons/ic_kopi.svg",
             height: 70,
           ),
+        ),
+        Text(
+          _error,
+          style: const TextStyle(color: Colors.red),
         ),
         AuthInput(
           controller: _namaController,
@@ -147,7 +177,7 @@ class _DaftarPageState extends State<DaftarPage> {
           keyboardType: TextInputType.emailAddress,
         ),
         AuthInput(
-          controller: _hpController,
+          controller: _noHpController,
           validator: hpValidator,
           hintText: "No. HP",
           icon: Icon(
@@ -177,29 +207,37 @@ class _DaftarPageState extends State<DaftarPage> {
           margin: const EdgeInsets.only(bottom: 20),
           multiline: true,
         ),
-        Column(
-          children: [
-            DaerahDropdown(
-              onChange: (value) => setProvinsi(value!),
-              value: _idProvinsi,
-              listDaerah: _viewModelWatch.listProvinsi,
-              title: "Provinsi",
-              isLoading: _viewModelWatch.provinsiStatus == ServerStatus.loading,
-            ),
-            DaerahDropdown(
-              onChange: (value) => setState(() => _idKecamatan = value),
-              value: _idKecamatan,
-              listDaerah: _viewModelWatch.listKecamatan,
-              title: "Kecamatan",
-              show: _viewModelWatch.provinsiStatus == ServerStatus.normal,
-              isLoading:
-                  _viewModelWatch.kecamatanStatus == ServerStatus.loading,
-            ),
-          ],
-        ),
+        !_isError
+            ? Column(
+                children: [
+                  DaerahDropdown(
+                    onChange: (value) => setProvinsi(value!),
+                    value: _idProvinsi,
+                    listDaerah: _viewModelWatch.listProvinsi,
+                    title: "Provinsi",
+                    isLoading:
+                        _viewModelWatch.provinsiStatus == ServerStatus.loading,
+                  ),
+                  DaerahDropdown(
+                    onChange: (value) => setState(() => _idKecamatan = value),
+                    value: _idKecamatan,
+                    listDaerah: _viewModelWatch.listKecamatan,
+                    title: "Kecamatan",
+                    show: _viewModelWatch.provinsiStatus == ServerStatus.normal,
+                    isLoading:
+                        _viewModelWatch.kecamatanStatus == ServerStatus.loading,
+                  ),
+                ],
+              )
+            : ServerErrorBuilder(
+                onRetry: getData,
+                margin: const EdgeInsets.only(bottom: 50, top: 30),
+                text:
+                    "Gagal mengambil data provinsi & kecamatan,\nsilahkan coba lagi",
+              ),
         DaftarActions(
           onDaftar: daftar,
-          isLoading: _isLoading,
+          enabled: !_isLoading && !_isError,
         ),
       ],
     );

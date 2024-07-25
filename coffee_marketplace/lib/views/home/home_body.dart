@@ -45,7 +45,10 @@ class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     if (isError) {
-      return ServerErrorBuilder(onRetry: getData);
+      return Align(
+        alignment: Alignment.topCenter,
+        child: ServerErrorBuilder(onRetry: getData),
+      );
     }
 
     if (_loading) {
