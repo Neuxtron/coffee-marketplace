@@ -31,7 +31,9 @@ class _LoginPageState extends State<LoginPage> {
         .read<UserViewModel>()
         .login(_emailController.text.trim(), _passwordController.text)
         .then((_) {
-      Navigator.pop(context);
+      if (context.read<UserViewModel>().status != ServerStatus.error) {
+        Navigator.pop(context);
+      }
     });
   }
 
