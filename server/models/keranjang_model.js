@@ -35,8 +35,8 @@ const KeranjangModel = sequelize.define("keranjang", {
   freezeTableName: true,
 })
 
-KeranjangModel.belongsTo(ProdukModel, { foreignKey: "idProduk", onDelete: "CASCADE" })
-KeranjangModel.belongsTo(VariasiModel, { foreignKey: "idVariasi", onDelete: "CASCADE" })
+KeranjangModel.belongsTo(ProdukModel, { as: "produk", foreignKey: "idProduk", onDelete: "CASCADE" })
+KeranjangModel.belongsTo(VariasiModel, { as: "variasi", foreignKey: "idVariasi", onDelete: "CASCADE" })
 KeranjangModel.belongsTo(UserModel, { foreignKey: "idUser", onDelete: "CASCADE" })
 
 module.exports = KeranjangModel

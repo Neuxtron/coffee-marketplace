@@ -1,29 +1,58 @@
+import 'package:coffee_marketplace/models/keranjang_model.dart';
 import 'package:coffee_marketplace/models/produk_model.dart';
 import 'package:coffee_marketplace/models/variasi_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
 import 'package:coffee_marketplace/views/detail/actions_section.dart';
 import 'package:coffee_marketplace/views/detail/deskripsi_section.dart';
 import 'package:coffee_marketplace/views/detail/gambar_section.dart';
 import 'package:coffee_marketplace/views/detail/judul_section.dart';
 import 'package:coffee_marketplace/views/detail/variasi_section.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
-class DetailsPage extends StatelessWidget {
+class DetailsPage extends StatefulWidget {
   const DetailsPage({super.key});
 
-  static late ProdukModel produk;
-  static VariasiModel? selectedVariasi;
+  @override
+  State<DetailsPage> createState() => _DetailsPageState();
+}
+
+class _DetailsPageState extends State<DetailsPage> {
+  final _scrollController = ScrollController();
+
+  late ProdukModel _produk;
+  VariasiModel? _selectedVariasi;
+  String _error = "";
 
   void addToCart(int amount) {
-    print("Variasi id: ${selectedVariasi?.id}");
-    print("amount: $amount");
-    print("Produk id: ${produk.id}");
+    setState(() => _error = "");
+    if (_selectedVariasi == null) {
+      setState(() => _error = "Silahkan pilih variasi");
+      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      return;
+    }
+
+    final keranjang = KeranjangModel(
+      produk: _produk,
+      variasi: _selectedVariasi!,
+      amount: amount,
+    );
+    context
+        .read<KeranjangViewModel>()
+        .updateKeranjang(keranjang: keranjang)
+        .then((_) {
+      Fluttertoast.showToast(msg: "Berhasil dimasukkan ke keranjang");
+      Navigator.pop(context);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    produk = ModalRoute.of(context)!.settings.arguments as ProdukModel;
+    _produk = ModalRoute.of(context)!.settings.arguments as ProdukModel;
 
+    // TODO: penjual
     return Scaffold(
       appBar: buildAppBar(),
       bottomNavigationBar: Container(
@@ -32,6 +61,7 @@ class DetailsPage extends StatelessWidget {
         child: ActionsSection(addToCart: addToCart),
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           children: [
             const SizedBox(height: 30),
@@ -39,15 +69,16 @@ class DetailsPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
                 children: [
-                  JudulSection(nama: produk.nama, harga: produk.harga),
-                  GambarSection(gambar: produk.gambar[0]),
-                  DeskripsiSection(deskripsi: produk.deskripsi),
+                  JudulSection(nama: _produk.nama, harga: _produk.harga),
+                  GambarSection(gambar: _produk.gambar[0]),
+                  DeskripsiSection(deskripsi: _produk.deskripsi),
                 ],
               ),
             ),
             VariasiSection(
-              listVariasi: produk.variasi,
-              selectVariasi: (variasi) => selectedVariasi = variasi,
+              listVariasi: _produk.variasi,
+              selectVariasi: (variasi) => _selectedVariasi = variasi,
+              error: _error,
             ),
           ],
         ),

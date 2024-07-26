@@ -8,10 +8,13 @@ class KeranjangController {
     // TODO: default exclude
     // TODO: include variasi
     KeranjangModel.findAll({
-      include: [{
-        model: ProdukModel,
-        include: ["gambar"]
-      }],
+      include: [
+        {
+          association: "produk",
+          include: ["gambar", "variasi"]
+        },
+        "variasi",
+      ],
       where: { idUser }
     })
       .then((data) => {
@@ -66,7 +69,11 @@ class KeranjangController {
       const keranjangBaru = listKeranjang.filter(keranjang => keranjang.id === null)
       const KeranjangLama = listKeranjang.filter(keranjang => keranjang.id !== null)
   
-      await KeranjangModel.bulkCreate(keranjangBaru).catch((err) => console.log(err))
+      await KeranjangModel.bulkCreate(keranjangBaru.map(keranjang => {
+        delete keranjang.id
+        return keranjang
+      }))
+        .catch((err) => console.log(err))
       
       const promises = KeranjangLama.map(keranjang => {
         return KeranjangModel.update(keranjang, {

@@ -1,10 +1,14 @@
+import 'package:coffee_marketplace/models/keranjang_model.dart';
 import 'package:coffee_marketplace/models/produk_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/app_helpers.dart';
+import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
 import 'package:coffee_marketplace/views/widgets/error_image.dart';
 import 'package:coffee_marketplace/views/widgets/loading_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 class ProdukItem extends StatelessWidget {
   final double shadowSize;
@@ -16,8 +20,24 @@ class ProdukItem extends StatelessWidget {
     required this.produk,
   });
 
+  static late BuildContext _context;
+
+  void addToCart() {
+    final keranjang = KeranjangModel(
+      produk: produk,
+      variasi: produk.variasi[0],
+    );
+    _context
+        .read<KeranjangViewModel>()
+        .updateKeranjang(keranjang: keranjang)
+        .then((_) {
+      Fluttertoast.showToast(msg: "Berhasil dimasukkan ke keranjang");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    _context = context;
     final hargaString = AppHelpers.formatHarga(produk.harga);
 
     return InkWell(
@@ -59,8 +79,7 @@ class ProdukItem extends StatelessWidget {
                   ),
                   IconButton(
                     padding: EdgeInsets.zero,
-                    // TODO: tambah keranjang
-                    onPressed: () {},
+                    onPressed: addToCart,
                     icon: SvgPicture.asset(
                       "assets/icons/ic_keranjang.svg",
                       height: 20,

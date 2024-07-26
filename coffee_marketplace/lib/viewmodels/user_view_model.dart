@@ -103,7 +103,7 @@ class UserViewModel extends ChangeNotifier {
 
     try {
       final response = await http.get(
-        Uri.parse(_endpoint),
+        Uri.parse("$_endpoint/profile"),
         headers: {
           "Authorization": "Bearer $_token",
         },

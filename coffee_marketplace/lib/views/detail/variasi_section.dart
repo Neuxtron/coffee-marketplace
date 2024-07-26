@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 class VariasiSection extends StatefulWidget {
   final List<VariasiModel> listVariasi;
   final Function(VariasiModel variasiId) selectVariasi;
+  final String error;
 
   const VariasiSection({
     super.key,
     required this.listVariasi,
     required this.selectVariasi,
+    required this.error,
   });
 
   @override
@@ -42,9 +44,9 @@ class _VariasiSectionState extends State<VariasiSection> {
               fontSize: 16,
             ),
           ),
-          const SizedBox(height: 10),
-          SizedBox(
+          Container(
             height: 35,
+            margin: const EdgeInsets.symmetric(vertical: 10),
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
@@ -59,6 +61,10 @@ class _VariasiSectionState extends State<VariasiSection> {
                 );
               },
             ),
+          ),
+          Text(
+            widget.error,
+            style: const TextStyle(color: Colors.red),
           ),
         ],
       ),

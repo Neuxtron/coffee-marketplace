@@ -27,8 +27,8 @@ class KeranjangModel {
   Map<String, dynamic> toMap() {
     return {
       "id": id,
-      "idProduk": produk,
-      "idVariasi": variasi,
+      "idProduk": produk.id,
+      "idVariasi": variasi.id,
       "amount": amount,
     };
   }
