@@ -1,9 +1,11 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/home/home_page.dart';
 import 'package:coffee_marketplace/views/keranjang/keranjang_page.dart';
 import 'package:coffee_marketplace/views/profil/profil_page.dart';
 import 'package:coffee_marketplace/views/widgets/nav_item.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key});
@@ -23,6 +25,7 @@ class _MainLayoutState extends State<MainLayout> {
     AppBar(
       toolbarHeight: 0,
       backgroundColor: AppConstants.secondaryAlt,
+      surfaceTintColor: Colors.transparent,
     ),
     AppBar(
       elevation: 0,
@@ -43,6 +46,12 @@ class _MainLayoutState extends State<MainLayout> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    context.read<UserViewModel>().authCheck();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_currentIndex],
@@ -58,6 +67,7 @@ class _MainLayoutState extends State<MainLayout> {
         selectedFontSize: 0,
         unselectedFontSize: 0,
         items: const [
+          // TODO: active icons
           BottomNavigationBarItem(
             label: "Home",
             tooltip: "Home",

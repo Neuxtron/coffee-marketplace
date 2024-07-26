@@ -7,7 +7,7 @@ import 'package:coffee_marketplace/views/daftar/daerah_dropdown.dart';
 import 'package:coffee_marketplace/views/daftar/daftar_actions.dart';
 import 'package:coffee_marketplace/views/layouts/auth_layout.dart';
 import 'package:coffee_marketplace/views/widgets/auth_input/auth_input.dart';
-import 'package:coffee_marketplace/views/widgets/server_error_builder.dart';
+import 'package:coffee_marketplace/views/widgets/info_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -229,9 +229,10 @@ class _DaftarPageState extends State<DaftarPage> {
                   ),
                 ],
               )
-            : ServerErrorBuilder(
-                onRetry: getData,
+            : InfoBuilder(
+                onPressed: getData,
                 margin: const EdgeInsets.only(bottom: 50, top: 30),
+                iconData: Icons.error_outline,
                 text:
                     "Gagal mengambil data provinsi & kecamatan,\nsilahkan coba lagi",
               ),

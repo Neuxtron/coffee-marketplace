@@ -9,6 +9,7 @@ class HomeBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: banner from api
     final dummyBanner = [
       "banner_1.png",
       "banner_2.png",

@@ -16,7 +16,7 @@ class LoadingImage extends StatelessWidget {
       height: height,
       width: width,
       padding: const EdgeInsets.all(10),
-      color: Colors.grey.shade400,
+      color: Colors.white,
       child: const Center(
         child: Text(
           "Loading...",

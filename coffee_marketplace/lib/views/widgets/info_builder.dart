@@ -1,16 +1,20 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:flutter/material.dart';
 
-class ServerErrorBuilder extends StatelessWidget {
-  final Function() onRetry;
+class InfoBuilder extends StatelessWidget {
+  final Function() onPressed;
   final EdgeInsets margin;
   final String text;
+  final IconData iconData;
+  final String buttonText;
 
-  const ServerErrorBuilder({
+  const InfoBuilder({
     super.key,
-    required this.onRetry,
+    required this.onPressed,
     this.margin = const EdgeInsets.only(top: 30),
     this.text = "Terjadi kesalahan, silahkan coba lagi",
+    required this.iconData,
+    this.buttonText = "Coba lagi",
   });
 
   @override
@@ -19,19 +23,21 @@ class ServerErrorBuilder extends StatelessWidget {
       padding: margin,
       child: Column(
         children: [
-          const Icon(
-            Icons.error_outline,
+          Icon(
+            iconData,
             color: AppConstants.primary,
             size: 30,
           ),
-          const SizedBox(height: 10),
-          Text(text, textAlign: TextAlign.center),
+          Padding(
+            padding: const EdgeInsets.only(top: 20, bottom: 5),
+            child: Text(text, textAlign: TextAlign.center),
+          ),
           MaterialButton(
-            onPressed: onRetry,
+            onPressed: onPressed,
             color: AppConstants.primary,
-            child: const Text(
-              "Coba lagi",
-              style: TextStyle(
+            child: Text(
+              buttonText,
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
