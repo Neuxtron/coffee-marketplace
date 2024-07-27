@@ -1,4 +1,5 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/home/home_page.dart';
 import 'package:coffee_marketplace/views/keranjang/keranjang_page.dart';
@@ -45,6 +46,13 @@ class _MainLayoutState extends State<MainLayout> {
     null,
   ];
 
+  void changePage(int index) {
+    if (index != 1) {
+      context.read<KeranjangViewModel>().updateKeranjang();
+    }
+    setState(() => _currentIndex = index);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -63,7 +71,7 @@ class _MainLayoutState extends State<MainLayout> {
         backgroundColor: AppConstants.secondaryAlt,
         iconSize: 35,
         selectedItemColor: Colors.black,
-        onTap: (index) => setState(() => _currentIndex = index),
+        onTap: changePage,
         selectedFontSize: 0,
         unselectedFontSize: 0,
         items: const [

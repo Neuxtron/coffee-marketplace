@@ -65,8 +65,9 @@ class ItemActions extends StatelessWidget {
           ],
         ),
         MaterialButton(
-          // TODO: hapus keranjang
-          onPressed: () {},
+          onPressed: () {
+            context.read<KeranjangViewModel>().hapusKeranang(id);
+          },
           color: Colors.red.shade400,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(999),

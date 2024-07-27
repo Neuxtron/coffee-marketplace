@@ -13,25 +13,28 @@ class KeranjangItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final produk = keranjang.produk;
 
-    return Container(
-      padding: const EdgeInsets.all(10),
-      margin: const EdgeInsets.symmetric(vertical: 5),
-      decoration: BoxDecoration(
-        color: AppConstants.secondary,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        children: [
-          ItemGambar(thumbnail: produk.thumbnail),
-          ItemJudul(
-            nama: produk.nama,
-            harga: produk.harga,
-          ),
-          ItemActions(
-            amount: keranjang.amount,
-            id: keranjang.id!,
-          ),
-        ],
+    return InkWell(
+      onTap: () => Navigator.pushNamed(context, "/details", arguments: produk),
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        margin: const EdgeInsets.symmetric(vertical: 5),
+        decoration: BoxDecoration(
+          color: AppConstants.secondary,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Row(
+          children: [
+            ItemGambar(thumbnail: produk.thumbnail),
+            ItemJudul(
+              nama: produk.nama,
+              harga: produk.harga,
+            ),
+            ItemActions(
+              amount: keranjang.amount,
+              id: keranjang.id!,
+            ),
+          ],
+        ),
       ),
     );
   }

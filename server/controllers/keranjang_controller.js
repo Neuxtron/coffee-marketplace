@@ -1,12 +1,10 @@
+const { defaultExclude } = require("../constants")
 const KeranjangModel = require("../models/keranjang_model")
-const ProdukModel = require("../models/produk_model")
 
 class KeranjangController {
   static keranjangRiwayatByUser(req, res) {
     const idUser = req.idUser
 
-    // TODO: default exclude
-    // TODO: include variasi
     KeranjangModel.findAll({
       include: [
         {
@@ -15,6 +13,7 @@ class KeranjangController {
         },
         "variasi",
       ],
+      attributes: defaultExclude,
       where: { idUser }
     })
       .then((data) => {
@@ -85,6 +84,30 @@ class KeranjangController {
     } catch (error) {
       throw error
     }
+  }
+
+  static hapusKeranjang(req, res) {
+    const { id } = req.params
+    const { idUser } = req
+
+    KeranjangModel.destroy({
+      where: { id, idUser }
+    })
+      .then((_) => {
+        res.status(200).json({
+          status: true,
+          message: "Berhasil menghapus data keranjang",
+          data: {},
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        res.status(500).json({
+          status: false,
+          message: "Terjadi kesalahan, silahkan coba lagi",
+          data: {},
+        })
+      })
   }
 }
 

@@ -18,6 +18,10 @@ class _KeranjangPageState extends State<KeranjangPage> {
   KeranjangViewModel get _viewModel => context.read<KeranjangViewModel>();
   KeranjangViewModel get _viewModelWatch => context.watch<KeranjangViewModel>();
 
+  void checkout() {
+    // TODO: checkout
+  }
+
   @override
   void initState() {
     super.initState();
@@ -94,6 +98,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
             },
           ),
         ),
+        // TODO: checkout section
       ],
     );
   }

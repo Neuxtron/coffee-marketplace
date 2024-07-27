@@ -1,4 +1,3 @@
-const { Sequelize } = require("sequelize")
 const { defaultExclude } = require("../constants")
 const ProdukModel = require("../models/produk_model")
 

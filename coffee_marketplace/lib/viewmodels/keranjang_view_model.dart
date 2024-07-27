@@ -57,9 +57,6 @@ class KeranjangViewModel extends ChangeNotifier {
   }
 
   Future updateKeranjang({KeranjangModel? keranjang}) async {
-    _status = ServerStatus.loading;
-    notifyListeners();
-
     List mapKeranjang = _listKeranjang.map((e) => e.toMap()).toList();
     if (keranjang != null) mapKeranjang = [keranjang.toMap()];
     final token = AppHelpers.token!;
@@ -77,13 +74,29 @@ class KeranjangViewModel extends ChangeNotifier {
       if (response.statusCode != 200) {
         final message = jsonDecode(response.body)["message"];
         log(message);
-        _status = ServerStatus.error;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  Future hapusKeranang(String id) async {
+    final token = AppHelpers.token!;
+
+    try {
+      final response = await http.delete(
+        Uri.parse("$_endpoint/$id"),
+        headers: {"Authorization": "Bearer $token"},
+      );
+      log("Hapus keranjang:\n${response.body}");
+      if (response.statusCode == 200) {
+        _listKeranjang.removeWhere((keranjang) {
+          return keranjang.id == id;
+        });
         notifyListeners();
       }
     } catch (e) {
       log(e.toString());
-      _status = ServerStatus.error;
-      notifyListeners();
     }
   }
 }

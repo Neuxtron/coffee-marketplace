@@ -5,5 +5,6 @@ const authentication = require("../middlewares/authentication")
 
 router.get("/", authentication, KeranjangController.keranjangRiwayatByUser)
 router.put("/", authentication, KeranjangController.updateKeranjang)
+router.delete("/:id", authentication, KeranjangController.hapusKeranjang)
 
 module.exports = router
