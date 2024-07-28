@@ -8,7 +8,6 @@ async function authentication(req, res, next) {
     const bearer = req.headers.authorization
     if (bearer === undefined) throw new jwt.JsonWebTokenError("No headers found")
     const token = bearer.slice(7)
-    console.log(token)
     
     const user = await UserModel.findOne({
       where: { token }

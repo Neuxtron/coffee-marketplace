@@ -1,4 +1,3 @@
-const { Op } = require("sequelize")
 const UserModel = require("../models/users_model")
 const { secret } = require("../utils/constants")
 const bcrypt = require("bcrypt")

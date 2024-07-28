@@ -27,10 +27,10 @@ const KeranjangModel = sequelize.define("keranjang", {
     type: INTEGER,
     allowNull: false,
   },
-  // idOrder: {
-  //   type: STRING,
-  //   allowNull: true,
-  // },
+  idOrder: {
+    type: STRING,
+    allowNull: true,
+  },
 }, {
   freezeTableName: true,
 })
