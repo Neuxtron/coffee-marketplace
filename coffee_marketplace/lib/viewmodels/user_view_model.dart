@@ -112,11 +112,11 @@ class UserViewModel extends ChangeNotifier {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)["data"];
         _currentUser = UserModel.fromJson(data);
-        _status = ServerStatus.normal;
-        notifyListeners();
       } else {
         logout();
       }
+      _status = ServerStatus.normal;
+      notifyListeners();
     } catch (e) {
       log(e.toString());
       _status = ServerStatus.error;

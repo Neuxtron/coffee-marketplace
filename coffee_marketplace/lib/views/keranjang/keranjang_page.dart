@@ -1,6 +1,7 @@
 import 'package:coffee_marketplace/utils/app_helpers.dart';
 import 'package:coffee_marketplace/utils/server_status.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
+import 'package:coffee_marketplace/views/keranjang/checkout_section.dart';
 import 'package:coffee_marketplace/views/keranjang/keranjang_item.dart';
 import 'package:coffee_marketplace/views/widgets/info_builder.dart';
 import 'package:flutter/material.dart';
@@ -17,10 +18,6 @@ class _KeranjangPageState extends State<KeranjangPage> {
   // TODO: update keranjang on leave
   KeranjangViewModel get _viewModel => context.read<KeranjangViewModel>();
   KeranjangViewModel get _viewModelWatch => context.watch<KeranjangViewModel>();
-
-  void checkout() {
-    // TODO: checkout
-  }
 
   @override
   void initState() {
@@ -86,19 +83,16 @@ class _KeranjangPageState extends State<KeranjangPage> {
       children: [
         Expanded(
           child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
             itemCount: listKeranjang.length,
             itemBuilder: (context, index) {
               final keranjang = listKeranjang[index];
-              // TODO: ceklis
-              // TODO: onpressed to detail
               return KeranjangItem(
                 keranjang: keranjang,
               );
             },
           ),
         ),
-        // TODO: checkout section
+        CheckoutSection(viewModel: _viewModelWatch),
       ],
     );
   }

@@ -2,7 +2,7 @@ const { defaultExclude } = require("../constants")
 const KeranjangModel = require("../models/keranjang_model")
 
 class KeranjangController {
-  static keranjangRiwayatByUser(req, res) {
+  static keranjangByUser(req, res) {
     const idUser = req.idUser
 
     KeranjangModel.findAll({
@@ -14,7 +14,8 @@ class KeranjangController {
         "variasi",
       ],
       attributes: defaultExclude,
-      where: { idUser }
+      where: { idUser },
+      order: [["createdAt", "DESC"]]
     })
       .then((data) => {
         res.status(200).json({

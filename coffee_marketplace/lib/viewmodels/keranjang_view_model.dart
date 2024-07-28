@@ -27,6 +27,15 @@ class KeranjangViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setChecked(String id, bool isChecked) {
+    final index = _listKeranjang.indexWhere((keranjang) {
+      return keranjang.id == id;
+    });
+
+    _listKeranjang[index].isChecked = isChecked;
+    notifyListeners();
+  }
+
   Future getKeranjang() async {
     _status = ServerStatus.loading;
     notifyListeners();

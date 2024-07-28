@@ -13,31 +13,28 @@ class ItemJudul extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              nama,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(
-                fontFamily: "Abhaya Libre",
-                fontWeight: FontWeight.w800,
-                fontSize: 16,
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            nama,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              fontFamily: "Abhaya Libre",
+              fontWeight: FontWeight.w800,
+              fontSize: 16,
             ),
-            Text(
-              AppHelpers.formatHarga(harga),
-              style: const TextStyle(
-                fontFamily: "Abhaya Libre",
-                fontSize: 14,
-              ),
+          ),
+          Text(
+            AppHelpers.formatHarga(harga),
+            style: const TextStyle(
+              fontFamily: "Abhaya Libre",
+              fontSize: 14,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
