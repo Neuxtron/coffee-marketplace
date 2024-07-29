@@ -4,6 +4,7 @@ import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
+import 'package:coffee_marketplace/views/checkout/checkout_page.dart';
 import 'package:coffee_marketplace/views/daftar/daftar_page.dart';
 import 'package:coffee_marketplace/views/detail/details_page.dart';
 import 'package:coffee_marketplace/views/kategori/kategori_page.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
           "/kategori": (context) => const KategoriPage(),
           "/login": (context) => const LoginPage(),
           "/daftar": (context) => const DaftarPage(),
+          "/checkout": (context) => const CheckoutPage(),
         },
       ),
     );

@@ -3,8 +3,7 @@ import 'package:coffee_marketplace/models/produk_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/app_helpers.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
-import 'package:coffee_marketplace/views/widgets/error_image.dart';
-import 'package:coffee_marketplace/views/widgets/loading_image.dart';
+import 'package:coffee_marketplace/views/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -30,8 +29,13 @@ class ProdukItem extends StatelessWidget {
     _context
         .read<KeranjangViewModel>()
         .updateKeranjang(keranjang: keranjang)
-        .then((_) {
-      Fluttertoast.showToast(msg: "Berhasil dimasukkan ke keranjang");
+        .then((bool success) {
+      String msg = "Berhasil dimasukkan ke keranjang";
+      if (!success) msg = "Gagal memasukkan ke keranjang";
+      Fluttertoast.showToast(
+        msg: msg,
+        backgroundColor: Colors.black54,
+      );
     });
   }
 
@@ -93,27 +97,11 @@ class ProdukItem extends StatelessWidget {
               width: shadowSize + 10,
               child: Align(
                 alignment: Alignment.topCenter,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  clipBehavior: Clip.hardEdge,
-                  child: Image.network(
-                    produk.thumbnail,
-                    height: 120,
-                    width: 120,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return const LoadingImage(
-                        height: 120,
-                        width: 120,
-                      );
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      return const ErrorImage(
-                        height: 120,
-                        width: 120,
-                      );
-                    },
-                  ),
+                child: RoundedImage(
+                  imageUrl: produk.thumbnail,
+                  height: 120,
+                  width: 120,
+                  radius: 10,
                 ),
               ),
             ),

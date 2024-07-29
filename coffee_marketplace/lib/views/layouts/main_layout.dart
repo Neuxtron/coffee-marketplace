@@ -1,5 +1,7 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/home/home_page.dart';
 import 'package:coffee_marketplace/views/keranjang/keranjang_page.dart';
@@ -17,11 +19,13 @@ class MainLayout extends StatefulWidget {
 
 class _MainLayoutState extends State<MainLayout> {
   int _currentIndex = 0;
-  final _pages = [
-    const HomePage(),
-    const KeranjangPage(),
-    const ProfilPage(),
-  ];
+
+  List<Widget> get _pages => [
+        HomePage(getData: getData),
+        const KeranjangPage(),
+        const ProfilPage(),
+      ];
+
   final _appBars = [
     AppBar(
       toolbarHeight: 0,
@@ -53,10 +57,18 @@ class _MainLayoutState extends State<MainLayout> {
     setState(() => _currentIndex = index);
   }
 
+  Future getData() async {
+    await Future.wait([
+      context.read<ProdukViewModel>().getProduk(),
+      context.read<KategoriViewModel>().getKategori(),
+      context.read<UserViewModel>().authCheck(),
+    ]);
+  }
+
   @override
   void initState() {
     super.initState();
-    context.read<UserViewModel>().authCheck();
+    getData();
   }
 
   @override

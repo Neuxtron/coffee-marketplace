@@ -3,16 +3,18 @@ import 'package:coffee_marketplace/views/home/home_body.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final Future Function() getData;
+  const HomePage({super.key, required this.getData});
 
   @override
   Widget build(BuildContext context) {
-    return const SingleChildScrollView(
+    return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          HomeBanner(),
-          HomeBody(),
+          // TODO: chat page button
+          const HomeBanner(),
+          HomeBody(getData: getData),
         ],
       ),
     );

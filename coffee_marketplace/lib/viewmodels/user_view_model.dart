@@ -180,7 +180,7 @@ class UserViewModel extends ChangeNotifier {
     return false;
   }
 
-  void authCheck() async {
+  Future authCheck() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("TOKEN");
     if (token == null) {

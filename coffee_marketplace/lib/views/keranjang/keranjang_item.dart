@@ -2,9 +2,9 @@ import 'package:coffee_marketplace/models/keranjang_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/views/keranjang/item_actions.dart';
 import 'package:coffee_marketplace/views/keranjang/item_checkbox.dart';
-import 'package:coffee_marketplace/views/keranjang/item_gambar.dart';
 import 'package:coffee_marketplace/views/keranjang/item_hapus.dart';
 import 'package:coffee_marketplace/views/keranjang/item_judul.dart';
+import 'package:coffee_marketplace/views/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 
 class KeranjangItem extends StatelessWidget {
@@ -31,7 +31,12 @@ class KeranjangItem extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  ItemGambar(thumbnail: produk.thumbnail),
+                  RoundedImage(
+                    imageUrl: produk.thumbnail,
+                    height: 75,
+                    width: 75,
+                    radius: 10,
+                  ),
                   Expanded(
                     child: Column(
                       children: [

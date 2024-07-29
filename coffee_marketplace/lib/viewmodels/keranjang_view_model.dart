@@ -65,7 +65,7 @@ class KeranjangViewModel extends ChangeNotifier {
     }
   }
 
-  Future updateKeranjang({KeranjangModel? keranjang}) async {
+  Future<bool> updateKeranjang({KeranjangModel? keranjang}) async {
     List mapKeranjang = _listKeranjang.map((e) => e.toMap()).toList();
     if (keranjang != null) mapKeranjang = [keranjang.toMap()];
     final token = AppHelpers.token!;
@@ -83,9 +83,12 @@ class KeranjangViewModel extends ChangeNotifier {
       if (response.statusCode != 200) {
         final message = jsonDecode(response.body)["message"];
         log(message);
+        return false;
       }
+      return true;
     } catch (e) {
       log(e.toString());
+      return false;
     }
   }
 

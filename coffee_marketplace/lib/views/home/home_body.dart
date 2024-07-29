@@ -8,43 +8,37 @@ import 'package:coffee_marketplace/views/widgets/info_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HomeBody extends StatefulWidget {
-  const HomeBody({super.key});
+class HomeBody extends StatelessWidget {
+  final Future Function() getData;
+  const HomeBody({super.key, required this.getData});
 
-  @override
-  State<HomeBody> createState() => _HomeBodyState();
-}
+  static late BuildContext _context;
 
-class _HomeBodyState extends State<HomeBody> {
-  bool _loading = true;
-
-  bool get isError {
+  bool get _isError {
     List<ServerStatus> listStatus = [];
     listStatus.addAll([
-      context.read<ProdukViewModel>().status,
-      context.read<KategoriViewModel>().status,
+      _context.watch<ProdukViewModel>().status,
+      _context.watch<KategoriViewModel>().status,
     ]);
 
     return listStatus.contains(ServerStatus.error);
   }
 
-  void getData() async {
-    await Future.wait([
-      context.read<ProdukViewModel>().getProduk(),
-      context.read<KategoriViewModel>().getKategori(),
+  bool get _isLoading {
+    List<ServerStatus> listStatus = [];
+    listStatus.addAll([
+      _context.watch<ProdukViewModel>().status,
+      _context.watch<KategoriViewModel>().status,
     ]);
-    setState(() => _loading = false);
-  }
 
-  @override
-  void initState() {
-    super.initState();
-    getData();
+    return listStatus.contains(ServerStatus.loading);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isError) {
+    _context = context;
+
+    if (_isError) {
       return Align(
         alignment: Alignment.topCenter,
         child: InfoBuilder(
@@ -54,7 +48,7 @@ class _HomeBodyState extends State<HomeBody> {
       );
     }
 
-    if (_loading) {
+    if (_isLoading) {
       return loadingBuilder();
     }
 

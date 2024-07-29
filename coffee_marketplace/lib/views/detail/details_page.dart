@@ -42,8 +42,13 @@ class _DetailsPageState extends State<DetailsPage> {
     context
         .read<KeranjangViewModel>()
         .updateKeranjang(keranjang: keranjang)
-        .then((_) {
-      Fluttertoast.showToast(msg: "Berhasil dimasukkan ke keranjang");
+        .then((success) {
+      String msg = "Berhasil dimasukkan ke keranjang";
+      if (!success) msg = "Gagal memasukkan ke keranjang";
+      Fluttertoast.showToast(
+        msg: msg,
+        backgroundColor: Colors.black54,
+      );
       Navigator.pop(context);
     });
   }
