@@ -4,6 +4,7 @@ import 'package:coffee_marketplace/utils/app_helpers.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 class CheckoutSection extends StatelessWidget {
   final KeranjangViewModel viewModel;
@@ -21,6 +22,23 @@ class CheckoutSection extends StatelessWidget {
       total += keranjang.produk.harga * keranjang.amount;
     }
     return total;
+  }
+
+  void checkout(BuildContext context) {
+    if (_checkedKeranjang.isEmpty) {
+      Fluttertoast.showToast(
+        msg: "Pilih satu produk untuk di checkout",
+        backgroundColor: Colors.black54,
+      );
+      return;
+    }
+    Navigator.pushNamed(
+      context,
+      "/checkout",
+      arguments: _checkedKeranjang,
+    ).then((_) {
+      context.read<KeranjangViewModel>().getKeranjang();
+    });
   }
 
   @override
@@ -43,20 +61,7 @@ class CheckoutSection extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: () {
-              if (_checkedKeranjang.isEmpty) {
-                Fluttertoast.showToast(
-                  msg: "Pilih satu produk untuk di checkout",
-                  backgroundColor: Colors.black54,
-                );
-                return;
-              }
-              Navigator.pushNamed(
-                context,
-                "/checkout",
-                arguments: _checkedKeranjang,
-              );
-            },
+            onTap: () => checkout(context),
             child: Container(
               color: AppConstants.primary,
               padding: const EdgeInsets.symmetric(

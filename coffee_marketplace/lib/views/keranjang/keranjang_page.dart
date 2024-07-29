@@ -15,7 +15,6 @@ class KeranjangPage extends StatefulWidget {
 }
 
 class _KeranjangPageState extends State<KeranjangPage> {
-  // TODO: update keranjang on leave
   KeranjangViewModel get _viewModel => context.read<KeranjangViewModel>();
   KeranjangViewModel get _viewModelWatch => context.watch<KeranjangViewModel>();
 

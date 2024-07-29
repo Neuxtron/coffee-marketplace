@@ -14,7 +14,7 @@ class AlamatSection extends StatelessWidget {
     return CheckoutSectionItem(
       icon: SvgPicture.asset("assets/icons/ic_lokasi.svg"),
       title: "Alamat",
-      children: [Text(user.alamat)],
+      child: Text(user.alamat),
     );
   }
 }

@@ -39,6 +39,7 @@ const UserModel = sequelize.define("user", {
     allowNull: false,
   },
   // TODO: saldo
+  // TODO: latllong toko, jasa kirim yg tersedia
 }, {
   freezeTableName: true,
   hooks: {

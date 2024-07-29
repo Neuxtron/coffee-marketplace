@@ -140,8 +140,13 @@ class _DaftarPageState extends State<DaftarPage> {
   @override
   void dispose() {
     super.dispose();
+    _namaController.dispose();
     _emailController.dispose();
+    _noHpController.dispose();
     _passwordController.dispose();
+    _kPasswordController.dispose();
+    _alamatController.dispose();
+    _scrollController.dispose();
   }
 
   @override

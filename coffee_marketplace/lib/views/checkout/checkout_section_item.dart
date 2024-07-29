@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 class CheckoutSectionItem extends StatelessWidget {
   final Widget icon;
   final String title;
-  final List<Widget> children;
+  final Widget child;
+  final double minHeight;
+  final EdgeInsets padding;
 
   const CheckoutSectionItem({
     super.key,
     required this.icon,
     required this.title,
-    required this.children,
+    required this.child,
+    this.minHeight = 120,
+    this.padding = const EdgeInsets.all(20),
   });
 
   @override
@@ -34,12 +38,9 @@ class CheckoutSectionItem extends StatelessWidget {
           ],
         ),
         Container(
-          constraints: const BoxConstraints(minHeight: 120),
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: children,
-          ),
+          constraints: BoxConstraints(minHeight: minHeight),
+          padding: padding,
+          child: child,
         ),
         const Divider(
           height: 1,

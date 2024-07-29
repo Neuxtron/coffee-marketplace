@@ -10,8 +10,8 @@ class KeranjangSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListView.builder(
-          padding: EdgeInsets.zero,
+        ListView.separated(
+          padding: const EdgeInsets.all(20),
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: listKeranjang.length,
@@ -19,6 +19,7 @@ class KeranjangSection extends StatelessWidget {
             final keranjang = listKeranjang[index];
             return KeranjangItem(keranjang: keranjang);
           },
+          separatorBuilder: (context, index) => const SizedBox(height: 15),
         ),
         const Divider(
           height: 1,
