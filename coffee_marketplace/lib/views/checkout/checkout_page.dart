@@ -3,6 +3,7 @@ import 'package:coffee_marketplace/models/kurir_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/views/checkout/alamat_section.dart';
 import 'package:coffee_marketplace/views/checkout/keranjang_section.dart';
+import 'package:coffee_marketplace/views/checkout/pembayaran_section.dart';
 import 'package:coffee_marketplace/views/checkout/pengiriman_section.dart';
 import 'package:flutter/material.dart';
 
@@ -32,6 +33,7 @@ class CheckoutPage extends StatelessWidget {
               onChange: (idKurir) => _kurir = idKurir,
               listKurir: listKurir,
             ),
+            PembayaranSection(onChange: (idMetode) => _metodeBayar = idMetode),
           ],
         ),
       ),

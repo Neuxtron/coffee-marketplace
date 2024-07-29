@@ -25,6 +25,7 @@ class RoundedImage extends StatelessWidget {
         imageUrl,
         height: height,
         width: width,
+        fit: BoxFit.cover,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
           return LoadingImage(

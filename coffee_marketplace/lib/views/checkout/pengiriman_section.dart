@@ -21,6 +21,9 @@ class PengirimanSection extends StatefulWidget {
 class _PengirimanSectionState extends State<PengirimanSection> {
   late KurirModel _selectedKurir;
 
+  // OPTIMIZE: better loading detection
+  bool get _loading => widget.listKurir.isEmpty;
+
   void selectKurir(Object? value) {
     if (value == null) return;
     final kurir = value as KurirModel;
@@ -28,14 +31,24 @@ class _PengirimanSectionState extends State<PengirimanSection> {
     widget.onChange(kurir.id);
   }
 
+  void getData() {
+    if (!_loading) {
+      _selectedKurir = widget.listKurir[0];
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-    _selectedKurir = widget.listKurir[0];
+    getData();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_loading) {
+      // TODO: loading builder
+    }
+
     return CheckoutSectionItem(
       icon: SvgPicture.asset("assets/icons/ic_pengiriman.svg"),
       title: "Pengiriman",

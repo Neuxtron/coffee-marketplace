@@ -10,6 +10,7 @@ import 'package:coffee_marketplace/views/detail/details_page.dart';
 import 'package:coffee_marketplace/views/kategori/kategori_page.dart';
 import 'package:coffee_marketplace/views/layouts/main_layout.dart';
 import 'package:coffee_marketplace/views/login/login_page.dart';
+import 'package:coffee_marketplace/views/pembayaran/pembayaran_page.dart';
 import 'package:coffee_marketplace/views/pengiriman/pengiriman_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -50,6 +51,7 @@ class MyApp extends StatelessWidget {
           "/daftar": (context) => const DaftarPage(),
           "/checkout": (context) => const CheckoutPage(),
           "/pengiriman": (context) => const PengirimanPage(),
+          "/pembayaran": (context) => const PembayaranPage(),
         },
       ),
     );
