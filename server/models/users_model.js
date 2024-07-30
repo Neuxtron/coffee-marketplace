@@ -38,7 +38,11 @@ const UserModel = sequelize.define("user", {
     type: STRING,
     allowNull: false,
   },
-  // TODO: saldo
+  saldo: {
+    type: INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  },
   // TODO: id kecamatan toko, jasa kirim yg tersedia
 }, {
   freezeTableName: true,

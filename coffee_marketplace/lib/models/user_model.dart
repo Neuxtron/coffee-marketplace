@@ -8,6 +8,7 @@ class UserModel {
   final String alamat;
   final String idKecamatan;
   final String? password;
+  final int saldo;
 
   UserModel({
     this.id,
@@ -16,6 +17,7 @@ class UserModel {
     required this.noHp,
     required this.alamat,
     required this.idKecamatan,
+    this.saldo = 0,
     this.password,
   });
 
@@ -27,7 +29,7 @@ class UserModel {
       noHp: json["noHp"],
       alamat: json["alamat"],
       idKecamatan: json["idKecamatan"],
-      // TODO: saldo
+      saldo: json["saldo"],
     );
   }
 

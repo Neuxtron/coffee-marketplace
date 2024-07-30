@@ -22,6 +22,7 @@ class InfoBuilder extends StatelessWidget {
     return Padding(
       padding: margin,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Icon(
             iconData,
@@ -29,7 +30,7 @@ class InfoBuilder extends StatelessWidget {
             size: 30,
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 5),
+            padding: const EdgeInsets.only(top: 10, bottom: 20),
             child: Text(text, textAlign: TextAlign.center),
           ),
           MaterialButton(

@@ -29,7 +29,7 @@ class _MainLayoutState extends State<MainLayout> {
   final _appBars = [
     AppBar(
       toolbarHeight: 0,
-      backgroundColor: AppConstants.secondaryAlt,
+      backgroundColor: AppConstants.background,
       surfaceTintColor: Colors.transparent,
     ),
     AppBar(
@@ -47,7 +47,21 @@ class _MainLayoutState extends State<MainLayout> {
       titleSpacing: 0,
       centerTitle: true,
     ),
-    null,
+    AppBar(
+      elevation: 0,
+      backgroundColor: AppConstants.background,
+      title: const Text(
+        "Profil",
+        style: TextStyle(
+          fontFamily: "Abhaya Libre",
+          fontWeight: FontWeight.w800,
+          fontSize: 18,
+        ),
+      ),
+      surfaceTintColor: Colors.transparent,
+      titleSpacing: 0,
+      centerTitle: true,
+    ),
   ];
 
   void changePage(int index) {
@@ -113,8 +127,8 @@ class _MainLayoutState extends State<MainLayout> {
             ),
           ),
           BottomNavigationBarItem(
-            label: "Saya",
-            tooltip: "Saya",
+            label: "Profil",
+            tooltip: "Profil",
             icon: NavItem(
               iconPath: "assets/icons/ic_nav_profil.svg",
               isActive: false,
