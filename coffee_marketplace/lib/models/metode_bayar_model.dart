@@ -30,4 +30,15 @@ final dummyMetodeBayar = [
     imgUrl:
         "https://i.pinimg.com/originals/26/b1/d5/26b1d5503605789d2cbd551704f5c948.jpg",
   ),
+  MetodeBayarModel(
+    id: "echannel",
+    nama: "Mandiri Bill",
+    imgUrl: "https://logowik.com/content/uploads/images/bank-mandiri.jpg",
+  ),
+  MetodeBayarModel(
+    id: "permata",
+    nama: "Permata",
+    imgUrl:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsrQ34dmUSu4AuYty918IQlQxzhmE0jchpUg&s",
+  ),
 ];

@@ -20,8 +20,8 @@ class DaerahViewModel extends ChangeNotifier {
   ServerStatus _kecamatanStatus = ServerStatus.normal;
   ServerStatus get kecamatanStatus => _kecamatanStatus;
 
-  int? _ongkir;
-  int? get ongkir => _ongkir;
+  int _ongkir = 0;
+  int get ongkir => _ongkir;
 
   Future getProvinsi() async {
     _provinsiStatus = ServerStatus.loading;
@@ -72,23 +72,24 @@ class DaerahViewModel extends ChangeNotifier {
   }
 
   // TODO: get ongkir
-  // Future getOngkir() async {
-  //   final token = AppHelpers.token!;
-  //   try {
-  //     final response = await http.get(
-  //       Uri.parse("$_endpoint/ongkir/jne"),
-  //       headers: {
-  //         "Authorization": "Bearer $token",
-  //       },
-  //     );
-  //     log("Get ongkir:\n${response.body}");
-  //     if (response.statusCode == 200) {
-  //       final data = jsonDecode(response.body)["data"];
-  //       _ongkir = data["ongkir"];
-  //       notifyListeners();
-  //     }
-  //   } catch (e) {
-  //     log(e.toString());
-  //   }
-  // }
+  Future getOngkir(int berat, String kurir, String kecamatanPembeli,
+      String kecamatanPenjual) async {
+    //   final token = AppHelpers.token!;
+    //   try {
+    //     final response = await http.get(
+    //       Uri.parse("$_endpoint/ongkir/jne"),
+    //       headers: {
+    //         "Authorization": "Bearer $token",
+    //       },
+    //     );
+    //     log("Get ongkir:\n${response.body}");
+    //     if (response.statusCode == 200) {
+    //       final data = jsonDecode(response.body)["data"];
+    //       _ongkir = data["ongkir"];
+    //       notifyListeners();
+    //     }
+    //   } catch (e) {
+    //     log(e.toString());
+    //   }
+  }
 }

@@ -32,6 +32,7 @@ class CheckoutSection extends StatelessWidget {
       );
       return;
     }
+    context.read<KeranjangViewModel>().updateKeranjang();
     Navigator.pushNamed(
       context,
       "/checkout",

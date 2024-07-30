@@ -1,19 +1,24 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/app_helpers.dart';
+import 'package:coffee_marketplace/viewmodels/daerah_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PesanSection extends StatelessWidget {
   final Function() checkout;
-  final int total;
+  final int subtotal;
 
   const PesanSection({
     super.key,
     required this.checkout,
-    required this.total,
+    required this.subtotal,
   });
 
   @override
   Widget build(BuildContext context) {
+    final ongkir = context.watch<DaerahViewModel>().ongkir;
+    final total = subtotal + ongkir;
+
     final totalString = AppHelpers.formatHarga(total);
 
     return Container(

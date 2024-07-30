@@ -6,6 +6,6 @@ class AppConstants {
   static const secondaryAlt = Color(0xFFB2A59B);
   static const background = Color(0xFFFAEED1);
 
-  static const baseUrl = "http://192.168.0.3:3000";
-  static const rajaOngkirKey = "edbdb41bd34ae51a9ed93e36a3a60312";
+  static String get baseUrl => "http://192.168.0.2:3000";
+  static String get rajaOngkirKey => "edbdb41bd34ae51a9ed93e36a3a60312";
 }

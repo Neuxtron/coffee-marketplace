@@ -7,4 +7,9 @@ class AppHelpers {
     final hargaString = NumberFormat("Rp ###,###,###").format(harga);
     return hargaString;
   }
+
+  static formatTanggal(DateTime tanggal) {
+    final tanggalString = DateFormat("dd-MM-yyyy").format(tanggal);
+    return tanggalString;
+  }
 }
