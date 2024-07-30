@@ -11,7 +11,7 @@ class KeranjangSection extends StatelessWidget {
     return Column(
       children: [
         ListView.separated(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
           physics: const NeverScrollableScrollPhysics(),
           shrinkWrap: true,
           itemCount: listKeranjang.length,

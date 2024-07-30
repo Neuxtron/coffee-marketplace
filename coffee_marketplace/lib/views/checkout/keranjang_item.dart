@@ -54,7 +54,6 @@ class KeranjangItem extends StatelessWidget {
           right: 0,
           child: Text(
             "x${keranjang.amount}",
-            style: const TextStyle(fontSize: 16),
           ),
         ),
       ],

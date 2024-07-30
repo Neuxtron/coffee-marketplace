@@ -2,6 +2,7 @@ import 'package:coffee_marketplace/models/keranjang_model.dart';
 import 'package:coffee_marketplace/models/kurir_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/views/checkout/alamat_section.dart';
+import 'package:coffee_marketplace/views/checkout/details_section.dart';
 import 'package:coffee_marketplace/views/checkout/keranjang_section.dart';
 import 'package:coffee_marketplace/views/checkout/pembayaran_section.dart';
 import 'package:coffee_marketplace/views/checkout/pengiriman_section.dart';
@@ -12,10 +13,34 @@ class CheckoutPage extends StatelessWidget {
 
   static late String _kurir;
   static late String _metodeBayar;
+  static late List<KeranjangModel> _listKeranjang;
+
+  int get _subtotal {
+    int subtotal = 0;
+    for (var keranjang in _listKeranjang) {
+      subtotal += keranjang.produk.harga * keranjang.amount;
+    }
+    return subtotal;
+  }
+
+  int get _ongkir {
+    // TODO: get ongkir
+    return 0;
+  }
+
+  bool get _loading {
+    // TODO: loading pengiriman, metode bayar, ongkir
+    return false;
+  }
+
+  void checkout() {
+    // TODO print kukrir & metode bayar
+    // TODO halaman baru, tgl expire, va number, jumlah bayar
+  }
 
   @override
   Widget build(BuildContext context) {
-    final listKeranjang =
+    _listKeranjang =
         ModalRoute.of(context)!.settings.arguments as List<KeranjangModel>;
 
     // TODO: kurir from toko
@@ -28,12 +53,16 @@ class CheckoutPage extends StatelessWidget {
         child: Column(
           children: [
             const AlamatSection(),
-            KeranjangSection(listKeranjang: listKeranjang),
+            KeranjangSection(listKeranjang: _listKeranjang),
             PengirimanSection(
               onChange: (idKurir) => _kurir = idKurir,
               listKurir: listKurir,
             ),
             PembayaranSection(onChange: (idMetode) => _metodeBayar = idMetode),
+            DetailsSection(
+              subtotalProduk: _subtotal,
+              ongkir: _ongkir,
+            ),
           ],
         ),
       ),
