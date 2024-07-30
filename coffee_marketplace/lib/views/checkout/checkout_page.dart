@@ -1,11 +1,13 @@
 import 'package:coffee_marketplace/models/keranjang_model.dart';
 import 'package:coffee_marketplace/models/kurir_model.dart';
+import 'package:coffee_marketplace/models/metode_bayar_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/views/checkout/alamat_section.dart';
 import 'package:coffee_marketplace/views/checkout/details_section.dart';
 import 'package:coffee_marketplace/views/checkout/keranjang_section.dart';
 import 'package:coffee_marketplace/views/checkout/pembayaran_section.dart';
 import 'package:coffee_marketplace/views/checkout/pengiriman_section.dart';
+import 'package:coffee_marketplace/views/checkout/pesan_section.dart';
 import 'package:flutter/material.dart';
 
 class CheckoutPage extends StatelessWidget {
@@ -34,7 +36,8 @@ class CheckoutPage extends StatelessWidget {
   }
 
   void checkout() {
-    // TODO print kukrir & metode bayar
+    print(_kurir);
+    print(_metodeBayar);
     // TODO halaman baru, tgl expire, va number, jumlah bayar
   }
 
@@ -46,6 +49,10 @@ class CheckoutPage extends StatelessWidget {
     // TODO: kurir from toko
     final listKurir = dummyKurir;
     _kurir = listKurir[0].id;
+
+    // TODO: metode bayar from api
+    final listMetode = dummyMetodeBayar;
+    _metodeBayar = listMetode[0].id;
 
     return Scaffold(
       appBar: buildAppBar(),
@@ -62,6 +69,10 @@ class CheckoutPage extends StatelessWidget {
             DetailsSection(
               subtotalProduk: _subtotal,
               ongkir: _ongkir,
+            ),
+            PesanSection(
+              checkout: checkout,
+              total: _subtotal + _ongkir,
             ),
           ],
         ),
