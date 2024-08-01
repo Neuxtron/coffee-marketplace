@@ -6,7 +6,7 @@ class OrderModel {
   final int subtotal;
   final int ongkir;
   final MetodeBayarModel metodeBayar;
-  final Map<String, String> bayarDetails;
+  final Map<String, dynamic> bayarDetails;
   final DateTime expiredAt;
 
   OrderModel({
@@ -18,6 +18,20 @@ class OrderModel {
     required this.bayarDetails,
     required this.expiredAt,
   });
+
+  factory OrderModel.fromJson(Map<String, dynamic> json) {
+    final metodeBayar = json["metodePembayaran"];
+
+    return OrderModel(
+      id: json["id"],
+      status: json["status"],
+      subtotal: json["subtotal"],
+      ongkir: json["ongkir"],
+      metodeBayar: MetodeBayarModel.fromJson(metodeBayar),
+      bayarDetails: json["bayarDetails"],
+      expiredAt: DateTime.parse(json["expiredAt"]),
+    );
+  }
 }
 
 final dummyOrder = OrderModel(

@@ -1,3 +1,4 @@
+import 'package:coffee_marketplace/models/penjual_model.dart';
 import 'package:coffee_marketplace/models/variasi_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 
@@ -11,7 +12,7 @@ class ProdukModel {
   final String merk;
   final List<String> gambar;
   final List<VariasiModel> variasi;
-  // TODO: id penjual
+  final PenjualModel penjual;
 
   ProdukModel({
     required this.id,
@@ -23,6 +24,7 @@ class ProdukModel {
     required this.merk,
     required this.gambar,
     required this.variasi,
+    required this.penjual,
   });
 
   factory ProdukModel.fromJson(Map<String, dynamic> json) {
@@ -43,6 +45,7 @@ class ProdukModel {
       merk: json["merk"],
       gambar: gambar,
       variasi: variasi.map((e) => VariasiModel.fromJson(e)).toList(),
+      penjual: PenjualModel.fromJson(json["penjual"]),
     );
   }
 
@@ -68,6 +71,11 @@ final dummyProduk = ProdukModel(
     VariasiModel(id: "3", nama: "Bubuk Sedang", stok: 999),
     VariasiModel(id: "4", nama: "Bubuk Kasar", stok: 999),
   ],
+  penjual: PenjualModel(
+    id: "1",
+    namaToko: "Toko dabes banget",
+    idKecamatanToko: "235",
+  ),
 );
 // final List<ProdukModel> dummyListProduk = [
 //   dummyProduk,

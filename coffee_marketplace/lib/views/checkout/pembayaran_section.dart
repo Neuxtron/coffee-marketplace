@@ -1,8 +1,10 @@
+import 'package:coffee_marketplace/viewmodels/metode_bayar_view_model.dart';
 import 'package:coffee_marketplace/views/checkout/checkout_section_item.dart';
 import 'package:coffee_marketplace/views/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:coffee_marketplace/models/metode_bayar_model.dart';
+import 'package:provider/provider.dart';
 
 class PembayaranSection extends StatefulWidget {
   final Function(String idMetode) onChange;
@@ -15,10 +17,8 @@ class PembayaranSection extends StatefulWidget {
 class _PembayaranSectionState extends State<PembayaranSection> {
   late MetodeBayarModel _selectedMetode;
 
-  final _listMetode = dummyMetodeBayar;
-
-  // OPTIMIZE: better loading detection
-  bool get _loading => _listMetode.isEmpty;
+  List<MetodeBayarModel> get _listMetode =>
+      context.read<MetodeBayarViewModel>().listMetode;
 
   void selectMetode(Object? value) {
     if (value == null) return;
@@ -28,7 +28,7 @@ class _PembayaranSectionState extends State<PembayaranSection> {
   }
 
   void getData() {
-    if (!_loading) {
+    if (_listMetode.isNotEmpty) {
       _selectedMetode = _listMetode[0];
     }
   }
@@ -41,9 +41,7 @@ class _PembayaranSectionState extends State<PembayaranSection> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      // TODO: loading builder
-    }
+    if (_listMetode.isEmpty) return const SizedBox();
 
     return CheckoutSectionItem(
       icon: SvgPicture.asset("assets/icons/ic_pembayaran.svg"),

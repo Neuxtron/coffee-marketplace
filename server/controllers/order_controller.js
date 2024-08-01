@@ -54,28 +54,45 @@ class OrderController {
 
       await order.save()
       
-      // const listKeranjang = listKeranjangRaw.map(keranjang => {
-      //   keranjang.idOrder = order.id
-      //   return keranjang
-      // })
+      const listKeranjang = listKeranjangRaw.map(keranjang => {
+        keranjang.idOrder = order.id
+        return keranjang
+      })
       
-      // const promises = listKeranjang.map((keranjang) => {
-      //   return VariasiModel.decrement("stok", {
-      //     where: { id: keranjang.idVariasi }
-      //   })
-      // })
+      const promises = listKeranjang.map((keranjang) => {
+        return VariasiModel.decrement("stok", {
+          where: { id: keranjang.idVariasi }
+        })
+      })
 
-      // await Promise.allSettled(promises)
-      // await KeranjangController.updateKeranjangLocal(listKeranjang, idUser)
+      await Promise.allSettled(promises)
+      await KeranjangController.updateKeranjangLocal(listKeranjang, idUser)
 
       const newOrder = await OrderModel.findByPk(order.id, {
-        attributes: defaultExclude
+        attributes: defaultExclude,
+        raw: true,
+        nest: true,
+        include: ["metodePembayaran"],
       })
+
+      const bayarDetails = {}
+      if (newOrder.vaNumber !== null) {
+        bayarDetails["VA Number"] = newOrder.vaNumber
+      }
+      if (newOrder.billKey !== null) {
+        bayarDetails["Bill Key"] = newOrder.billKey
+      }
+      if (newOrder.billerCode !== null) {
+        bayarDetails["Biller Code"] = newOrder.billerCode
+      }
 
       res.status(201).json({
         status: true,
         message: "Berhasil membuat order",
-        data: newOrder,
+        data: {
+          ...newOrder,
+          bayarDetails,
+        },
         // data: {},
       })
     } catch (err) {

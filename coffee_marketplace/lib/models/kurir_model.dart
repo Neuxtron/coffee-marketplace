@@ -1,7 +1,10 @@
+import 'package:coffee_marketplace/models/ongkir_model.dart';
+
 class KurirModel {
   final String id;
   final String nama;
   final String imgUrl;
+  List<OngkirModel>? listOngkir;
 
   KurirModel({
     required this.id,

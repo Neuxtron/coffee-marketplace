@@ -1,18 +1,17 @@
+import 'package:coffee_marketplace/models/ongkir_model.dart';
+import 'package:coffee_marketplace/viewmodels/daerah_view_model.dart';
 import 'package:coffee_marketplace/views/checkout/checkout_section_item.dart';
+import 'package:coffee_marketplace/views/pengiriman/kurir_item.dart';
 import 'package:coffee_marketplace/views/widgets/rounded_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:coffee_marketplace/models/kurir_model.dart';
+import 'package:provider/provider.dart';
 
 class PengirimanSection extends StatefulWidget {
-  final Function(String idKurir) onChange;
-  final List<KurirModel> listKurir;
+  final Function(OngkirModel ongkir) onChange;
 
-  const PengirimanSection({
-    super.key,
-    required this.onChange,
-    required this.listKurir,
-  });
+  const PengirimanSection({super.key, required this.onChange});
 
   @override
   State<PengirimanSection> createState() => _PengirimanSectionState();
@@ -20,21 +19,23 @@ class PengirimanSection extends StatefulWidget {
 
 class _PengirimanSectionState extends State<PengirimanSection> {
   late KurirModel _selectedKurir;
+  late OngkirModel _selectedOngkir;
 
-  // OPTIMIZE: better loading detection
-  bool get _loading => widget.listKurir.isEmpty;
+  List<KurirModel> get _listKurir => context.read<DaerahViewModel>().listKurir;
 
   void selectKurir(Object? value) {
     if (value == null) return;
-    final kurir = value as KurirModel;
-    setState(() => _selectedKurir = kurir);
-    widget.onChange(kurir.id);
+    final response = value as KurirValue;
+    setState(() {
+      _selectedKurir = response.kurir;
+      _selectedOngkir = response.ongkir;
+    });
+    widget.onChange(_selectedOngkir);
   }
 
   void getData() {
-    if (!_loading) {
-      _selectedKurir = widget.listKurir[0];
-    }
+    _selectedKurir = _listKurir[0];
+    _selectedOngkir = _listKurir[0].listOngkir![0];
   }
 
   @override
@@ -45,10 +46,6 @@ class _PengirimanSectionState extends State<PengirimanSection> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      // TODO: loading builder
-    }
-
     return CheckoutSectionItem(
       icon: SvgPicture.asset("assets/icons/ic_pengiriman.svg"),
       title: "Pengiriman",
@@ -59,7 +56,6 @@ class _PengirimanSectionState extends State<PengirimanSection> {
           Navigator.pushNamed(
             context,
             "/pengiriman",
-            arguments: widget.listKurir,
           ).then(selectKurir);
         },
         child: Padding(
@@ -73,13 +69,25 @@ class _PengirimanSectionState extends State<PengirimanSection> {
                 radius: 10,
               ),
               const SizedBox(width: 20),
-              Text(
-                _selectedKurir.nama,
-                style: const TextStyle(
-                  fontFamily: "Abhaya Libre",
-                  fontWeight: FontWeight.w800,
-                  fontSize: 18,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    _selectedKurir.nama,
+                    style: const TextStyle(
+                      fontFamily: "Abhaya Libre",
+                      fontWeight: FontWeight.w800,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    "${_selectedOngkir.deskripsi} (${_selectedOngkir.nama})",
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                ],
               ),
               const Expanded(child: SizedBox()),
               const Icon(Icons.keyboard_arrow_right_rounded),

@@ -95,8 +95,8 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
-  void getProfile() async {
-    if (_status == ServerStatus.loading) return;
+  Future<bool?> getProfile() async {
+    if (_status == ServerStatus.loading) return null;
     _status = ServerStatus.loading;
     _error = "";
     notifyListeners();
@@ -117,12 +117,15 @@ class UserViewModel extends ChangeNotifier {
       }
       _status = ServerStatus.normal;
       notifyListeners();
+      return true;
     } catch (e) {
       log(e.toString());
       _status = ServerStatus.error;
       _error = "Terjadi kesalahan, silahkan coba lagi";
       notifyListeners();
     }
+
+    return false;
   }
 
   Future updateProfil(UserModel user) async {

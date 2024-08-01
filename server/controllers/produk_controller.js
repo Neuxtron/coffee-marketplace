@@ -16,7 +16,7 @@ const getInclude = [
   },
   {
     association: "penjual",
-    attributes: ["id", "nama"],
+    attributes: ["id", "namaToko", "idKecamatanToko"],
   },
 ]
 

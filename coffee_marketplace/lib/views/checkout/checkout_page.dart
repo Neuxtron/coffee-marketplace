@@ -1,10 +1,14 @@
 import 'package:coffee_marketplace/models/keranjang_model.dart';
 import 'package:coffee_marketplace/models/kurir_model.dart';
 import 'package:coffee_marketplace/models/metode_bayar_model.dart';
+import 'package:coffee_marketplace/models/ongkir_model.dart';
 import 'package:coffee_marketplace/models/order_model.dart';
 import 'package:coffee_marketplace/models/pembayaran_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/utils/server_status.dart';
 import 'package:coffee_marketplace/viewmodels/daerah_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/metode_bayar_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/order_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/checkout/alamat_section.dart';
@@ -25,51 +29,55 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
-  late String _kurir;
   late String _metodeBayar;
-  late List<KeranjangModel> _listKeranjang;
+  late OngkirModel _ongkir;
 
-  // TODO: kurir from toko
-  List<KurirModel> get _listKurir => dummyKurir;
-  // TODO: metode bayar from api
-  List<MetodeBayarModel> get _listMetodeBayar => dummyMetodeBayar;
+  List<MetodeBayarModel> get _listMetodeBayar =>
+      context.read<MetodeBayarViewModel>().listMetode;
+  List<KeranjangModel> get _listCheckout =>
+      context.read<KeranjangViewModel>().listCheckout;
 
   int get _subtotal {
     int subtotal = 0;
-    for (var keranjang in _listKeranjang) {
+    for (var keranjang in _listCheckout) {
       subtotal += keranjang.produk.harga * keranjang.amount;
     }
     return subtotal;
   }
 
-  bool get _loading {
-    // TODO: loading pengiriman, metode bayar, ongkir, order
-    return false;
+  bool get _isLoading {
+    List<ServerStatus> listStatus = [];
+    listStatus.addAll([
+      context.watch<MetodeBayarViewModel>().status,
+      context.watch<DaerahViewModel>().ongkirStatus,
+      context.watch<UserViewModel>().status,
+    ]);
+
+    return listStatus.contains(ServerStatus.loading);
   }
 
-  void checkout() {
-    final ongkir = context.read<DaerahViewModel>().ongkir;
+  bool get _isSubmitting =>
+      context.watch<OrderViewModel>().status == ServerStatus.loading;
 
+  void checkout() {
     final pembayaran = PembayaranModel(
       subtotal: _subtotal,
-      ongkir: ongkir,
+      ongkir: _ongkir.ongkir,
       metodeBayar: _metodeBayar,
-      listKeranjang: _listKeranjang,
+      listKeranjang: _listCheckout,
     );
 
-    // context.read<OrderViewModel>().createOrder(pembayaran).then(handleOrder);
-    final order = dummyOrder;
-    handleOrder(order);
+    context.read<OrderViewModel>().createOrder(pembayaran).then(handleOrder);
   }
 
   void handleOrder(OrderModel? order) {
-    // if (order == null) {
-    //   Fluttertoast.showToast(
-    //     msg: "Terjadi kesalahan",
-    //     backgroundColor: Colors.black54,
-    //   );
-    //   return;
-    // }
+    if (order == null) {
+      Fluttertoast.showToast(
+        msg: "Terjadi kesalahan",
+        backgroundColor: Colors.black54,
+      );
+      return;
+    }
     Navigator.pushNamed(
       context,
       "/menunggu_pembayaran",
@@ -79,24 +87,55 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   void getOngkir() {
     int totalBerat = 0;
-    for (var keranjang in _listKeranjang) {
+    for (var keranjang in _listCheckout) {
       totalBerat += keranjang.produk.beratProduk;
     }
 
     final kecamatanPembeli =
         context.read<UserViewModel>().currentUser!.idKecamatan;
-    // TODO: from api
-    final kecamatanPenjual = "235"; // Lhokseumawe
+    // TODO: kecamatan semua toko
+    final kecamatanPenjual = _listCheckout[0].produk.penjual.idKecamatanToko;
+    // TODO: kurir from toko
+    final listKurir = dummyKurir;
 
     context
         .read<DaerahViewModel>()
-        .getOngkir(totalBerat, _kurir, kecamatanPembeli, kecamatanPenjual);
+        .getAllOngkir(
+          totalBerat,
+          kecamatanPembeli,
+          kecamatanPenjual,
+          listKurir,
+        )
+        .then((response) {
+      if (response) {
+        _ongkir = context.read<DaerahViewModel>().listKurir[0].listOngkir![0];
+        return;
+      }
+      Fluttertoast.showToast(
+        msg: "Terjadi kesalahan",
+        backgroundColor: Colors.black54,
+      );
+      Navigator.pop(context);
+    });
   }
 
   void getData() {
-    // TODO: get profile, get kecamatan toko, get kurir, get metode
-    _kurir = _listKurir[0].id;
-    _metodeBayar = _listMetodeBayar[0].id;
+    // TODO: get kecamatan semua toko
+    Future.wait([
+      context.read<UserViewModel>().getProfile(),
+      context.read<MetodeBayarViewModel>().getMetodeBayar(),
+    ]).then((responses) {
+      if (!responses.contains(false)) {
+        _metodeBayar = _listMetodeBayar[0].id;
+        getOngkir();
+        return;
+      }
+      Fluttertoast.showToast(
+        msg: "Terjadi kesalahan",
+        backgroundColor: Colors.black54,
+      );
+      Navigator.pop(context);
+    });
   }
 
   @override
@@ -107,14 +146,22 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      // TODO: loading builder
+    if (_isLoading) {
+      return Scaffold(
+        appBar: buildAppBar(),
+        body: const Padding(
+          padding: EdgeInsets.only(top: 30),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: SizedBox(
+              height: 30,
+              width: 30,
+              child: CircularProgressIndicator(),
+            ),
+          ),
+        ),
+      );
     }
-
-    _listKeranjang =
-        ModalRoute.of(context)!.settings.arguments as List<KeranjangModel>;
-
-    getOngkir();
 
     return Scaffold(
       appBar: buildAppBar(),
@@ -122,18 +169,20 @@ class _CheckoutPageState extends State<CheckoutPage> {
         child: Column(
           children: [
             const AlamatSection(),
-            KeranjangSection(listKeranjang: _listKeranjang),
+            KeranjangSection(listKeranjang: _listCheckout),
             PengirimanSection(
-              onChange: (idKurir) => _kurir = idKurir,
-              listKurir: _listKurir,
+              onChange: (ongkir) => setState(() => _ongkir = ongkir),
             ),
             PembayaranSection(onChange: (idMetode) => _metodeBayar = idMetode),
             DetailsSection(
               subtotalProduk: _subtotal,
+              ongkir: _ongkir.ongkir,
             ),
             PesanSection(
               checkout: checkout,
               subtotal: _subtotal,
+              isSubmitting: _isSubmitting,
+              ongkir: _ongkir.ongkir,
             ),
           ],
         ),

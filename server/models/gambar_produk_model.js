@@ -1,4 +1,4 @@
-const { INTEGER, STRING, UUIDV4 } = require("sequelize")
+const { STRING, UUIDV4 } = require("sequelize")
 const sequelize = require("../config/database")
 
 const GambarProdukModel = sequelize.define("gambar_produk", {

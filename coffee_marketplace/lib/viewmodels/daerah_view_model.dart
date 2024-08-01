@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:coffee_marketplace/models/daerah_model.dart';
+import 'package:coffee_marketplace/models/kurir_model.dart';
+import 'package:coffee_marketplace/models/ongkir_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/server_status.dart';
 import 'package:flutter/material.dart';
@@ -14,14 +16,16 @@ class DaerahViewModel extends ChangeNotifier {
   List<DaerahModel> get listProvinsi => _listProvinsi;
   List<DaerahModel> _listKecamatan = [];
   List<DaerahModel> get listKecamatan => _listKecamatan;
+  // TODO: kurir from toko
+  List<KurirModel> _listKurir = [];
+  List<KurirModel> get listKurir => _listKurir;
 
   ServerStatus _provinsiStatus = ServerStatus.normal;
   ServerStatus get provinsiStatus => _provinsiStatus;
   ServerStatus _kecamatanStatus = ServerStatus.normal;
   ServerStatus get kecamatanStatus => _kecamatanStatus;
-
-  int _ongkir = 0;
-  int get ongkir => _ongkir;
+  ServerStatus _ongkirStatus = ServerStatus.normal;
+  ServerStatus get ongkirStatus => _ongkirStatus;
 
   Future getProvinsi() async {
     _provinsiStatus = ServerStatus.loading;
@@ -71,25 +75,53 @@ class DaerahViewModel extends ChangeNotifier {
     }
   }
 
-  // TODO: get ongkir
-  Future getOngkir(int berat, String kurir, String kecamatanPembeli,
+  Future<bool> getAllOngkir(int berat, String kecamatanPembeli,
+      String kecamatanPenjual, List<KurirModel> kurirFromToko) async {
+    _ongkirStatus = ServerStatus.loading;
+    notifyListeners();
+    _listKurir = kurirFromToko;
+    final responses = await Future.wait(
+      _listKurir.map((kurir) {
+        return getOngkir(berat, kurir, kecamatanPembeli, kecamatanPenjual);
+      }),
+    );
+    _ongkirStatus = ServerStatus.normal;
+    notifyListeners();
+    return !responses.contains(false);
+  }
+
+  Future<bool> getOngkir(int berat, KurirModel kurir, String kecamatanPembeli,
       String kecamatanPenjual) async {
-    //   final token = AppHelpers.token!;
-    //   try {
-    //     final response = await http.get(
-    //       Uri.parse("$_endpoint/ongkir/jne"),
-    //       headers: {
-    //         "Authorization": "Bearer $token",
-    //       },
-    //     );
-    //     log("Get ongkir:\n${response.body}");
-    //     if (response.statusCode == 200) {
-    //       final data = jsonDecode(response.body)["data"];
-    //       _ongkir = data["ongkir"];
-    //       notifyListeners();
-    //     }
-    //   } catch (e) {
-    //     log(e.toString());
-    //   }
+    try {
+      final response = await http.post(
+        Uri.parse("$_endpoint/cost"),
+        headers: {
+          "key": AppConstants.rajaOngkirKey,
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({
+          "origin": kecamatanPenjual,
+          "destination": kecamatanPembeli,
+          "weight": berat,
+          "courier": kurir.id,
+        }),
+      );
+      log("Get ongkir:\n${response.body}");
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body)["rajaongkir"]["results"][0]
+            ["costs"] as List;
+        List<OngkirModel> listOngkir =
+            data.map((e) => OngkirModel.fromJson(e)).toList();
+
+        final index = _listKurir.indexOf(kurir);
+        _listKurir[index].listOngkir = listOngkir;
+        notifyListeners();
+        return true;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+
+    return false;
   }
 }

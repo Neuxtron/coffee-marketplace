@@ -1,15 +1,15 @@
-import 'package:coffee_marketplace/models/kurir_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/viewmodels/daerah_view_model.dart';
 import 'package:coffee_marketplace/views/pengiriman/kurir_item.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PengirimanPage extends StatelessWidget {
   const PengirimanPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final listKurir =
-        ModalRoute.of(context)!.settings.arguments as List<KurirModel>;
+    final listKurir = context.watch<DaerahViewModel>().listKurir;
 
     return Scaffold(
       appBar: buildAppBar(),

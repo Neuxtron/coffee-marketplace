@@ -1,22 +1,23 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/app_helpers.dart';
-import 'package:coffee_marketplace/viewmodels/daerah_view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PesanSection extends StatelessWidget {
   final Function() checkout;
   final int subtotal;
+  final bool isSubmitting;
+  final int ongkir;
 
   const PesanSection({
     super.key,
     required this.checkout,
     required this.subtotal,
+    required this.isSubmitting,
+    required this.ongkir,
   });
 
   @override
   Widget build(BuildContext context) {
-    final ongkir = context.watch<DaerahViewModel>().ongkir;
     final total = subtotal + ongkir;
 
     final totalString = AppHelpers.formatHarga(total);
@@ -37,9 +38,11 @@ class PesanSection extends StatelessWidget {
             ),
           ),
           InkWell(
-            onTap: checkout,
+            onTap: isSubmitting ? null : checkout,
             child: Container(
-              color: AppConstants.primary,
+              color: isSubmitting
+                  ? AppConstants.primary.withOpacity(.7)
+                  : AppConstants.primary,
               padding: const EdgeInsets.symmetric(
                 vertical: 20,
                 horizontal: 25,

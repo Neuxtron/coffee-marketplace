@@ -1,3 +1,5 @@
+import 'package:coffee_marketplace/utils/app_constants.dart';
+
 class MetodeBayarModel {
   final String id;
   final String nama;
@@ -9,6 +11,17 @@ class MetodeBayarModel {
     required this.nama,
     required this.imgUrl,
   });
+
+  factory MetodeBayarModel.fromJson(Map<String, dynamic> json) {
+    final imgFileName = json["imgFileName"];
+    final imgUrl = "${AppConstants.baseUrl}/images/pembayaran/$imgFileName";
+
+    return MetodeBayarModel(
+      id: json["id"],
+      nama: json["nama"],
+      imgUrl: imgUrl,
+    );
+  }
 }
 
 final dummyMetodeBayar = [

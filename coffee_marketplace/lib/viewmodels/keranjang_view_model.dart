@@ -12,8 +12,12 @@ class KeranjangViewModel extends ChangeNotifier {
   final _endpoint = "${AppConstants.baseUrl}/api/keranjang";
 
   List<KeranjangModel> _listKeranjang = [];
-
   List<KeranjangModel> get listKeranjang => _listKeranjang;
+  List<KeranjangModel> get listCheckout {
+    return _listKeranjang.where((keranjang) {
+      return keranjang.isChecked;
+    }).toList();
+  }
 
   ServerStatus _status = ServerStatus.normal;
   ServerStatus get status => _status;

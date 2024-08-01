@@ -10,22 +10,18 @@ class CheckoutSection extends StatelessWidget {
   final KeranjangViewModel viewModel;
   const CheckoutSection({super.key, required this.viewModel});
 
-  List<KeranjangModel> get _checkedKeranjang {
-    return viewModel.listKeranjang.where((keranjang) {
-      return keranjang.isChecked;
-    }).toList();
-  }
+  List<KeranjangModel> get _listCheckout => viewModel.listCheckout;
 
   int get _total {
     int total = 0;
-    for (var keranjang in _checkedKeranjang) {
+    for (var keranjang in _listCheckout) {
       total += keranjang.produk.harga * keranjang.amount;
     }
     return total;
   }
 
   void checkout(BuildContext context) {
-    if (_checkedKeranjang.isEmpty) {
+    if (_listCheckout.isEmpty) {
       Fluttertoast.showToast(
         msg: "Pilih satu produk untuk di checkout",
         backgroundColor: Colors.black54,
@@ -36,7 +32,6 @@ class CheckoutSection extends StatelessWidget {
     Navigator.pushNamed(
       context,
       "/checkout",
-      arguments: _checkedKeranjang,
     ).then((_) {
       context.read<KeranjangViewModel>().getKeranjang();
     });
