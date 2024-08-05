@@ -51,7 +51,11 @@ const UserModel = sequelize.define("user", {
     type: STRING,
     allowNull: true,
   },
-  // TODO: id kecamatan toko, jasa kirim yg tersedia
+  role: {
+    type: STRING,
+    allowNull: false,
+    defaultValue: "pelanggan"
+  },
 }, {
   freezeTableName: true,
   hooks: {

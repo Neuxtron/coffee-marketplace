@@ -150,6 +150,28 @@ class UserController {
       })
   }
 
+  static allPakar(req, res) {
+    UserModel.findOne({
+      where: { role: "pakar" },
+      attributes: ["id", "nama"]
+    })
+      .then((data) => {
+        res.status(200).json({
+          status: true,
+          message: "Berhasil mengambil data pakar",
+          data,
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        res.status(500).json({
+          status: false,
+          message: "Terjadi kesalahan, silahkan coba lagi",
+          data: {},
+        })
+      })
+  }
+
   // TODO: ubah password
 }
 

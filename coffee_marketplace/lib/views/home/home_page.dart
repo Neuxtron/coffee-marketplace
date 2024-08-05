@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // TODO: chat page button
+          // TODO: search section with chat button
           const HomeBanner(),
           HomeBody(getData: getData),
         ],
