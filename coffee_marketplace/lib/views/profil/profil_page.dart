@@ -1,5 +1,7 @@
 import 'package:coffee_marketplace/models/user_model.dart';
 import 'package:coffee_marketplace/utils/app_helpers.dart';
+import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/pesan_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/profil/logout_section.dart';
 import 'package:coffee_marketplace/views/profil/nama_section.dart';
@@ -31,7 +33,12 @@ class _ProfilPageState extends State<ProfilPage> {
   }
 
   void logout() {
-    context.read<UserViewModel>().logout().then((_) => setState(() {}));
+    context.read<UserViewModel>().logout().then((_) {
+      login();
+      setState(() {});
+    });
+    context.read<KeranjangViewModel>().onLogout();
+    context.read<PesanViewModel>().onLogout();
   }
 
   @override
@@ -54,18 +61,20 @@ class _ProfilPageState extends State<ProfilPage> {
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        children: [
-          NamaSection(
-            nama: _nama,
-            saldo: _saldo,
-          ),
-          const RiwayatSection(),
-          const PengaturanSection(),
-          LogoutSection(logout: logout),
-        ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            NamaSection(
+              nama: _nama,
+              saldo: _saldo,
+            ),
+            const RiwayatSection(),
+            const PengaturanSection(),
+            LogoutSection(logout: logout),
+          ],
+        ),
       ),
     );
   }

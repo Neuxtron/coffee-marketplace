@@ -151,7 +151,7 @@ class UserController {
   }
 
   static allPakar(req, res) {
-    UserModel.findOne({
+    UserModel.findAll({
       where: { role: "pakar" },
       attributes: ["id", "nama"]
     })

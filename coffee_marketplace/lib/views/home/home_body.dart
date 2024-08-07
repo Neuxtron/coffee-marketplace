@@ -2,7 +2,6 @@ import 'package:coffee_marketplace/utils/server_status.dart';
 import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/views/home/all_menu_section.dart';
-import 'package:coffee_marketplace/views/home/best_seller_section.dart';
 import 'package:coffee_marketplace/views/home/kategori_section.dart';
 import 'package:coffee_marketplace/views/widgets/info_builder.dart';
 import 'package:flutter/material.dart';
@@ -49,24 +48,20 @@ class HomeBody extends StatelessWidget {
     }
 
     if (_isLoading) {
-      return loadingBuilder();
+      return const Padding(
+        padding: EdgeInsets.only(top: 40),
+        child: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
     }
 
     return const Column(
       children: [
         KategoriSection(),
-        BestSellerSection(),
+        // BestSellerSection(),
         AllMenuSection(),
       ],
-    );
-  }
-
-  Padding loadingBuilder() {
-    return const Padding(
-      padding: EdgeInsets.only(top: 40),
-      child: Center(
-        child: CircularProgressIndicator(),
-      ),
     );
   }
 }

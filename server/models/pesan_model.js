@@ -1,5 +1,6 @@
 const { STRING, UUIDV4, TEXT, DATE } = require("sequelize")
 const sequelize = require("../config/database")
+const UserModel = require("./users_model")
 
 const PesanModel = sequelize.define("pesan", {
   id: {
@@ -23,6 +24,10 @@ const PesanModel = sequelize.define("pesan", {
     type: DATE,
     allowNull: true,
   },
+  tglTerkirim: {
+    type: DATE,
+    allowNull: true,
+  },
   tglHapus: {
     type: DATE,
     allowNull: true,
@@ -30,5 +35,9 @@ const PesanModel = sequelize.define("pesan", {
 }, {
   freezeTableName: true,
 })
+
+PesanModel.belongsTo(UserModel, { as: "pengirimData", foreignKey: "pengirim", onDelete: "CASCADE" })
+PesanModel.belongsTo(UserModel, { as: "penerimaData", foreignKey: "penerima", onDelete: "CASCADE" })
+
 
 module.exports = PesanModel

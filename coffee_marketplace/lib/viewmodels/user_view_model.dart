@@ -180,6 +180,7 @@ class UserViewModel extends ChangeNotifier {
       log(e.toString());
     }
     token = null;
+    _currentUser = null;
     return false;
   }
 

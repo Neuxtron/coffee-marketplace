@@ -1,5 +1,6 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/server_status.dart';
+import 'package:coffee_marketplace/viewmodels/pesan_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/layouts/auth_layout.dart';
 import 'package:coffee_marketplace/views/login/login_actions.dart';
@@ -32,6 +33,7 @@ class _LoginPageState extends State<LoginPage> {
         .login(_emailController.text.trim(), _passwordController.text)
         .then((_) {
       if (context.read<UserViewModel>().status != ServerStatus.error) {
+        context.read<PesanViewModel>().onInit();
         Navigator.pop(context);
       }
     });

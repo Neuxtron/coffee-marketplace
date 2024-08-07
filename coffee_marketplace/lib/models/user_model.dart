@@ -9,6 +9,7 @@ class UserModel {
   final String idKecamatan;
   final String? password;
   final int saldo;
+  final String role;
 
   UserModel({
     this.id,
@@ -17,6 +18,7 @@ class UserModel {
     required this.noHp,
     required this.alamat,
     required this.idKecamatan,
+    this.role = "pelanggan",
     this.saldo = 0,
     this.password,
   });
@@ -30,6 +32,7 @@ class UserModel {
       alamat: json["alamat"],
       idKecamatan: json["idKecamatan"],
       saldo: json["saldo"],
+      role: json["role"],
     );
   }
 

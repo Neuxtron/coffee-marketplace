@@ -4,8 +4,12 @@ import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/metode_bayar_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/order_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/pakar_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/pesan_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
+import 'package:coffee_marketplace/views/all_pakar/all_pakar_page.dart';
+import 'package:coffee_marketplace/views/chat_room/chat_room_page.dart';
 import 'package:coffee_marketplace/views/checkout/checkout_page.dart';
 import 'package:coffee_marketplace/views/daftar/daftar_page.dart';
 import 'package:coffee_marketplace/views/detail/details_page.dart';
@@ -15,6 +19,7 @@ import 'package:coffee_marketplace/views/login/login_page.dart';
 import 'package:coffee_marketplace/views/menunggu_pembayaran/menunggu_pembayaran_page.dart';
 import 'package:coffee_marketplace/views/pembayaran/pembayaran_page.dart';
 import 'package:coffee_marketplace/views/pengiriman/pengiriman_page.dart';
+import 'package:coffee_marketplace/views/pesan/pesan_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +41,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserViewModel()),
         ChangeNotifierProvider(create: (context) => MetodeBayarViewModel()),
         ChangeNotifierProvider(create: (context) => OrderViewModel()),
+        ChangeNotifierProvider(create: (context) => PakarViewModel()),
+        ChangeNotifierProvider(create: (context) => PesanViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -58,6 +65,9 @@ class MyApp extends StatelessWidget {
           "/pengiriman": (context) => const PengirimanPage(),
           "/pembayaran": (context) => const PembayaranPage(),
           "/menunggu_pembayaran": (context) => const MenungguPembayaranPage(),
+          "/pesan": (context) => const PesanPage(),
+          "/all_pakar": (context) => const AllPakarPage(),
+          "/chatroom": (context) => const ChatRoomPage(),
         },
       ),
     );

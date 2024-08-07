@@ -13,18 +13,18 @@ class AllMenuSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 40),
-        const Padding(
-          padding: EdgeInsets.only(left: 20),
-          child: Text(
-            "All Menu",
-            style: TextStyle(
-              fontWeight: FontWeight.w800,
-              fontFamily: "Abhaya Libre",
-              fontSize: 16,
-            ),
-          ),
-        ),
+        const SizedBox(height: 20),
+        // const Padding(
+        //   padding: EdgeInsets.only(left: 20),
+        //   child: Text(
+        //     "All Menu",
+        //     style: TextStyle(
+        //       fontWeight: FontWeight.w800,
+        //       fontFamily: "Abhaya Libre",
+        //       fontSize: 16,
+        //     ),
+        //   ),
+        // ),
         ProdukGridView(
           listProduk: listProduk,
         ),

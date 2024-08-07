@@ -22,6 +22,10 @@ class KeranjangViewModel extends ChangeNotifier {
   ServerStatus _status = ServerStatus.normal;
   ServerStatus get status => _status;
 
+  void onLogout() {
+    _listKeranjang = [];
+  }
+
   void setAmount(String id, int amount) {
     final index = _listKeranjang.indexWhere((keranjang) {
       return keranjang.id == id;

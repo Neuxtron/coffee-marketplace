@@ -1,10 +1,24 @@
 import 'package:coffee_marketplace/views/home/home_banner.dart';
 import 'package:coffee_marketplace/views/home/home_body.dart';
+import 'package:coffee_marketplace/views/home/search_section.dart';
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   final Future Function() getData;
   const HomePage({super.key, required this.getData});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,9 +26,12 @@ class HomePage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // TODO: search section with chat button
+          SearchSection(
+            controller: _searchController,
+            onSearch: () {},
+          ),
           const HomeBanner(),
-          HomeBody(getData: getData),
+          HomeBody(getData: widget.getData),
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/pesan_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/home/home_page.dart';
@@ -71,12 +72,14 @@ class _MainLayoutState extends State<MainLayout> {
     setState(() => _currentIndex = index);
   }
 
-  Future getData() async {
-    await Future.wait([
+  Future getData() {
+    return Future.wait([
       context.read<ProdukViewModel>().getProduk(),
       context.read<KategoriViewModel>().getKategori(),
       context.read<UserViewModel>().authCheck(),
-    ]);
+    ]).then((_) {
+      context.read<PesanViewModel>().onInit();
+    });
   }
 
   @override
