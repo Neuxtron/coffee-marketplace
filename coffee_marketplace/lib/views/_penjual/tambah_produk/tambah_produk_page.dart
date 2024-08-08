@@ -2,10 +2,10 @@ import 'dart:io';
 
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
-import 'package:coffee_marketplace/views/tambah_produk/gambar_section.dart';
-import 'package:coffee_marketplace/views/tambah_produk/kategori_section.dart';
-import 'package:coffee_marketplace/views/tambah_produk/submit_section.dart';
-import 'package:coffee_marketplace/views/tambah_produk/tambah_produk_form.dart';
+import 'package:coffee_marketplace/views/_penjual/widgets/gambar_section.dart';
+import 'package:coffee_marketplace/views/_penjual/widgets/kategori_section.dart';
+import 'package:coffee_marketplace/views/_penjual/widgets/submit_section.dart';
+import 'package:coffee_marketplace/views/_penjual/tambah_produk/tambah_produk_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:coffee_marketplace/views/tambah_produk/gambar_preview.dart';
+import 'package:coffee_marketplace/views/_penjual/widgets/gambar_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
