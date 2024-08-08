@@ -34,8 +34,7 @@ class _ProfilPageState extends State<ProfilPage> {
 
   void logout() {
     context.read<UserViewModel>().logout().then((_) {
-      login();
-      setState(() {});
+      Navigator.pushNamed(context, "/login").then((_) => setState(() {}));
     });
     context.read<KeranjangViewModel>().onLogout();
     context.read<PesanViewModel>().onLogout();

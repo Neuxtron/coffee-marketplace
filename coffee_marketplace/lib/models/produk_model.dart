@@ -53,6 +53,14 @@ class ProdukModel {
   String get thumbnail {
     return gambar[0];
   }
+
+  int get totalStok {
+    int stok = 0;
+    for (var variasiItem in variasi) {
+      stok += variasiItem.stok;
+    }
+    return stok;
+  }
 }
 
 final dummyProduk = ProdukModel(

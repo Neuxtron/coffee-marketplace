@@ -1,24 +1,49 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PengaturanSection extends StatelessWidget {
   const PengaturanSection({super.key});
 
-  static List<PengaturanItem> get _listPengaturan => [
+  static late BuildContext _context;
+
+  static List<PengaturanItem> get _listPengaturan {
+    final role = _context.read<UserViewModel>().currentUser!.role;
+
+    final listPengaturan = [
+      // TODO: route
+      PengaturanItem(
+        route: "",
+        icon: const Icon(Icons.settings),
+        text: "Pengaturan Akun",
+      ),
+      // TODO: route
+      PengaturanItem(
+        route: "",
+        icon: const Icon(Icons.lock_outline),
+        text: "Ubah Password",
+      ),
+    ];
+
+    if (role == "penjual") {
+      listPengaturan.insert(
+        1,
         PengaturanItem(
-          route: "",
-          icon: const Icon(Icons.settings),
-          text: "Pengaturan Akun",
+          route: "/toko_saya",
+          icon: const Icon(Icons.store),
+          text: "Toko Saya",
         ),
-        PengaturanItem(
-          route: "",
-          icon: const Icon(Icons.lock_outline),
-          text: "Ubah Password",
-        ),
-      ];
+      );
+    }
+
+    return listPengaturan;
+  }
 
   @override
   Widget build(BuildContext context) {
+    PengaturanSection._context = context;
+
     return Container(
       clipBehavior: Clip.hardEdge,
       margin: const EdgeInsets.only(top: 30),
@@ -33,17 +58,17 @@ class PengaturanSection extends StatelessWidget {
           ),
         ],
       ),
-      child: ListView.separated(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        itemCount: _listPengaturan.length,
-        itemBuilder: (context, index) {
-          final item = _listPengaturan[index];
-          return Material(
-            color: Colors.transparent,
-            child: ListTile(
-              // TODO: navigate
-              onTap: () {},
+      child: Material(
+        color: Colors.transparent,
+        child: ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: _listPengaturan.length,
+          itemBuilder: (context, index) {
+            final item = _listPengaturan[index];
+
+            return ListTile(
+              onTap: () => Navigator.pushNamed(context, item.route),
               leading: item.icon,
               trailing: Icon(
                 Icons.keyboard_arrow_right,
@@ -56,18 +81,18 @@ class PengaturanSection extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
               ),
-            ),
-          );
-        },
-        separatorBuilder: (context, index) {
-          return const Divider(
-            color: Colors.black12,
-            height: 1,
-            thickness: 1,
-            indent: 30,
-            endIndent: 30,
-          );
-        },
+            );
+          },
+          separatorBuilder: (context, index) {
+            return const Divider(
+              color: Colors.black12,
+              height: 1,
+              thickness: 1,
+              indent: 30,
+              endIndent: 30,
+            );
+          },
+        ),
       ),
     );
   }

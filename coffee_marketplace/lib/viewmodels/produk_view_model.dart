@@ -16,6 +16,12 @@ class ProdukViewModel extends ChangeNotifier {
   List<ProdukModel> get listProduk => _listProduk;
   ServerStatus get status => _status;
 
+  List<ProdukModel> produkByPenjual(String idPenjual) {
+    return _listProduk.where((produk) {
+      return produk.penjual.id == idPenjual;
+    }).toList();
+  }
+
   Future getProduk() async {
     if (_status == ServerStatus.loading) return;
     _status = ServerStatus.loading;
