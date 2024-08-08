@@ -33,6 +33,7 @@ class PengaturanSection extends StatelessWidget {
           route: "/toko_saya",
           icon: const Icon(Icons.store),
           text: "Toko Saya",
+          replace: true,
         ),
       );
     }
@@ -68,7 +69,13 @@ class PengaturanSection extends StatelessWidget {
             final item = _listPengaturan[index];
 
             return ListTile(
-              onTap: () => Navigator.pushNamed(context, item.route),
+              onTap: () {
+                if (item.replace) {
+                  Navigator.pushReplacementNamed(context, item.route);
+                  return;
+                }
+                Navigator.pushNamed(context, item.route);
+              },
               leading: item.icon,
               trailing: Icon(
                 Icons.keyboard_arrow_right,
@@ -102,10 +109,12 @@ class PengaturanItem {
   final String route;
   final Widget icon;
   final String text;
+  final bool replace;
 
   PengaturanItem({
     required this.route,
     required this.icon,
     required this.text,
+    this.replace = false,
   });
 }

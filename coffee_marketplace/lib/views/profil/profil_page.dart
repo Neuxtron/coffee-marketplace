@@ -33,6 +33,7 @@ class _ProfilPageState extends State<ProfilPage> {
   }
 
   void logout() {
+    // TODO: konfirmasi
     context.read<UserViewModel>().logout().then((_) {
       Navigator.pushNamed(context, "/login").then((_) => setState(() {}));
     });

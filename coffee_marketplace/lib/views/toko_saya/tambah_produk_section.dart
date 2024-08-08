@@ -23,7 +23,7 @@ class TambahProdukSection extends StatelessWidget {
             Align(
               alignment: Alignment.topCenter,
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: () => Navigator.pushNamed(context, "/tambah_produk"),
                 shape: const CircleBorder(),
                 minWidth: 0,
                 padding: const EdgeInsets.all(5),

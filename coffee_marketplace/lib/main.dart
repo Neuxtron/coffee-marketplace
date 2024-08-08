@@ -18,8 +18,10 @@ import 'package:coffee_marketplace/views/layouts/main_layout.dart';
 import 'package:coffee_marketplace/views/login/login_page.dart';
 import 'package:coffee_marketplace/views/menunggu_pembayaran/menunggu_pembayaran_page.dart';
 import 'package:coffee_marketplace/views/pembayaran/pembayaran_page.dart';
+import 'package:coffee_marketplace/views/pengaturan_toko/pengaturan_toko_page.dart';
 import 'package:coffee_marketplace/views/pengiriman/pengiriman_page.dart';
 import 'package:coffee_marketplace/views/pesan/pesan_page.dart';
+import 'package:coffee_marketplace/views/tambah_produk/tambah_produk_page.dart';
 import 'package:coffee_marketplace/views/toko_saya/toko_saya_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -70,6 +72,8 @@ class MyApp extends StatelessWidget {
           "/all_pakar": (context) => const AllPakarPage(),
           "/chatroom": (context) => const ChatRoomPage(),
           "/toko_saya": (context) => const TokoSayaPage(),
+          "/pengaturan_toko": (context) => const PengaturanTokoPage(),
+          "/tambah_produk": (context) => const TambahProdukPage(),
         },
       ),
     );

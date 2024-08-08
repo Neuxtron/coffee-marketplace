@@ -19,6 +19,12 @@ class _TokoSayaPageState extends State<TokoSayaPage> {
       context.watch<ProdukViewModel>().produkByPenjual(_idPenjual);
 
   @override
+  void initState() {
+    super.initState();
+    context.read<ProdukViewModel>().getProduk();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -69,8 +75,7 @@ class _TokoSayaPageState extends State<TokoSayaPage> {
         Padding(
           padding: const EdgeInsets.only(right: 10),
           child: IconButton(
-            // TODO: navigate to pengaturan
-            onPressed: () {},
+            onPressed: () => Navigator.pushNamed(context, "/pengaturan_toko"),
             icon: const Icon(
               Icons.settings_outlined,
               color: Colors.grey,
