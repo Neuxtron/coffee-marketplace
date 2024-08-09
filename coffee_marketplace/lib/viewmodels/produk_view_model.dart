@@ -166,4 +166,30 @@ class ProdukViewModel extends ChangeNotifier {
     }
     return false;
   }
+
+  Future hapusProduk(String id) async {
+    if (_status == ServerStatus.loading) return;
+    final token = AppHelpers.token;
+    _status = ServerStatus.loading;
+    notifyListeners();
+
+    try {
+      final response = await http.delete(
+        Uri.parse("$_endpoint/$id"),
+        headers: {"Authorization": "Bearer $token"},
+      );
+      log("Hapus produk:\n${response.body}");
+
+      if (response.statusCode == 200) {
+        _status = ServerStatus.normal;
+        notifyListeners();
+        getProduk();
+        return;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    _status = ServerStatus.error;
+    notifyListeners();
+  }
 }

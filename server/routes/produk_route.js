@@ -7,5 +7,6 @@ router.get("/", ProdukController.allProduk)
 // router.get("/best_sellers", ProdukController.bestSellers)
 router.post("/", authentication, ProdukController.createProduk)
 router.put("/", authentication, ProdukController.updateProduk)
+router.delete("/:id", authentication, ProdukController.hapusProduk)
 
 module.exports = router
