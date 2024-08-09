@@ -25,7 +25,11 @@ class ProdukItem extends StatelessWidget {
       child: Material(
         color: Color.alphaBlend(Colors.white24, AppConstants.background),
         child: InkWell(
-          onTap: () {},
+          onTap: () => Navigator.pushNamed(
+            context,
+            "/edit_produk",
+            arguments: produk,
+          ),
           child: Row(
             children: [
               Padding(

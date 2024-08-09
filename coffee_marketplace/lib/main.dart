@@ -8,6 +8,7 @@ import 'package:coffee_marketplace/viewmodels/pakar_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/pesan_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
+import 'package:coffee_marketplace/views/_penjual/edit_produk/edit_produk_page.dart';
 import 'package:coffee_marketplace/views/all_pakar/all_pakar_page.dart';
 import 'package:coffee_marketplace/views/chat_room/chat_room_page.dart';
 import 'package:coffee_marketplace/views/checkout/checkout_page.dart';
@@ -74,6 +75,7 @@ class MyApp extends StatelessWidget {
           "/toko_saya": (context) => const TokoSayaPage(),
           "/pengaturan_toko": (context) => const PengaturanTokoPage(),
           "/tambah_produk": (context) => const TambahProdukPage(),
+          "/edit_produk": (context) => const EditProdukPage(),
         },
       ),
     );

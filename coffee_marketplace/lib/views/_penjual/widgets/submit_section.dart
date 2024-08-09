@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class SubmitSection extends StatelessWidget {
   final Function() onSubmit;
   final String error;
+  final String text;
 
   const SubmitSection({
     super.key,
     required this.onSubmit,
     required this.error,
+    required this.text,
   });
 
   @override
@@ -25,14 +27,16 @@ class SubmitSection extends StatelessWidget {
             onPressed: onSubmit,
             minWidth: double.infinity,
             color: AppConstants.primary,
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 8),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(999)),
-            child: const Text(
-              "+ Tambah",
-              style: TextStyle(
+            child: Text(
+              text,
+              style: const TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+                fontFamily: "Abhaya Libre",
               ),
             ),
           ),

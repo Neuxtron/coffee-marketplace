@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 class GambarPreview extends StatefulWidget {
-  final File gambar;
+  final ImageProvider gambar;
   final Function() pickImage;
 
   const GambarPreview({
@@ -29,8 +27,8 @@ class _GambarPreviewState extends State<GambarPreview> {
     return Center(
       child: Stack(
         children: [
-          Image.file(
-            widget.gambar,
+          Image(
+            image: widget.gambar,
             width: 200,
             height: 200,
             fit: BoxFit.cover,
@@ -44,7 +42,7 @@ class _GambarPreviewState extends State<GambarPreview> {
                 height: 200,
                 width: 200,
                 color: Colors.black54,
-                child: Center(
+                child: const Center(
                   child: Icon(
                     Icons.photo_library,
                     color: Colors.white,

@@ -5,9 +5,9 @@ import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:coffee_marketplace/views/_penjual/widgets/gambar_section.dart';
 import 'package:coffee_marketplace/views/_penjual/widgets/kategori_section.dart';
 import 'package:coffee_marketplace/views/_penjual/widgets/submit_section.dart';
-import 'package:coffee_marketplace/views/_penjual/tambah_produk/tambah_produk_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import './tambah_produk_form.dart';
 
 class TambahProdukPage extends StatefulWidget {
   const TambahProdukPage({super.key});
@@ -18,6 +18,10 @@ class TambahProdukPage extends StatefulWidget {
 
 class _TambahProdukPageState extends State<TambahProdukPage> {
   final _formKey = GlobalKey<FormState>();
+  final _namaController = TextEditingController();
+  final _deskripsiController = TextEditingController();
+  final _hargaController = TextEditingController();
+  final _beratController = TextEditingController();
 
   File? _gambar;
   String? _idKategori;
@@ -61,6 +65,10 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
             children: [
               TambahProdukForm(
                 formKey: _formKey,
+                namaController: _namaController,
+                deskripsiController: _deskripsiController,
+                hargaController: _hargaController,
+                beratController: _beratController,
               ),
               KategoriSection(
                 onChange: (idKategori) {
@@ -75,14 +83,12 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
                 ),
               ),
               GambarSection(
-                onChange: (gambar) {
-                  _gambar = gambar;
-                  setState(() => _error = "");
-                },
+                onChange: (gambar) => _gambar = gambar,
               ),
               SubmitSection(
                 onSubmit: uploadProduk,
                 error: _error,
+                text: "+ Tambah",
               ),
             ],
           ),

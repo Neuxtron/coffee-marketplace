@@ -3,25 +3,32 @@ import 'package:flutter/material.dart';
 
 class TambahProdukForm extends StatefulWidget {
   final Key formKey;
-  const TambahProdukForm({super.key, required this.formKey});
+  final TextEditingController namaController;
+  final TextEditingController deskripsiController;
+  final TextEditingController hargaController;
+  final TextEditingController beratController;
+
+  const TambahProdukForm({
+    super.key,
+    required this.formKey,
+    required this.namaController,
+    required this.deskripsiController,
+    required this.hargaController,
+    required this.beratController,
+  });
 
   @override
   State<TambahProdukForm> createState() => _TambahProdukFormState();
 }
 
 class _TambahProdukFormState extends State<TambahProdukForm> {
-  final _namaController = TextEditingController();
-  final _deskripsiController = TextEditingController();
-  final _hargaController = TextEditingController();
-  final _beratController = TextEditingController();
-
   @override
   void dispose() {
     super.dispose();
-    _namaController.dispose();
-    _deskripsiController.dispose();
-    _hargaController.dispose();
-    _beratController.dispose();
+    widget.namaController.dispose();
+    widget.deskripsiController.dispose();
+    widget.hargaController.dispose();
+    widget.beratController.dispose();
   }
 
   @override
@@ -32,25 +39,25 @@ class _TambahProdukFormState extends State<TambahProdukForm> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           InputItem(
-            controller: _namaController,
+            controller: widget.namaController,
             label: "Nama produk:",
             keyboardType: TextInputType.name,
           ),
           InputItem(
-            controller: _deskripsiController,
+            controller: widget.deskripsiController,
             label: "Deskripsi:",
             keyboardType: TextInputType.multiline,
             multiline: true,
           ),
           InputItem(
-            controller: _hargaController,
+            controller: widget.hargaController,
             label: "Harga:",
             keyboardType: TextInputType.number,
             prefix: "Rp ",
             isShort: true,
           ),
           InputItem(
-            controller: _beratController,
+            controller: widget.beratController,
             label: "Berat:",
             keyboardType: TextInputType.number,
             suffix: "g",

@@ -9,7 +9,13 @@ import 'package:image_picker/image_picker.dart';
 
 class GambarSection extends StatefulWidget {
   final Function(File gambar) onChange;
-  const GambarSection({super.key, required this.onChange});
+  final String? defaultImage;
+
+  const GambarSection({
+    super.key,
+    required this.onChange,
+    this.defaultImage,
+  });
 
   @override
   State<GambarSection> createState() => _GambarSectionState();
@@ -40,7 +46,14 @@ class _GambarSectionState extends State<GambarSection> {
   Widget build(BuildContext context) {
     if (_gambar != null) {
       return GambarPreview(
-        gambar: _gambar!,
+        gambar: FileImage(_gambar!),
+        pickImage: pickImage,
+      );
+    }
+
+    if (widget.defaultImage != null) {
+      return GambarPreview(
+        gambar: NetworkImage(widget.defaultImage!),
         pickImage: pickImage,
       );
     }
