@@ -5,5 +5,6 @@ const uploadGambar = require("../middlewares/upload_gambar")
 const router = express.Router()
 
 router.post("/", authentication, uploadGambar, GambarProdukController.uploadGambarProduk)
+router.put("/", authentication, uploadGambar, GambarProdukController.updateGambarProduk)
 
 module.exports = router

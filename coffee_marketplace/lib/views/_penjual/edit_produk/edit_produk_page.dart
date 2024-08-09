@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:coffee_marketplace/models/produk_model.dart';
+import 'package:coffee_marketplace/models/produk_request_model.dart';
+import 'package:coffee_marketplace/models/variasi_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/server_status.dart';
 import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
@@ -9,7 +11,9 @@ import 'package:coffee_marketplace/views/_penjual/edit_produk/hapus_section.dart
 import 'package:coffee_marketplace/views/_penjual/widgets/gambar_section.dart';
 import 'package:coffee_marketplace/views/_penjual/widgets/kategori_section.dart';
 import 'package:coffee_marketplace/views/_penjual/widgets/submit_section.dart';
+import 'package:coffee_marketplace/views/_penjual/widgets/variasi_section.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import './edit_produk_form.dart';
 
@@ -27,6 +31,9 @@ class _EditProdukPageState extends State<EditProdukPage> {
   final _hargaController = TextEditingController();
   final _beratController = TextEditingController();
   final _merkController = TextEditingController();
+  late String _idProduk;
+
+  List<VariasiModel> _listVariasi = [];
 
   File? _gambar;
   String? _idKategori;
@@ -39,13 +46,64 @@ class _EditProdukPageState extends State<EditProdukPage> {
     setState(() => _error = "");
     if (_idKategori == null) return;
     if (!(_formKey.currentState?.validate() ?? false)) return;
-    // if (_gambar == null) {
-    //   setState(() => _error = "Produk harus memiliki gambar");
-    //   return;
-    // }
+    if (!validateVariasi()) return;
 
-    // TODO: upload produk
-    print("Mengupload produk...");
+    final variasi = VariasiModel.toMap(_listVariasi);
+    final merk = _merkController.text.isEmpty ? null : _merkController.text;
+    final produkRequest = ProdukRequestModel(
+      id: _idProduk,
+      nama: _namaController.text,
+      deskripsi: _deskripsiController.text,
+      harga: int.parse(_hargaController.text),
+      beratProduk: int.parse(_beratController.text),
+      merk: merk,
+      idKategori: _idKategori!,
+      gambar: _gambar,
+      variasi: variasi,
+    );
+
+    context.read<ProdukViewModel>().updateProduk(produkRequest).then((_) {
+      final status = context.read<ProdukViewModel>().status;
+      if (status == ServerStatus.error) {
+        Fluttertoast.showToast(
+          msg: "Terjadi kesalahan",
+          backgroundColor: Colors.black54,
+        );
+        return;
+      }
+      Fluttertoast.showToast(
+        msg: "Produk berhasil diupdate",
+        backgroundColor: Colors.black54,
+      );
+      Navigator.pop(context);
+    });
+  }
+
+  void onVariasiChanged(int index, VariasiModel variasi) {
+    _listVariasi[index] = variasi;
+  }
+
+  void addVariasi() {
+    final defaultVariasi = VariasiModel(id: null, nama: "", stok: 0);
+    setState(() => _listVariasi.add(defaultVariasi));
+  }
+
+  void removeVariasi() {
+    setState(() => _listVariasi.removeLast());
+  }
+
+  bool validateVariasi() {
+    if (_listVariasi.isEmpty) {
+      setState(() => _error = "Variasi tidak boleh kosong");
+      return false;
+    }
+    for (var variasi in _listVariasi) {
+      if (variasi.nama == "") {
+        setState(() => _error = "Nama variasi tidak boleh kosong");
+        return false;
+      }
+    }
+    return true;
   }
 
   void getData() {
@@ -62,6 +120,8 @@ class _EditProdukPageState extends State<EditProdukPage> {
   @override
   Widget build(BuildContext context) {
     final produk = ModalRoute.of(context)!.settings.arguments as ProdukModel;
+    if (_listVariasi.isEmpty) _listVariasi = produk.variasi;
+    _idProduk = produk.id;
 
     return Scaffold(
       appBar: buildAppBar(),
@@ -85,6 +145,12 @@ class _EditProdukPageState extends State<EditProdukPage> {
                   _idKategori = idKategori;
                 },
                 defaultKategori: produk.idKategori,
+              ),
+              VariasiSection(
+                onChanged: onVariasiChanged,
+                addVariasi: addVariasi,
+                removeVariasi: _listVariasi.isEmpty ? null : removeVariasi,
+                listVariasi: _listVariasi,
               ),
               const Padding(
                 padding: EdgeInsets.only(bottom: 5),

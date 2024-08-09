@@ -1,5 +1,5 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
-import 'package:coffee_marketplace/views/_penjual/tambah_produk/variasi_item_view.dart';
+import 'package:coffee_marketplace/views/_penjual/widgets/variasi_item_view.dart';
 import 'package:flutter/material.dart';
 import 'package:coffee_marketplace/models/variasi_model.dart';
 
@@ -36,9 +36,12 @@ class _VariasiSectionState extends State<VariasiSection> {
           physics: const NeverScrollableScrollPhysics(),
           itemCount: widget.listVariasi.length,
           itemBuilder: (context, index) {
+            final variasi = widget.listVariasi[index];
+
             return VariasiItemView(
               onChanged: widget.onChanged,
               index: index,
+              variasi: variasi,
             );
           },
         ),

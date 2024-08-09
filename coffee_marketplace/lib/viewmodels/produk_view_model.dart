@@ -68,7 +68,7 @@ class ProdukViewModel extends ChangeNotifier {
         final data = jsonDecode(response.body)["data"];
         final produk = ProdukModel.fromJson(data);
         final upload =
-            await uploadGambarProduk(produk.id, produkRequest.gambar);
+            await uploadGambarProduk(produk.id, produkRequest.gambar!);
 
         if (upload) {
           _status = ServerStatus.normal;
@@ -101,6 +101,66 @@ class ProdukViewModel extends ChangeNotifier {
 
       log("Upload gambar produk:\n${response.body}");
       if (response.statusCode == 201) return true;
+    } catch (e) {
+      log(e.toString());
+    }
+    return false;
+  }
+
+  Future updateProduk(ProdukRequestModel produkRequest) async {
+    if (_status == ServerStatus.loading) return;
+    final token = AppHelpers.token;
+    _status = ServerStatus.loading;
+    notifyListeners();
+
+    try {
+      final response = await http.put(
+        Uri.parse(_endpoint),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $token",
+        },
+        body: jsonEncode({"produk": produkRequest.toMap()}),
+      );
+      log("Update produk:\n${response.body}");
+
+      if (response.statusCode == 200) {
+        final upload =
+            await updateGambarProduk(produkRequest.id!, produkRequest.gambar);
+
+        if (upload) {
+          _status = ServerStatus.normal;
+          notifyListeners();
+          getProduk();
+          return;
+        }
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    _status = ServerStatus.error;
+    notifyListeners();
+  }
+
+  Future<bool> updateGambarProduk(String idProduk, File? gambar) async {
+    if (gambar == null) return true;
+
+    try {
+      final endpoint = "${AppConstants.baseUrl}/api/gambar_produk";
+      final token = AppHelpers.token;
+      final headers = {"Authorization": "Bearer $token"};
+      final fields = {"idProduk": idProduk};
+
+      final request = http.MultipartRequest('PUT', Uri.parse(endpoint));
+      request.files.add(await http.MultipartFile.fromPath('file', gambar.path));
+      request.headers.addAll(headers);
+      request.fields.addAll(fields);
+
+      final stream = await request.send();
+      final response = await http.Response.fromStream(stream);
+
+      log("Update gambar produk:\n${response.body}");
+      if (response.statusCode == 200) return true;
     } catch (e) {
       log(e.toString());
     }

@@ -18,12 +18,8 @@ class OrderController {
       const body = this.midtransReqBody(
         orderData.metodeBayar,
         order.id,
-        // "123",
         orderData.ongkir + orderData.subtotal
       )
-      // console.log(body)
-      // console.log(btoa(serverKey))
-      // console.log(`${midtransBaseUrl}/charge`)
       
       const response = await fetch(`${midtransBaseUrl}/charge`, {
         headers: {
@@ -59,10 +55,10 @@ class OrderController {
         return keranjang
       })
       
-      const promises = listKeranjang.map((keranjang) => {
-        return VariasiModel.decrement("stok", {
-          where: { id: keranjang.idVariasi }
-        })
+      const promises = listKeranjang.map(async (keranjang) => {
+        const variasi = await VariasiModel.findByPk(keranjang.idVariasi)
+        variasi.stok -= keranjang.amount
+        await variasi.save()
       })
 
       await Promise.allSettled(promises)

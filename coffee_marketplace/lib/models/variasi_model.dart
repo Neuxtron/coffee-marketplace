@@ -4,7 +4,7 @@ class VariasiModel {
   final int stok;
 
   VariasiModel({
-    this.id,
+    required this.id,
     required this.nama,
     required this.stok,
   });
@@ -21,6 +21,7 @@ class VariasiModel {
     List<Map<String, dynamic>> listMap = [];
     for (var variasi in listVariasi) {
       listMap.add({
+        "id": variasi.id,
         "nama": variasi.nama,
         "stok": variasi.stok,
       });

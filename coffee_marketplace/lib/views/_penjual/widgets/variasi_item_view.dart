@@ -6,11 +6,13 @@ import 'package:flutter/services.dart';
 class VariasiItemView extends StatefulWidget {
   final Function(int index, VariasiModel variasi) onChanged;
   final int index;
+  final VariasiModel variasi;
 
   const VariasiItemView({
     super.key,
     required this.onChanged,
     required this.index,
+    required this.variasi,
   });
 
   @override
@@ -23,10 +25,27 @@ class _VariasiItemViewState extends State<VariasiItemView> {
 
   void onChanged(_) {
     final variasi = VariasiModel(
+      id: widget.variasi.id,
       nama: _namaController.text.trim(),
       stok: int.tryParse(_stokController.text) ?? 0,
     );
     widget.onChanged(widget.index, variasi);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _namaController.dispose();
+    _stokController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _namaController.text = widget.variasi.nama;
+    if (widget.variasi.stok != 0) {
+      _stokController.text = widget.variasi.stok.toString();
+    }
   }
 
   @override

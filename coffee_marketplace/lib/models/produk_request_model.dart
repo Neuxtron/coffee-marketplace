@@ -1,16 +1,18 @@
 import 'dart:io';
 
 class ProdukRequestModel {
+  final String? id;
   final String nama;
   final String deskripsi;
   final int harga;
   final int beratProduk;
   final String? merk;
   final String idKategori;
-  final File gambar;
+  final File? gambar;
   final List<Map<String, dynamic>> variasi;
 
   ProdukRequestModel({
+    this.id,
     required this.nama,
     required this.deskripsi,
     required this.harga,
@@ -23,6 +25,7 @@ class ProdukRequestModel {
 
   Map<String, dynamic> toMap() {
     return {
+      "id": id,
       "nama": nama,
       "deskripsi": deskripsi,
       "harga": harga,

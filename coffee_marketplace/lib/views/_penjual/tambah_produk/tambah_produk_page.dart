@@ -6,7 +6,7 @@ import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/server_status.dart';
 import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
-import 'package:coffee_marketplace/views/_penjual/tambah_produk/variasi_section.dart';
+import 'package:coffee_marketplace/views/_penjual/widgets/variasi_section.dart';
 import 'package:coffee_marketplace/views/_penjual/widgets/gambar_section.dart';
 import 'package:coffee_marketplace/views/_penjual/widgets/kategori_section.dart';
 import 'package:coffee_marketplace/views/_penjual/widgets/submit_section.dart';
@@ -31,7 +31,7 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
   final _merkController = TextEditingController();
 
   final List<VariasiModel> _listVariasi = [
-    VariasiModel(nama: "", stok: 0),
+    VariasiModel(id: null, nama: "", stok: 0),
   ];
 
   File? _gambar;
@@ -86,7 +86,7 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
   }
 
   void addVariasi() {
-    final defaultVariasi = VariasiModel(nama: "", stok: 0);
+    final defaultVariasi = VariasiModel(id: null, nama: "", stok: 0);
     setState(() => _listVariasi.add(defaultVariasi));
   }
 
@@ -95,6 +95,10 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
   }
 
   bool validateVariasi() {
+    if (_listVariasi.isEmpty) {
+      setState(() => _error = "Variasi tidak boleh kosong");
+      return false;
+    }
     for (var variasi in _listVariasi) {
       if (variasi.nama == "") {
         setState(() => _error = "Nama variasi tidak boleh kosong");
@@ -143,7 +147,7 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
               VariasiSection(
                 onChanged: onVariasiChanged,
                 addVariasi: addVariasi,
-                removeVariasi: _listVariasi.length <= 1 ? null : removeVariasi,
+                removeVariasi: _listVariasi.isEmpty ? null : removeVariasi,
                 listVariasi: _listVariasi,
               ),
               const Padding(

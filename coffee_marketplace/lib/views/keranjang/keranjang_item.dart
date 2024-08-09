@@ -39,6 +39,7 @@ class KeranjangItem extends StatelessWidget {
                   ),
                   Expanded(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         ItemJudul(
                           nama: produk.nama,
