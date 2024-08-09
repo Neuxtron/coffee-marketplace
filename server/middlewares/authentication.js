@@ -16,6 +16,7 @@ async function authentication(req, res, next) {
       
     const decode = jwt.verify(token, secret)
     req.idUser = decode.id
+    req.role = user.role
     next()
 
   } catch (error) {

@@ -55,6 +55,44 @@ class ProdukController {
   static bestSellers = (req, res) => {
     // TODO: produk terbanyak terjual
   }
+
+  static async createProduk(req, res) {
+    const { idUser: idPenjual, role } = req
+    const { produk } = req.body
+
+    if (role !== "penjual") {
+      res.status(401).json({
+        status: false,
+        message: "Akses ditolak",
+        data: {}
+      })
+      return
+    }
+
+    const produkBalu = await ProdukModel.create({ ...produk, idPenjual }, {
+      include: ["variasi"]
+    })
+    ProdukModel.findByPk(produkBalu.id, {
+      include: getInclude,
+      attributes: defaultExclude,
+      order: [["createdAt", "DESC"]],
+    })
+      .then((data) => {
+        res.status(201).json({
+          status: true,
+          message: "Berhasil menambahkan produk",
+          data,
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        res.status(500).json({
+          status: false,
+          message: "Terjadi kesalahan, silahkan coba lagi",
+          data: {},
+        })
+      })
+  }
 }
 
 module.exports = ProdukController

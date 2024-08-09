@@ -6,7 +6,13 @@ import 'package:provider/provider.dart';
 
 class KategoriSection extends StatefulWidget {
   final Function(String idKategori) onChange;
-  const KategoriSection({super.key, required this.onChange});
+  final String? defaultKategori;
+
+  const KategoriSection({
+    super.key,
+    required this.onChange,
+    this.defaultKategori,
+  });
 
   @override
   State<KategoriSection> createState() => _KategoriSectionState();
@@ -20,6 +26,11 @@ class _KategoriSectionState extends State<KategoriSection> {
 
   void getData() {
     final viewModel = context.read<KategoriViewModel>();
+    if (widget.defaultKategori != null) {
+      _idKategori = widget.defaultKategori!;
+      widget.onChange(_idKategori!);
+      return;
+    }
     _idKategori = viewModel.listKategori[0].id;
   }
 

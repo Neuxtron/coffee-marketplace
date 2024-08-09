@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:coffee_marketplace/models/produk_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/utils/server_status.dart';
 import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/views/_penjual/edit_produk/hapus_section.dart';
 import 'package:coffee_marketplace/views/_penjual/widgets/gambar_section.dart';
 import 'package:coffee_marketplace/views/_penjual/widgets/kategori_section.dart';
@@ -24,10 +26,14 @@ class _EditProdukPageState extends State<EditProdukPage> {
   final _deskripsiController = TextEditingController();
   final _hargaController = TextEditingController();
   final _beratController = TextEditingController();
+  final _merkController = TextEditingController();
 
   File? _gambar;
   String? _idKategori;
   String _error = "";
+
+  bool get _isLoading =>
+      context.watch<ProdukViewModel>().status == ServerStatus.loading;
 
   void uploadProduk() {
     setState(() => _error = "");
@@ -44,9 +50,7 @@ class _EditProdukPageState extends State<EditProdukPage> {
 
   void getData() {
     final viewModel = context.read<KategoriViewModel>();
-    viewModel.getKategori().then((_) {
-      _idKategori = viewModel.listKategori[0].id;
-    });
+    viewModel.getKategori();
   }
 
   @override
@@ -74,11 +78,13 @@ class _EditProdukPageState extends State<EditProdukPage> {
                 deskripsiController: _deskripsiController,
                 hargaController: _hargaController,
                 beratController: _beratController,
+                merkController: _merkController,
               ),
               KategoriSection(
                 onChange: (idKategori) {
-                  setState(() => _idKategori = idKategori);
+                  _idKategori = idKategori;
                 },
+                defaultKategori: produk.idKategori,
               ),
               const Padding(
                 padding: EdgeInsets.only(bottom: 5),
@@ -95,6 +101,7 @@ class _EditProdukPageState extends State<EditProdukPage> {
                 onSubmit: uploadProduk,
                 error: _error,
                 text: "Update",
+                isLoading: _isLoading,
               ),
               HapusSection(idProduk: produk.id),
             ],

@@ -9,6 +9,7 @@ class EditProdukForm extends StatefulWidget {
   final TextEditingController deskripsiController;
   final TextEditingController hargaController;
   final TextEditingController beratController;
+  final TextEditingController merkController;
 
   const EditProdukForm({
     super.key,
@@ -18,6 +19,7 @@ class EditProdukForm extends StatefulWidget {
     required this.deskripsiController,
     required this.hargaController,
     required this.beratController,
+    required this.merkController,
   });
 
   @override
@@ -32,6 +34,7 @@ class _EditProdukFormState extends State<EditProdukForm> {
     widget.deskripsiController.dispose();
     widget.hargaController.dispose();
     widget.beratController.dispose();
+    widget.merkController.dispose();
   }
 
   @override
@@ -41,6 +44,7 @@ class _EditProdukFormState extends State<EditProdukForm> {
     widget.deskripsiController.text = widget.produk.deskripsi;
     widget.hargaController.text = widget.produk.harga.toString();
     widget.beratController.text = widget.produk.beratProduk.toString();
+    widget.merkController.text = widget.produk.merk ?? "";
   }
 
   @override
@@ -50,6 +54,12 @@ class _EditProdukFormState extends State<EditProdukForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          InputItem(
+            controller: widget.merkController,
+            label: "Merk (Opsional):",
+            keyboardType: TextInputType.name,
+            optional: true,
+          ),
           InputItem(
             controller: widget.namaController,
             label: "Nama produk:",

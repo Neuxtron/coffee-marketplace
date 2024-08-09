@@ -9,7 +9,7 @@ class ProdukModel {
   final int harga;
   final String idKategori;
   final int beratProduk;
-  final String merk;
+  final String? merk;
   final List<String> gambar;
   final List<VariasiModel> variasi;
   final PenjualModel penjual;
@@ -30,7 +30,7 @@ class ProdukModel {
   factory ProdukModel.fromJson(Map<String, dynamic> json) {
     final gambar = (json["gambar"] as List).map((item) {
       final fileName = item["fileName"];
-      return "${AppConstants.baseUrl}/images/$fileName";
+      return "${AppConstants.baseUrl}/images/uploads/$fileName";
     }).toList();
 
     final variasi = json["variasi"] as List;
@@ -72,7 +72,7 @@ final dummyProduk = ProdukModel(
   idKategori: "1",
   beratProduk: 200,
   merk: "PRESO",
-  gambar: ["${AppConstants.baseUrl}/images/contoh.jpg"],
+  gambar: ["${AppConstants.baseUrl}/images/uploads/contoh.jpg"],
   variasi: [
     VariasiModel(id: "1", nama: "Biji Kopi", stok: 999),
     VariasiModel(id: "2", nama: "Bubuk Halus", stok: 999),

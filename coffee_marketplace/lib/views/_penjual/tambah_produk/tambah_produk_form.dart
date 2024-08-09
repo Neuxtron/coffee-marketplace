@@ -7,6 +7,7 @@ class TambahProdukForm extends StatefulWidget {
   final TextEditingController deskripsiController;
   final TextEditingController hargaController;
   final TextEditingController beratController;
+  final TextEditingController merkController;
 
   const TambahProdukForm({
     super.key,
@@ -15,6 +16,7 @@ class TambahProdukForm extends StatefulWidget {
     required this.deskripsiController,
     required this.hargaController,
     required this.beratController,
+    required this.merkController,
   });
 
   @override
@@ -29,6 +31,7 @@ class _TambahProdukFormState extends State<TambahProdukForm> {
     widget.deskripsiController.dispose();
     widget.hargaController.dispose();
     widget.beratController.dispose();
+    widget.merkController.dispose();
   }
 
   @override
@@ -38,6 +41,12 @@ class _TambahProdukFormState extends State<TambahProdukForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          InputItem(
+            controller: widget.merkController,
+            label: "Merk (Opsional):",
+            keyboardType: TextInputType.name,
+            optional: true,
+          ),
           InputItem(
             controller: widget.namaController,
             label: "Nama produk:",

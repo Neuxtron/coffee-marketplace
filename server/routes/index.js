@@ -8,6 +8,7 @@ const keranjangRoute = require("./keranjang_route")
 const orderRoute = require("./order_route")
 const metodeBayarRoute = require("./metode_bayar_route")
 const pesanRoute = require("./pesan_route")
+const gambarProdukRouter = require("./gambar_produk_route")
 
 router.use("/kategori", kategoriRouter)
 router.use("/produk", produkRoute)
@@ -16,5 +17,6 @@ router.use("/keranjang", keranjangRoute)
 router.use("/order", orderRoute)
 router.use("/metode_bayar", metodeBayarRoute)
 router.use("/pesan", pesanRoute)
+router.use("/gambar_produk", gambarProdukRouter)
 
 module.exports = router

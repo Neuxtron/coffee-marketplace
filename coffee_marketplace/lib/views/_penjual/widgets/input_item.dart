@@ -9,6 +9,7 @@ class InputItem extends StatelessWidget {
   final TextInputType keyboardType;
   final bool multiline;
   final bool isShort;
+  final bool optional;
 
   const InputItem({
     super.key,
@@ -19,6 +20,7 @@ class InputItem extends StatelessWidget {
     this.suffix,
     this.multiline = false,
     this.isShort = false,
+    this.optional = false,
   });
 
   String? validator(String? value) {
@@ -41,7 +43,7 @@ class InputItem extends StatelessWidget {
           width: isShort ? 200 : null,
           child: TextFormField(
             controller: controller,
-            validator: validator,
+            validator: !optional ? validator : null,
             keyboardType: multiline ? TextInputType.multiline : keyboardType,
             minLines: multiline ? 3 : 1,
             maxLines: multiline ? null : 1,

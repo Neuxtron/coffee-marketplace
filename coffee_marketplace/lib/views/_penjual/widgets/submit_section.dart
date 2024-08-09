@@ -5,12 +5,14 @@ class SubmitSection extends StatelessWidget {
   final Function() onSubmit;
   final String error;
   final String text;
+  final bool isLoading;
 
   const SubmitSection({
     super.key,
     required this.onSubmit,
     required this.error,
     required this.text,
+    required this.isLoading,
   });
 
   @override
@@ -24,9 +26,10 @@ class SubmitSection extends StatelessWidget {
             style: const TextStyle(color: Colors.red),
           ),
           MaterialButton(
-            onPressed: onSubmit,
+            onPressed: isLoading ? null : onSubmit,
             minWidth: double.infinity,
             color: AppConstants.primary,
+            disabledColor: AppConstants.primary.withOpacity(.6),
             padding: const EdgeInsets.symmetric(vertical: 8),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(999)),

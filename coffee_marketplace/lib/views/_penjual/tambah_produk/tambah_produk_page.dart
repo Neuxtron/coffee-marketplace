@@ -1,11 +1,17 @@
 import 'dart:io';
 
+import 'package:coffee_marketplace/models/produk_request_model.dart';
+import 'package:coffee_marketplace/models/variasi_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/utils/server_status.dart';
 import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
+import 'package:coffee_marketplace/views/_penjual/tambah_produk/variasi_section.dart';
 import 'package:coffee_marketplace/views/_penjual/widgets/gambar_section.dart';
 import 'package:coffee_marketplace/views/_penjual/widgets/kategori_section.dart';
 import 'package:coffee_marketplace/views/_penjual/widgets/submit_section.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import './tambah_produk_form.dart';
 
@@ -22,22 +28,80 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
   final _deskripsiController = TextEditingController();
   final _hargaController = TextEditingController();
   final _beratController = TextEditingController();
+  final _merkController = TextEditingController();
+
+  final List<VariasiModel> _listVariasi = [
+    VariasiModel(nama: "", stok: 0),
+  ];
 
   File? _gambar;
   String? _idKategori;
   String _error = "";
 
+  bool get _isLoading =>
+      context.watch<ProdukViewModel>().status == ServerStatus.loading;
+
   void uploadProduk() {
     setState(() => _error = "");
     if (_idKategori == null) return;
     if (!(_formKey.currentState?.validate() ?? false)) return;
+    if (!validateVariasi()) return;
     if (_gambar == null) {
       setState(() => _error = "Produk harus memiliki gambar");
       return;
     }
 
-    // TODO: upload produk
-    print("Mengupload produk...");
+    final variasi = VariasiModel.toMap(_listVariasi);
+    final merk = _merkController.text.isEmpty ? null : _merkController.text;
+    final produkRequest = ProdukRequestModel(
+      nama: _namaController.text,
+      deskripsi: _deskripsiController.text,
+      harga: int.parse(_hargaController.text),
+      beratProduk: int.parse(_beratController.text),
+      merk: merk,
+      idKategori: _idKategori!,
+      gambar: _gambar!,
+      variasi: variasi,
+    );
+
+    context.read<ProdukViewModel>().createProduk(produkRequest).then((_) {
+      final status = context.read<ProdukViewModel>().status;
+      if (status == ServerStatus.error) {
+        Fluttertoast.showToast(
+          msg: "Terjadi kesalahan",
+          backgroundColor: Colors.black54,
+        );
+        return;
+      }
+      Fluttertoast.showToast(
+        msg: "Produk berhasil ditambah",
+        backgroundColor: Colors.black54,
+      );
+      Navigator.pop(context);
+    });
+  }
+
+  void onVariasiChanged(int index, VariasiModel variasi) {
+    _listVariasi[index] = variasi;
+  }
+
+  void addVariasi() {
+    final defaultVariasi = VariasiModel(nama: "", stok: 0);
+    setState(() => _listVariasi.add(defaultVariasi));
+  }
+
+  void removeVariasi() {
+    setState(() => _listVariasi.removeLast());
+  }
+
+  bool validateVariasi() {
+    for (var variasi in _listVariasi) {
+      if (variasi.nama == "") {
+        setState(() => _error = "Nama variasi tidak boleh kosong");
+        return false;
+      }
+    }
+    return true;
   }
 
   void getData() {
@@ -69,11 +133,18 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
                 deskripsiController: _deskripsiController,
                 hargaController: _hargaController,
                 beratController: _beratController,
+                merkController: _merkController,
               ),
               KategoriSection(
                 onChange: (idKategori) {
                   setState(() => _idKategori = idKategori);
                 },
+              ),
+              VariasiSection(
+                onChanged: onVariasiChanged,
+                addVariasi: addVariasi,
+                removeVariasi: _listVariasi.length <= 1 ? null : removeVariasi,
+                listVariasi: _listVariasi,
               ),
               const Padding(
                 padding: EdgeInsets.only(bottom: 5),
@@ -89,6 +160,7 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
                 onSubmit: uploadProduk,
                 error: _error,
                 text: "+ Tambah",
+                isLoading: _isLoading,
               ),
             ],
           ),
