@@ -19,7 +19,7 @@ class ProfilPage extends StatefulWidget {
 }
 
 class _ProfilPageState extends State<ProfilPage> {
-  UserModel? get _user => context.watch<UserViewModel>().currentUser;
+  UserModel? get _user => context.read<UserViewModel>().currentUser;
   bool get _loggedIn => _user != null;
 
   String get _nama => _user?.nama ?? "-";

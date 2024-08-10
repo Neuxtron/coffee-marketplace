@@ -9,9 +9,6 @@ class DeskripsiSection extends StatelessWidget {
     return Text(
       deskripsi,
       textAlign: TextAlign.justify,
-      style: const TextStyle(
-        fontSize: 16,
-      ),
     );
   }
 }

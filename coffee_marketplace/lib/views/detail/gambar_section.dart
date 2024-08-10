@@ -33,10 +33,13 @@ class GambarSection extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 clipBehavior: Clip.hardEdge,
-                child: Image.network(
-                  gambar,
-                  height: 260,
-                  width: 260,
+                child: ColoredBox(
+                  color: Colors.black,
+                  child: Image.network(
+                    gambar,
+                    height: 260,
+                    width: 260,
+                  ),
                 ),
               ),
             ),

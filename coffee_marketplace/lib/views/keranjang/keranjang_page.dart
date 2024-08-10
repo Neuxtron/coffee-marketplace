@@ -38,7 +38,7 @@ class _KeranjangPageState extends State<KeranjangPage> {
               _viewModel.getKeranjang();
             });
           },
-          iconData: Icons.info_outline,
+          iconData: Icons.person,
           text: "Silahkan login untuk\nmelihat keranjang",
           buttonText: "Login",
         ),

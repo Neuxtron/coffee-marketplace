@@ -1,7 +1,7 @@
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
-import 'package:coffee_marketplace/views/toko_saya/produk_item.dart';
-import 'package:coffee_marketplace/views/toko_saya/tambah_produk_section.dart';
+import 'package:coffee_marketplace/views/_penjual/toko_saya/produk_item.dart';
+import 'package:coffee_marketplace/views/_penjual/toko_saya/tambah_produk_section.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:coffee_marketplace/models/produk_model.dart';

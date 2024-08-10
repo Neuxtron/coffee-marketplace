@@ -8,6 +8,7 @@ import 'package:coffee_marketplace/viewmodels/pakar_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/pesan_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
+import 'package:coffee_marketplace/views/_auth_check/auth_check.dart';
 import 'package:coffee_marketplace/views/_penjual/edit_produk/edit_produk_page.dart';
 import 'package:coffee_marketplace/views/all_pakar/all_pakar_page.dart';
 import 'package:coffee_marketplace/views/chat_room/chat_room_page.dart';
@@ -15,7 +16,6 @@ import 'package:coffee_marketplace/views/checkout/checkout_page.dart';
 import 'package:coffee_marketplace/views/daftar/daftar_page.dart';
 import 'package:coffee_marketplace/views/detail/details_page.dart';
 import 'package:coffee_marketplace/views/kategori/kategori_page.dart';
-import 'package:coffee_marketplace/views/layouts/main_layout.dart';
 import 'package:coffee_marketplace/views/login/login_page.dart';
 import 'package:coffee_marketplace/views/menunggu_pembayaran/menunggu_pembayaran_page.dart';
 import 'package:coffee_marketplace/views/pembayaran/pembayaran_page.dart';
@@ -23,7 +23,7 @@ import 'package:coffee_marketplace/views/pengaturan_toko/pengaturan_toko_page.da
 import 'package:coffee_marketplace/views/pengiriman/pengiriman_page.dart';
 import 'package:coffee_marketplace/views/pesan/pesan_page.dart';
 import 'package:coffee_marketplace/views/_penjual/tambah_produk/tambah_produk_page.dart';
-import 'package:coffee_marketplace/views/toko_saya/toko_saya_page.dart';
+import 'package:coffee_marketplace/views/_penjual/toko_saya/toko_saya_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
         ),
         initialRoute: "/",
         routes: {
-          "/": (context) => const MainLayout(),
+          "/": (context) => const AuthCheck(),
           "/details": (context) => const DetailsPage(),
           "/kategori": (context) => const KategoriPage(),
           "/login": (context) => const LoginPage(),

@@ -3,7 +3,6 @@ import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/pesan_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
-import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/home/home_page.dart';
 import 'package:coffee_marketplace/views/keranjang/keranjang_page.dart';
 import 'package:coffee_marketplace/views/profil/profil_page.dart';
@@ -76,7 +75,6 @@ class _MainLayoutState extends State<MainLayout> {
     return Future.wait([
       context.read<ProdukViewModel>().getProduk(),
       context.read<KategoriViewModel>().getKategori(),
-      context.read<UserViewModel>().authCheck(),
     ]).then((_) {
       context.read<PesanViewModel>().onInit();
     });

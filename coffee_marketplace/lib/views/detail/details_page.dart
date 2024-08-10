@@ -73,6 +73,7 @@ class _DetailsPageState extends State<DetailsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   JudulSection(nama: _produk.nama, harga: _produk.harga),
                   GambarSection(gambar: _produk.gambar[0]),
