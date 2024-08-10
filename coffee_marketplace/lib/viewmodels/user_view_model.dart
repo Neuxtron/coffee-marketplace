@@ -41,7 +41,7 @@ class UserViewModel extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)["data"];
-        _currentUser = user;
+        _currentUser = UserModel.fromJson(data);
         token = data["token"];
         _status = ServerStatus.normal;
         notifyListeners();

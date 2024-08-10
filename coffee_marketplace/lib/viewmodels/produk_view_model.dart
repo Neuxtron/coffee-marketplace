@@ -66,9 +66,8 @@ class ProdukViewModel extends ChangeNotifier {
 
       if (response.statusCode == 201) {
         final data = jsonDecode(response.body)["data"];
-        final produk = ProdukModel.fromJson(data);
         final upload =
-            await uploadGambarProduk(produk.id, produkRequest.gambar!);
+            await uploadGambarProduk(data["id"], produkRequest.gambar!);
 
         if (upload) {
           _status = ServerStatus.normal;
