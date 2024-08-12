@@ -24,10 +24,10 @@ class _MengajukanPakarPageState extends State<MengajukanPakarPage> {
     context
         .read<PengajuanPakarViewModel>()
         .createPengajuan(pesan)
-        .then(preSubmit);
+        .then(postSubmit);
   }
 
-  void preSubmit(bool success) {
+  void postSubmit(bool success) {
     if (success) {
       Fluttertoast.showToast(
         msg: "Berhasil mengirim pengajuan pakar",

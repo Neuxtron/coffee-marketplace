@@ -25,9 +25,9 @@ class PengajuanListView extends StatelessWidget {
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-      itemCount: 20,
+      itemCount: _listPengajuan.length,
       itemBuilder: (context, index) {
-        final pengajuan = _listPengajuan[0];
+        final pengajuan = _listPengajuan[index];
         return PengajuanItem(pengajuan: pengajuan);
       },
     );

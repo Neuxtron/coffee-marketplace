@@ -5,5 +5,6 @@ const router = express.Router()
 
 router.get("/", authentication, PengajuanPakarController.allPengajuan)
 router.post("/", authentication, PengajuanPakarController.createPengajuan)
+router.put("/approve/:id", authentication, PengajuanPakarController.approvePengajuan)
 
 module.exports = router

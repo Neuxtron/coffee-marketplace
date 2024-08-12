@@ -1,5 +1,6 @@
 const { defaultExclude } = require("../constants")
 const PengajuanPakarModel = require("../models/pengajuan_pakar_model")
+const UserModel = require("../models/users_model")
 
 class PengajuanPakarController {
   static allPengajuan(req, res) {
@@ -39,6 +40,42 @@ class PengajuanPakarController {
           data: {},
         })
       })
+  }
+
+  static async approvePengajuan(req, res) {
+    try {
+      const { role } = req
+      const { id } = req.params
+
+      if (role !== "admin") {
+        res.status(401).json({
+          status: false,
+          message: "Akses ditolak",
+          data: {}
+        })
+        return
+      }
+  
+      const pengajuan = await PengajuanPakarModel.findByPk(id)
+      await UserModel.update({ role: "pakar" }, {
+        where: { id: pengajuan.idUser }
+      })
+
+      await PengajuanPakarModel.destroy({ where: { id } })
+
+      res.status(200).json({
+        status: true,
+        message: "Pengajuan berhasil diterima",
+        data: {},
+      })
+      } catch (err) {
+        console.log(err)
+        res.status(500).json({
+          status: false,
+          message: "Terjadi kesalahan, silahkan coba lagi",
+          data: {},
+        })
+      }
   }
 
   static async createPengajuan(req, res) {

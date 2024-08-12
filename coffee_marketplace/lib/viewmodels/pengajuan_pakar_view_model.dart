@@ -76,4 +76,23 @@ class PengajuanPakarViewModel extends ChangeNotifier {
     notifyListeners();
     return false;
   }
+
+  Future<bool> approvePengajuan(String id) async {
+    final token = AppHelpers.token!;
+
+    try {
+      final response = await http.put(
+        Uri.parse("$_endpoint/approve/$id"),
+        headers: {"Authorization": "Bearer $token"},
+      );
+      log("Approve pengajuan pakar:\n${response.body}");
+      if (response.statusCode == 200) {
+        return true;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    notifyListeners();
+    return false;
+  }
 }

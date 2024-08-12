@@ -1,6 +1,8 @@
 import 'package:coffee_marketplace/models/pengajuan_pakar_model.dart';
+import 'package:coffee_marketplace/viewmodels/pengajuan_pakar_view_model.dart';
 import 'package:coffee_marketplace/views/_admin/admin_home/approve_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class PengajuanItem extends StatelessWidget {
   final PengajuanPakarModel pengajuan;
@@ -14,7 +16,9 @@ class PengajuanItem extends StatelessWidget {
       builder: (context) {
         return ApproveModal(pengajuan: pengajuan);
       },
-    );
+    ).then((_) {
+      context.read<PengajuanPakarViewModel>().getPengajuan();
+    });
   }
 
   @override
