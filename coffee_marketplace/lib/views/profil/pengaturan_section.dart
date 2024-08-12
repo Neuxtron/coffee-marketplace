@@ -38,6 +38,17 @@ class PengaturanSection extends StatelessWidget {
       );
     }
 
+    if (role == "pelanggan") {
+      listPengaturan.insert(
+        1,
+        PengaturanItem(
+          route: "/mengajukan_pakar",
+          icon: const Icon(Icons.store),
+          text: "Mengjukan sebagai pakar",
+        ),
+      );
+    }
+
     return listPengaturan;
   }
 

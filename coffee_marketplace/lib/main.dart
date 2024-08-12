@@ -5,6 +5,7 @@ import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/metode_bayar_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/order_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/pakar_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/pengajuan_pakar_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/pesan_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
@@ -17,6 +18,7 @@ import 'package:coffee_marketplace/views/daftar/daftar_page.dart';
 import 'package:coffee_marketplace/views/detail/details_page.dart';
 import 'package:coffee_marketplace/views/kategori/kategori_page.dart';
 import 'package:coffee_marketplace/views/login/login_page.dart';
+import 'package:coffee_marketplace/views/mengajukan_pakar/mengajukan_pakar_page.dart';
 import 'package:coffee_marketplace/views/menunggu_pembayaran/menunggu_pembayaran_page.dart';
 import 'package:coffee_marketplace/views/pembayaran/pembayaran_page.dart';
 import 'package:coffee_marketplace/views/pengaturan_toko/pengaturan_toko_page.dart';
@@ -47,6 +49,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => OrderViewModel()),
         ChangeNotifierProvider(create: (context) => PakarViewModel()),
         ChangeNotifierProvider(create: (context) => PesanViewModel()),
+        ChangeNotifierProvider(create: (context) => PengajuanPakarViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -76,6 +79,7 @@ class MyApp extends StatelessWidget {
           "/pengaturan_toko": (context) => const PengaturanTokoPage(),
           "/tambah_produk": (context) => const TambahProdukPage(),
           "/edit_produk": (context) => const EditProdukPage(),
+          "/mengajukan_pakar": (context) => const MengajukanPakarPage(),
         },
       ),
     );

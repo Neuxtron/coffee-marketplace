@@ -1,5 +1,5 @@
 import 'package:coffee_marketplace/models/produk_model.dart';
-import 'package:coffee_marketplace/views/_penjual/widgets/input_item.dart';
+import 'package:coffee_marketplace/views/widgets/input_item.dart';
 import 'package:flutter/material.dart';
 
 class EditProdukForm extends StatefulWidget {

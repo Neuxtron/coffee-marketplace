@@ -1,7 +1,8 @@
-import 'package:coffee_marketplace/models/pakar_model.dart';
-import 'package:coffee_marketplace/models/pengajuan_pakar_model.dart';
+import 'package:coffee_marketplace/utils/server_status.dart';
+import 'package:coffee_marketplace/viewmodels/pengajuan_pakar_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
-import 'package:coffee_marketplace/views/_admin/admin_home/pengajuan_item.dart';
+import 'package:coffee_marketplace/views/_admin/admin_home/pengajuan_list_view.dart';
+import 'package:coffee_marketplace/views/widgets/info_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,15 +14,17 @@ class AdminHomePage extends StatefulWidget {
 }
 
 class _AdminHomePageState extends State<AdminHomePage> {
-  List get _listPengajuan => [
-        PengajuanPakarModel(
-          id: "1",
-          pakar: PakarModel(id: "1", nama: "Pakar 1"),
-          pesan: "Saya ingin menjadi pakar\nTrims",
-        ),
-      ];
+  ServerStatus get _status => context.watch<PengajuanPakarViewModel>().status;
 
-  // TODO: get pakar
+  void getData() {
+    context.read<PengajuanPakarViewModel>().getPengajuan();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
   void logout() {
     context.read<UserViewModel>().logout();
@@ -29,14 +32,37 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    if (_status == ServerStatus.loading) {
+      return const Scaffold(
+        body: Center(
+          child: SizedBox(
+            height: 30,
+            width: 30,
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    }
+
+    if (_status == ServerStatus.error) {
+      return Scaffold(
+        body: Center(
+          child: InfoBuilder(
+            onPressed: getData,
+            iconData: Icons.error_outline,
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: buildAppBar(),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.fromLTRB(20, 80, 0, 10),
               child: Text(
                 "Admin",
@@ -47,16 +73,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 ),
               ),
             ),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
-              itemCount: 20,
-              itemBuilder: (context, index) {
-                final pengajuan = _listPengajuan[0];
-                return PengajuanItem(pengajuan: pengajuan);
-              },
-            ),
+            PengajuanListView(),
           ],
         ),
       ),
