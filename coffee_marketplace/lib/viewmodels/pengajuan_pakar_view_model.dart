@@ -46,4 +46,34 @@ class PengajuanPakarViewModel extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future<bool> createPengajuan(String pesan) async {
+    _status = ServerStatus.loading;
+    notifyListeners();
+    final token = AppHelpers.token!;
+
+    try {
+      final response = await http.post(
+        Uri.parse(_endpoint),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        },
+        body: jsonEncode({
+          "pengajuan": {"pesan": pesan}
+        }),
+      );
+      log("Create pengajuan pakar:\n${response.body}");
+      if (response.statusCode == 201) {
+        _status = ServerStatus.normal;
+        notifyListeners();
+        return true;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    _status = ServerStatus.normal;
+    notifyListeners();
+    return false;
+  }
 }

@@ -4,5 +4,6 @@ const authentication = require("../middlewares/authentication")
 const router = express.Router()
 
 router.get("/", authentication, PengajuanPakarController.allPengajuan)
+router.post("/", authentication, PengajuanPakarController.createPengajuan)
 
 module.exports = router

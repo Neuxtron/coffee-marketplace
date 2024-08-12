@@ -40,6 +40,38 @@ class PengajuanPakarController {
         })
       })
   }
+
+  static async createPengajuan(req, res) {
+    try {
+      const { idUser } = req
+      const { pengajuan } = req.body
+
+      const existing = await PengajuanPakarModel.findOne({
+        where: { idUser }
+      })
+
+      if (existing) {
+        await PengajuanPakarModel.update({ ...pengajuan }, {
+          where: { idUser }
+        })
+      } else {
+        await PengajuanPakarModel.create({ ...pengajuan, idUser })
+      }
+      
+      res.status(201).json({
+        status: true,
+        message: "Berhasil mengirim pengajuan pakar",
+        data: {},
+      })
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: {},
+      })
+    }
+  }
 }
 
 module.exports = PengajuanPakarController
