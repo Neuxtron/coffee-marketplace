@@ -10,6 +10,8 @@ class InputItem extends StatelessWidget {
   final bool multiline;
   final bool isShort;
   final bool optional;
+  final bool obscureText;
+  final String? Function(String? value)? validator;
 
   const InputItem({
     super.key,
@@ -21,9 +23,17 @@ class InputItem extends StatelessWidget {
     this.multiline = false,
     this.isShort = false,
     this.optional = false,
+    this.obscureText = false,
+    this.validator,
   });
 
-  String? validator(String? value) {
+  String? Function(String? value)? get _finalValidator {
+    if (validator != null) return validator;
+    if (!optional) return defaultValidator;
+    return null;
+  }
+
+  String? defaultValidator(String? value) {
     if (value == null || value.isEmpty) {
       return '$label tidak boleh kosong';
     }
@@ -43,10 +53,11 @@ class InputItem extends StatelessWidget {
           width: isShort ? 200 : null,
           child: TextFormField(
             controller: controller,
-            validator: !optional ? validator : null,
+            validator: _finalValidator,
             keyboardType: multiline ? TextInputType.multiline : keyboardType,
             minLines: multiline ? 3 : 1,
             maxLines: multiline ? null : 1,
+            obscureText: obscureText,
             style: const TextStyle(fontSize: 14),
             decoration: buildDecoration(),
           ),

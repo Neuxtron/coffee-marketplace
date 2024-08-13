@@ -3,6 +3,8 @@ const { secret } = require("../utils/constants")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const { defaultExclude } = require("../constants")
+const nodemailer = require("nodemailer")
+const { saltRounds } = require("../utils/constants")
 
 class UserController {
   static getProfile(req, res) {
@@ -167,6 +169,130 @@ class UserController {
         res.status(500).json({
           status: false,
           message: "Terjadi kesalahan, silahkan coba lagi",
+          data: {},
+        })
+      })
+  }
+
+  static async requestUbahPassword(req, res) {
+    const { email } = req.body
+    const kodeOTP = Math.floor(Math.random() * 1000000)
+
+    const rows = await UserModel.update({ kodeOTP }, {
+      where: { email }
+    }).catch((err) => {
+      console.log(error)
+      res.status(500).json({
+        status: false,
+        message: "Gagal ubah password: Internal server error",
+        data: {},
+      })
+    })
+
+    if (rows[0] === 0) {
+      res.status(404).json({
+        status: false,
+        message: "Email Anda tidak terdaftar",
+        data: {},
+      })
+      return
+    }
+
+    const emailPengirim = process.env.NODEMAILER_SENDER_EMAIL
+    const passwordPengirim = process.env.NODEMAILER_SENDER_PASSWORD
+    const hostPengirim = process.env.NODEMAILER_SENDER_HOST
+
+    // const transporter = nodemailer.createTransport({
+    //   service: 'gmail',
+      
+    //   auth: {
+    //     user: emailPengirim,
+    //     pass: passwordPengirim
+    //   }
+    // })
+    const transporter = nodemailer.createTransport(
+      `smtp://${emailPengirim}:${passwordPengirim}@${hostPengirim}:587`
+    );
+
+    const mailOptions = {
+      from: emailPengirim,
+      to: email,
+      subject: 'Ubah password Coffee Marketplace',
+      text: `Kode OTP Anda adalah ${kodeOTP}`
+    }
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        res.status(500).json({
+          status: false,
+          message: "Gagal kirim email: Internal server error",
+          data: {},
+        })
+        return
+      }
+      res.status(200).json({
+        status: true,
+        message: "Kode OTP berhasil dikirim",
+        data: {},
+      })
+    });
+  }
+
+  static checkOTP(req, res) {
+    const { email, kodeOTP } = req.body
+
+    UserModel.findOne({ where: { email, kodeOTP } })
+      .then((data) => {
+        if (data === null) {
+          res.status(404).json({
+            status: false,
+            message: "Kode OTP salah",
+            data: {},
+          })
+          return
+        }
+        res.status(200).json({
+          status: true,
+          message: "Email dan kode OTP sudah benar",
+          data: {},
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        res.status(500).json({
+          status: false,
+          message: "Gagal check OTP: Internal server error",
+          data: {},
+        })
+      })
+  }
+
+  static ubahPasswordOTP(req, res) {
+    const { email, kodeOTP, password: passwordRaw } = req.body
+    const password = bcrypt.hashSync(passwordRaw, saltRounds)
+
+    UserModel.update({ password, kodeOTP: null }, { where: { email, kodeOTP } })
+      .then((rows) => {
+        if (rows[0] === 0) {
+          res.status(404).json({
+            status: false,
+            message: "Email atau kode OTP salah",
+            data: {},
+          })
+          return
+        }
+        res.status(200).json({
+          status: true,
+          message: "Password berhasil diubah",
+          data: {},
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        res.status(500).json({
+          status: false,
+          message: "Gagal ubah password: Internal server error",
           data: {},
         })
       })

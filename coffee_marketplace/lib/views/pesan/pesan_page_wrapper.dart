@@ -24,6 +24,7 @@ class PesanPageWrapper extends StatelessWidget {
     _context = context;
     return DefaultTabController(
       length: 2,
+      initialIndex: 1,
       child: Scaffold(
         appBar: buildAppBar(isPenjual, isPakar),
         body: body,

@@ -56,6 +56,10 @@ const UserModel = sequelize.define("user", {
     allowNull: false,
     defaultValue: "pelanggan"
   },
+  kodeOTP: {
+    type: STRING,
+    allowNull: true,
+  },
 }, {
   freezeTableName: true,
   hooks: {

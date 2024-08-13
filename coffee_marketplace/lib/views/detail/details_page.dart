@@ -3,6 +3,7 @@ import 'package:coffee_marketplace/models/produk_model.dart';
 import 'package:coffee_marketplace/models/variasi_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/detail/actions_section.dart';
 import 'package:coffee_marketplace/views/detail/deskripsi_section.dart';
 import 'package:coffee_marketplace/views/detail/gambar_section.dart';
@@ -21,6 +22,7 @@ class DetailsPage extends StatefulWidget {
 
 class _DetailsPageState extends State<DetailsPage> {
   final _scrollController = ScrollController();
+  bool get _isLoggedIn => context.watch<UserViewModel>().currentUser != null;
 
   late ProdukModel _produk;
   VariasiModel? _selectedVariasi;
@@ -60,11 +62,13 @@ class _DetailsPageState extends State<DetailsPage> {
     // TODO: penjual
     return Scaffold(
       appBar: buildAppBar(),
-      bottomNavigationBar: Container(
-        color: AppConstants.secondaryAlt,
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-        child: ActionsSection(addToCart: addToCart),
-      ),
+      bottomNavigationBar: _isLoggedIn
+          ? Container(
+              color: AppConstants.secondaryAlt,
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+              child: ActionsSection(addToCart: addToCart),
+            )
+          : null,
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Column(
@@ -81,11 +85,13 @@ class _DetailsPageState extends State<DetailsPage> {
                 ],
               ),
             ),
-            VariasiSection(
-              listVariasi: _produk.variasi,
-              selectVariasi: (variasi) => _selectedVariasi = variasi,
-              error: _error,
-            ),
+            _isLoggedIn
+                ? VariasiSection(
+                    listVariasi: _produk.variasi,
+                    selectVariasi: (variasi) => _selectedVariasi = variasi,
+                    error: _error,
+                  )
+                : const SizedBox(),
           ],
         ),
       ),

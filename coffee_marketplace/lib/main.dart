@@ -18,6 +18,9 @@ import 'package:coffee_marketplace/views/daftar/daftar_page.dart';
 import 'package:coffee_marketplace/views/detail/details_page.dart';
 import 'package:coffee_marketplace/views/kategori/kategori_page.dart';
 import 'package:coffee_marketplace/views/login/login_page.dart';
+import 'package:coffee_marketplace/views/lupa_password/check_otp_page.dart';
+import 'package:coffee_marketplace/views/lupa_password/request_ubah_password_page.dart';
+import 'package:coffee_marketplace/views/lupa_password/ubah_password_otp_page.dart';
 import 'package:coffee_marketplace/views/mengajukan_pakar/mengajukan_pakar_page.dart';
 import 'package:coffee_marketplace/views/menunggu_pembayaran/menunggu_pembayaran_page.dart';
 import 'package:coffee_marketplace/views/pembayaran/pembayaran_page.dart';
@@ -80,6 +83,10 @@ class MyApp extends StatelessWidget {
           "/tambah_produk": (context) => const TambahProdukPage(),
           "/edit_produk": (context) => const EditProdukPage(),
           "/mengajukan_pakar": (context) => const MengajukanPakarPage(),
+          "/request_ubah_password": (context) =>
+              const RequestUbahPasswordPage(),
+          "/check_otp": (context) => const CheckOtpPage(),
+          "/ubah_password_otp": (context) => const UbahPasswordOTPPage(),
         },
       ),
     );

@@ -39,6 +39,8 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  void forgotPassword() {}
+
   String? emailValidator(String? value) {
     if (value == null || value.isEmpty) {
       return 'Email tidak boleh kosong';
@@ -101,6 +103,7 @@ class _LoginPageState extends State<LoginPage> {
         LoginActions(
           onLogin: login,
           enabled: !_isLoading,
+          onForgotPassword: forgotPassword,
         ),
       ],
     );

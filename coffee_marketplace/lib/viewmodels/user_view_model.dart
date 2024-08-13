@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:coffee_marketplace/models/ubah_password_model.dart';
 import 'package:coffee_marketplace/models/user_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/app_helpers.dart';
@@ -15,6 +16,7 @@ class UserViewModel extends ChangeNotifier {
   String? _token;
   ServerStatus _status = ServerStatus.normal;
   String _error = "";
+  UbahPasswordModel? ubahPasswordModel;
 
   UserModel? get currentUser => _currentUser;
   String? get token => _token;
@@ -182,6 +184,89 @@ class UserViewModel extends ChangeNotifier {
     token = null;
     _currentUser = null;
     return false;
+  }
+
+  Future<String> requestUbahPassword(String email) async {
+    _status = ServerStatus.loading;
+    notifyListeners();
+    String error = "";
+
+    try {
+      final response = await http.post(
+        Uri.parse("$_endpoint/request_ubah_password"),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({"email": email}),
+      );
+      log("Request ubah password:\n${response.body}");
+      if (response.statusCode == 200) {
+        ubahPasswordModel = UbahPasswordModel(email: email);
+      } else {
+        error = jsonDecode(response.body)["message"];
+      }
+    } catch (e) {
+      log(e.toString());
+      error = "Terjadi kesalahan, silahkan coba lagi";
+    }
+    _status = ServerStatus.normal;
+    notifyListeners();
+    return error;
+  }
+
+  Future<String> checkOTP(int kodeOTP) async {
+    _status = ServerStatus.loading;
+    notifyListeners();
+    String error = "";
+
+    try {
+      ubahPasswordModel!.kodeOTP = kodeOTP;
+      final response = await http.post(
+        Uri.parse("$_endpoint/check_otp"),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: ubahPasswordModel!.toJson(),
+      );
+      log("Check otp:\n${response.body}");
+      if (response.statusCode != 200) {
+        error = jsonDecode(response.body)["message"];
+      }
+    } catch (e) {
+      log(e.toString());
+      error = "Terjadi kesalahan, silahkan coba lagi";
+    }
+    _status = ServerStatus.normal;
+    notifyListeners();
+    return error;
+  }
+
+  Future<String> ubahPassword(String password) async {
+    _status = ServerStatus.loading;
+    notifyListeners();
+    String error = "";
+
+    try {
+      ubahPasswordModel!.password = password;
+      final response = await http.post(
+        Uri.parse("$_endpoint/ubah_password"),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: ubahPasswordModel!.toJson(),
+      );
+      log("Ubah password:\n${response.body}");
+      if (response.statusCode != 200) {
+        error = jsonDecode(response.body)["message"];
+      }
+    } catch (e) {
+      log(e.toString());
+      error = "Terjadi kesalahan, silahkan coba lagi";
+    }
+
+    _status = ServerStatus.normal;
+    notifyListeners();
+    return error;
   }
 
   Future authCheck() async {

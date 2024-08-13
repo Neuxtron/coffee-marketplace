@@ -8,5 +8,8 @@ router.post("/register", UserController.registerUser)
 router.post("/login", UserController.loginUser)
 router.get("/logout", authentication, UserController.logoutUser)
 router.get("/pakar", UserController.allPakar)
+router.post("/request_ubah_password", UserController.requestUbahPassword)
+router.post("/check_otp", UserController.checkOTP)
+router.post("/ubah_password", UserController.ubahPasswordOTP)
 
 module.exports = router
