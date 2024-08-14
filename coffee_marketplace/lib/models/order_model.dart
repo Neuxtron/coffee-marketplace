@@ -3,6 +3,7 @@ import 'package:coffee_marketplace/models/metode_bayar_model.dart';
 class OrderModel {
   final String id;
   final String status;
+  final String statusMessage;
   final int subtotal;
   final int ongkir;
   final MetodeBayarModel metodeBayar;
@@ -12,6 +13,7 @@ class OrderModel {
   OrderModel({
     required this.id,
     required this.status,
+    required this.statusMessage,
     required this.subtotal,
     required this.ongkir,
     required this.metodeBayar,
@@ -25,6 +27,7 @@ class OrderModel {
     return OrderModel(
       id: json["id"],
       status: json["status"],
+      statusMessage: json["statusMessage"],
       subtotal: json["subtotal"],
       ongkir: json["ongkir"],
       metodeBayar: MetodeBayarModel.fromJson(metodeBayar),
@@ -33,16 +36,3 @@ class OrderModel {
     );
   }
 }
-
-final dummyOrder = OrderModel(
-  id: "1",
-  status: "Pending",
-  subtotal: 100000,
-  ongkir: 20000,
-  metodeBayar: dummyMetodeBayar[3],
-  bayarDetails: {
-    "Bill Key": "778347787706",
-    "Biller Code": "70012",
-  },
-  expiredAt: DateTime.parse("2024-07-29 04:23:06"),
-);

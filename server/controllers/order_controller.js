@@ -3,9 +3,17 @@ const OrderModel = require("../models/order_model")
 const VariasiModel = require("../models/variasi_model")
 const { midtransBaseUrl } = require("../utils/constants")
 const KeranjangController = require("./keranjang_controller")
+const serverKey = process.env.MIDTRANS_SERVER_KEY
 
 class OrderController {
   static bankTransfers = ["bca", "bni", "bri", "cimb"]
+  static statusMessages = {
+    "pending": "Dibayar",
+    "settlement": "Selesai",
+    "deny": "Ditolak",
+    "cancel": "Dibatalkan",
+    "expire": "Expired",
+  }
 
   static createOrder = async (req, res) => {
     try {
@@ -14,7 +22,6 @@ class OrderController {
 
       const order = await OrderModel.create({ ...orderData, idUser })
       
-      const serverKey = process.env.MIDTRANS_SERVER_KEY
       const body = this.midtransReqBody(
         orderData.metodeBayar,
         order.id,
@@ -40,13 +47,15 @@ class OrderController {
         billKey,
         billerCode,
         vaNumber,
-        expiredAt
+        expiredAt,
+        status,
       } = midtransVaNumbers
 
       order.billKey = billKey
       order.billerCode = billerCode
       order.vaNumber = vaNumber
       order.expiredAt = expiredAt
+      order.status = status
 
       await order.save()
       
@@ -71,16 +80,8 @@ class OrderController {
         include: ["metodePembayaran"],
       })
 
-      const bayarDetails = {}
-      if (newOrder.vaNumber !== null) {
-        bayarDetails["VA Number"] = newOrder.vaNumber
-      }
-      if (newOrder.billKey !== null) {
-        bayarDetails["Bill Key"] = newOrder.billKey
-      }
-      if (newOrder.billerCode !== null) {
-        bayarDetails["Biller Code"] = newOrder.billerCode
-      }
+      const bayarDetails = this.getBayarDetails(newOrder)
+      const statusMessage = this.statusMessages[status]
 
       res.status(201).json({
         status: true,
@@ -88,6 +89,7 @@ class OrderController {
         data: {
           ...newOrder,
           bayarDetails,
+          statusMessage,
         },
         // data: {},
       })
@@ -99,6 +101,20 @@ class OrderController {
         data: {},
       })
     }
+  }
+
+  static getBayarDetails(order) {
+    const bayarDetails = {}
+    if (order.vaNumber !== null) {
+      bayarDetails["VA Number"] = order.vaNumber
+    }
+    if (order.billKey !== null) {
+      bayarDetails["Bill Key"] = order.billKey
+    }
+    if (order.billerCode !== null) {
+      bayarDetails["Biller Code"] = order.billerCode
+    }
+    return bayarDetails
   }
 
   static midtransReqBody(metodeBayar, idOrder, jumlah) {
@@ -130,11 +146,14 @@ class OrderController {
   static async midtransVaNumber(response, metodeBayar) {
     const jsonData = await response.json()
     const expiredAt = jsonData["expiry_time"]
+    const status = jsonData["transaction_status"]
+    const validCodes = ["201", "407", "200", "202"]
+    
     let billKey = null
     let billerCode = null
     let vaNumber = null
 
-    if (jsonData["status_code"] !== "201") {
+    if (!validCodes.includes(jsonData["status_code"])) {
       console.log(jsonData)
       return null
     }
@@ -152,7 +171,63 @@ class OrderController {
       vaNumber = jsonData["va_numbers"][0]["va_number"]
     }
 
-    return { billKey, billerCode, vaNumber, expiredAt }
+    return { billKey, billerCode, vaNumber, expiredAt, status }
+  }
+
+  static riwayatOrder = (req, res) => {
+    const { idUser } = req
+
+    OrderModel.findAll({
+      where: { idUser },
+      include: ["metodePembayaran", "keranjang"],
+      order: [["createdAt", "DESC"]]
+    })
+      .then(async (raw) => {
+        const promises = raw.map(async (order) => {
+          if (order.status == "pending") {
+            const request = fetch(`${midtransBaseUrl}/${order.id}/status`, {
+              headers: {
+                "Authorization": `Basic ${btoa(serverKey)}`,
+              },
+            })
+            promises.push(request)
+
+            const response = await request
+            const vaNumbers = await this.midtransVaNumber(response, order.metodeBayar)
+            if (vaNumbers == null) return
+
+            const { status } = vaNumbers
+            order.status = status
+            await order.save()
+          }
+          const bayarDetails = this.getBayarDetails(order)
+          const statusMessage = this.statusMessages[order.status]
+
+          return {
+            ...order.get(),
+            bayarDetails,
+            statusMessage,
+          }
+        })
+
+        const data = (await Promise.allSettled(promises)).map(result => {
+          return result.value
+        })
+        
+        res.status(200).json({
+          status: true,
+          message: "Berhasil mengambil riwayat order",
+          data,
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        res.status(500).json({
+          status: false,
+          message: "Terjadi kesalahan, silahkan coba lagi",
+          data: {},
+        })
+      })
   }
 }
 

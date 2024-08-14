@@ -2,6 +2,7 @@ const { INTEGER, STRING, UUIDV4, DATE } = require("sequelize")
 const sequelize = require("../config/database")
 const UserModel = require("./users_model")
 const MetodeBayarModel = require("./metode_bayar_model")
+const KeranjangModel = require("./keranjang_model")
 
 const OrderModel = sequelize.define("orders", {
   id: {
@@ -17,7 +18,7 @@ const OrderModel = sequelize.define("orders", {
   status: {
     type: STRING,
     allowNull: false,
-    defaultValue: "Pending",
+    defaultValue: "pending",
   },
   subtotal: {
     type: INTEGER,
@@ -53,5 +54,6 @@ const OrderModel = sequelize.define("orders", {
 
 OrderModel.belongsTo(UserModel, { foreignKey: "idUser", onDelete: "CASCADE" })
 OrderModel.belongsTo(MetodeBayarModel, { as: "metodePembayaran", foreignKey: "metodeBayar", onDelete: "RESTRICT" })
+OrderModel.hasMany(KeranjangModel, { as: "keranjang", foreignKey: "idOrder", onDelete: "RESTRICT" })
 
 module.exports = OrderModel
