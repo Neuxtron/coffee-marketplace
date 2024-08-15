@@ -77,7 +77,7 @@ class OrderController {
         attributes: defaultExclude,
         raw: true,
         nest: true,
-        include: ["metodePembayaran"],
+        include: ["metodePembayaran", "keranjang"],
       })
 
       const bayarDetails = this.getBayarDetails(newOrder)

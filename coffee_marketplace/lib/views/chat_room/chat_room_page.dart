@@ -24,8 +24,6 @@ class ChatRoomPage extends StatelessWidget {
         context.watch<PesanViewModel>().messagesFromId(chatRoom.idUser);
     context.read<PesanViewModel>().readPesan(chatRoom.idUser);
 
-    // IDEA: detect penerima/pengirim if penerima != me
-
     return Scaffold(
       appBar: buildAppBar(chatRoom),
       body: Padding(

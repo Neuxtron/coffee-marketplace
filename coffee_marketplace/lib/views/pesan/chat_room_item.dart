@@ -56,6 +56,8 @@ class ChatRoomItem extends StatelessWidget {
       subtitle: lastPesan != null
           ? Text(
               (isLastSender ? "Anda: " : "") + lastPesan.isi,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(color: Colors.black45),
             )
           : null,

@@ -29,6 +29,7 @@ import 'package:coffee_marketplace/views/pengiriman/pengiriman_page.dart';
 import 'package:coffee_marketplace/views/pesan/pesan_page.dart';
 import 'package:coffee_marketplace/views/_penjual/tambah_produk/tambah_produk_page.dart';
 import 'package:coffee_marketplace/views/_penjual/toko_saya/toko_saya_page.dart';
+import 'package:coffee_marketplace/views/riwayat/riwayat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -87,6 +88,7 @@ class MyApp extends StatelessWidget {
               const RequestUbahPasswordPage(),
           "/check_otp": (context) => const CheckOtpPage(),
           "/ubah_password_otp": (context) => const UbahPasswordOTPPage(),
+          "/riwayat": (context) => const RiwayatPage(),
         },
       ),
     );

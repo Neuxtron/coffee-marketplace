@@ -1,3 +1,4 @@
+import 'package:coffee_marketplace/models/keranjang_model.dart';
 import 'package:coffee_marketplace/models/metode_bayar_model.dart';
 
 class OrderModel {
@@ -9,6 +10,7 @@ class OrderModel {
   final MetodeBayarModel metodeBayar;
   final Map<String, dynamic> bayarDetails;
   final DateTime expiredAt;
+  final List<KeranjangModel> keranjang;
 
   OrderModel({
     required this.id,
@@ -19,6 +21,7 @@ class OrderModel {
     required this.metodeBayar,
     required this.bayarDetails,
     required this.expiredAt,
+    required this.keranjang,
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
@@ -33,6 +36,7 @@ class OrderModel {
       metodeBayar: MetodeBayarModel.fromJson(metodeBayar),
       bayarDetails: json["bayarDetails"],
       expiredAt: DateTime.parse(json["expiredAt"]),
+      keranjang: json["keranjang"],
     );
   }
 }

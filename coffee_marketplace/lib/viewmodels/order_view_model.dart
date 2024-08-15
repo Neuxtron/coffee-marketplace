@@ -13,7 +13,16 @@ class OrderViewModel extends ChangeNotifier {
   final _endpoint = "${AppConstants.baseUrl}/api/order";
 
   ServerStatus _status = ServerStatus.normal;
+  List<OrderModel> _listRiwayat = [];
+
   ServerStatus get status => _status;
+  List<OrderModel> get listRiwayat => _listRiwayat;
+
+  List<OrderModel> get listPending {
+    return _listRiwayat.where((riwayat) {
+      return riwayat.status == "pending";
+    }).toList();
+  }
 
   Future<OrderModel?> createOrder(PembayaranModel pembayaran) async {
     _status = ServerStatus.loading;
@@ -47,5 +56,30 @@ class OrderViewModel extends ChangeNotifier {
       notifyListeners();
       return null;
     }
+  }
+
+  Future getRiwayat() async {
+    final token = AppHelpers.token;
+    _status = ServerStatus.loading;
+    notifyListeners();
+
+    try {
+      final response = await http.get(
+        Uri.parse(_endpoint),
+        headers: {"Authorization": "Bearer $token"},
+      );
+      log("Get riwayat:\n${response.body}");
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body)["data"] as List;
+        _listRiwayat = data.map((e) => OrderModel.fromJson(e)).toList();
+        _status = ServerStatus.normal;
+        notifyListeners();
+        return;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    _status = ServerStatus.error;
+    notifyListeners();
   }
 }

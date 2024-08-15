@@ -20,8 +20,9 @@ class RiwayatMenuItem extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          // TODO: navigate
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(context, "/riwayat", arguments: index);
+          },
           child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
