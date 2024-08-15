@@ -18,20 +18,25 @@ class JudulSection extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          nama,
-          style: const TextStyle(
-            fontWeight: FontWeight.w800,
-            fontFamily: "Abhaya Libre",
-            fontSize: 16,
+        Expanded(
+          child: Text(
+            nama,
+            style: const TextStyle(
+              fontWeight: FontWeight.w800,
+              fontFamily: "Abhaya Libre",
+              fontSize: 16,
+            ),
           ),
         ),
-        Text(
-          hargaString,
-          style: const TextStyle(
-            fontWeight: FontWeight.w800,
-            fontFamily: "Abhaya Libre",
-            fontSize: 16,
+        Expanded(
+          child: Text(
+            hargaString,
+            textAlign: TextAlign.right,
+            style: const TextStyle(
+              fontWeight: FontWeight.w800,
+              fontFamily: "Abhaya Libre",
+              fontSize: 16,
+            ),
           ),
         ),
       ],

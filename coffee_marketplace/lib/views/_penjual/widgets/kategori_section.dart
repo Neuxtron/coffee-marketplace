@@ -59,7 +59,10 @@ class _KategoriSectionState extends State<KategoriSection> {
           child: DropdownButtonHideUnderline(
             child: DropdownButton(
               value: _idKategori,
-              onChanged: (value) => setState(() => _idKategori = value),
+              onChanged: (value) {
+                setState(() => _idKategori = value);
+                widget.onChange(_idKategori!);
+              },
               items: _listKategori.map((kategori) {
                 return DropdownMenuItem(
                   value: kategori.id,

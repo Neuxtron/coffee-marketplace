@@ -25,6 +25,12 @@ class ProdukViewModel extends ChangeNotifier {
     }).toList();
   }
 
+  List<ProdukModel> produkByKategori(String idKategori) {
+    return _listProduk.where((produk) {
+      return produk.idKategori == idKategori;
+    }).toList();
+  }
+
   Future getProduk() async {
     if (_status == ServerStatus.loading) return;
     _status = ServerStatus.loading;

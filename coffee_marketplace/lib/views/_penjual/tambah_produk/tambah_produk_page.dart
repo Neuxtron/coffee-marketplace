@@ -140,9 +140,7 @@ class _TambahProdukPageState extends State<TambahProdukPage> {
                 merkController: _merkController,
               ),
               KategoriSection(
-                onChange: (idKategori) {
-                  setState(() => _idKategori = idKategori);
-                },
+                onChange: (idKategori) => _idKategori = idKategori,
               ),
               VariasiSection(
                 onChanged: onVariasiChanged,

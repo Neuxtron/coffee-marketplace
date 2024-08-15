@@ -14,18 +14,16 @@ class KategoriPage extends StatelessWidget {
     final kategori =
         ModalRoute.of(context)!.settings.arguments as KategoriModel;
 
-    // TODO: produk by kategori
-    final listProduk = context.watch<ProdukViewModel>().listProduk;
+    final listProduk =
+        context.watch<ProdukViewModel>().produkByKategori(kategori.id);
 
     return Scaffold(
       appBar: buildAppBar(kategori),
-      body: Column(
-        children: [
-          ProdukGridView(
-            listProduk: listProduk,
-            padding: const EdgeInsets.symmetric(vertical: 30),
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: ProdukGridView(
+          listProduk: listProduk,
+          padding: const EdgeInsets.symmetric(vertical: 30),
+        ),
       ),
     );
   }
@@ -34,6 +32,7 @@ class KategoriPage extends StatelessWidget {
     return AppBar(
       backgroundColor: AppConstants.background,
       titleSpacing: 0,
+      surfaceTintColor: Colors.transparent,
       title: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
