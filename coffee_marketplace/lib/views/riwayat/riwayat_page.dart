@@ -2,7 +2,10 @@ import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/server_status.dart';
 import 'package:coffee_marketplace/viewmodels/order_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
-import 'package:coffee_marketplace/views/riwayat/riwayat_list_view.dart';
+import 'package:coffee_marketplace/views/riwayat/views/dikemas_view.dart';
+import 'package:coffee_marketplace/views/riwayat/views/dikirim_view.dart';
+import 'package:coffee_marketplace/views/riwayat/views/pending_view.dart';
+import 'package:coffee_marketplace/views/riwayat/views/riwayat_view.dart';
 import 'package:coffee_marketplace/views/widgets/info_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -63,10 +66,13 @@ class _RiwayatPageState extends State<RiwayatPage> {
     }
 
     if (_status == ServerStatus.error) {
-      return Center(
-        child: InfoBuilder(
-          onPressed: getData,
-          iconData: Icons.error_outline,
+      return Scaffold(
+        appBar: buildAppBar(),
+        body: Center(
+          child: InfoBuilder(
+            onPressed: getData,
+            iconData: Icons.error_outline,
+          ),
         ),
       );
     }
@@ -76,25 +82,12 @@ class _RiwayatPageState extends State<RiwayatPage> {
       initialIndex: initialIndex,
       child: Scaffold(
         appBar: buildAppBar(showTabs: true),
-        body: TabBarView(
+        body: const TabBarView(
           children: [
-            RiwayatListView(
-              listRiwayat: _viewModelWatch.listPending,
-              buttonText: (_) => "Bayar",
-              title: (order) => order.expiredAt.toString(),
-              subtitle: "Batas waktu pembayaran",
-              // TODO: halaman menunggu pembayaran
-              buttonOnPressed: () {},
-            ),
-            RiwayatListView(
-              listRiwayat: _viewModelWatch.listPending,
-              buttonText: (_) => "Hubungi Penjual",
-              title: (_) => "Pesanan sedang dikemas",
-              // TODO: halaman menunggu pembayaran
-              buttonOnPressed: () {},
-            ),
-            Center(child: Text("Dikirim view")),
-            Center(child: Text("Riwayat view")),
+            PendingView(),
+            DikemasView(),
+            DikirimView(),
+            RiwayatView(),
           ],
         ),
       ),

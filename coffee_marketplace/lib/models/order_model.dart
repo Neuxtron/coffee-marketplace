@@ -11,6 +11,7 @@ class OrderModel {
   final Map<String, dynamic> bayarDetails;
   final DateTime expiredAt;
   final List<KeranjangModel> keranjang;
+  final DateTime? batasKonfirmasi;
 
   OrderModel({
     required this.id,
@@ -21,11 +22,13 @@ class OrderModel {
     required this.metodeBayar,
     required this.bayarDetails,
     required this.expiredAt,
-    required this.keranjang,
+    this.keranjang = const [],
+    required this.batasKonfirmasi,
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     final metodeBayar = json["metodePembayaran"];
+    final keranjangJson = (json["keranjang"] as List?) ?? [];
 
     return OrderModel(
       id: json["id"],
@@ -36,7 +39,8 @@ class OrderModel {
       metodeBayar: MetodeBayarModel.fromJson(metodeBayar),
       bayarDetails: json["bayarDetails"],
       expiredAt: DateTime.parse(json["expiredAt"]),
-      keranjang: json["keranjang"],
+      keranjang: keranjangJson.map((e) => KeranjangModel.fromJson(e)).toList(),
+      batasKonfirmasi: json["batasKonfirmasi"],
     );
   }
 }

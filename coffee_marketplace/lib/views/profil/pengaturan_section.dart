@@ -43,7 +43,7 @@ class PengaturanSection extends StatelessWidget {
         1,
         PengaturanItem(
           route: "/mengajukan_pakar",
-          icon: const Icon(Icons.store),
+          icon: const Icon(Icons.person_2),
           text: "Mengajukan sebagai pakar",
         ),
       );

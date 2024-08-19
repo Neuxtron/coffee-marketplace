@@ -47,6 +47,10 @@ const OrderModel = sequelize.define("orders", {
   expiredAt: {
     type: DATE,
     allowNull: true,
+  },
+  batasKonfirmasi: {
+    type: DATE,
+    allowNull: true,
   }
 }, {
   freezeTableName: true,

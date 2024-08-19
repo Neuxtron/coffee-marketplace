@@ -24,6 +24,26 @@ class OrderViewModel extends ChangeNotifier {
     }).toList();
   }
 
+  List<OrderModel> get listDikemas {
+    return _listRiwayat.where((riwayat) {
+      return riwayat.status == "settlement";
+    }).toList();
+  }
+
+  List<OrderModel> get listDikirim {
+    return _listRiwayat.where((riwayat) {
+      final listStatus = ["dikirim", "diterima"];
+      return listStatus.contains(riwayat.status);
+    }).toList();
+  }
+
+  List<OrderModel> get listSelesai {
+    return _listRiwayat.where((riwayat) {
+      final listStatus = ["selesai", "deny", "cancel", "expire"];
+      return listStatus.contains(riwayat.status);
+    }).toList();
+  }
+
   Future<OrderModel?> createOrder(PembayaranModel pembayaran) async {
     _status = ServerStatus.loading;
     notifyListeners();

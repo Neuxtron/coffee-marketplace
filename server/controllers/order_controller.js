@@ -8,12 +8,24 @@ const serverKey = process.env.MIDTRANS_SERVER_KEY
 class OrderController {
   static bankTransfers = ["bca", "bni", "bri", "cimb"]
   static statusMessages = {
-    "pending": "Dibayar",
-    "settlement": "Selesai",
-    "deny": "Ditolak",
-    "cancel": "Dibatalkan",
-    "expire": "Expired",
+    "pending": "Menunggu pembayaran",
+    "settlement": "Pesanan sedang dikemas",
+    "deny": "Pembayaran ditolak",
+    "cancel": "Pesanan dibatalkan",
+    "expire": "Pembayaran kadaluarsa",
+
+    "dikirim": "Pesanan dalam perjalanan",
+    "diterima": "Pesanan sudah sampai ke tujuan",
+    "selesai": "Pesanan selesai",
   }
+  // IDEA: Tahap status
+  static tahapStatus = [
+    "pending",
+    "settlement",
+    "dikirim",
+    "diterima",
+    "selesai",
+  ]
 
   static createOrder = async (req, res) => {
     try {
@@ -75,9 +87,8 @@ class OrderController {
 
       const newOrder = await OrderModel.findByPk(order.id, {
         attributes: defaultExclude,
-        raw: true,
-        nest: true,
-        include: ["metodePembayaran", "keranjang"],
+        raw: true, nest: true, 
+        include: ["metodePembayaran"],
       })
 
       const bayarDetails = this.getBayarDetails(newOrder)
@@ -179,7 +190,26 @@ class OrderController {
 
     OrderModel.findAll({
       where: { idUser },
-      include: ["metodePembayaran", "keranjang"],
+      include: [
+        "metodePembayaran",
+        {
+          association: "keranjang",
+          include: [
+            {
+              association: "produk",
+              include: [
+                "gambar",
+                "variasi",
+                {
+                  association: "penjual",
+                  attributes: ["id", "namaToko", "idKecamatanToko"],
+                },
+              ],
+            },
+            "variasi",
+          ],
+        }
+      ],
       order: [["createdAt", "DESC"]]
     })
       .then(async (raw) => {
@@ -190,8 +220,6 @@ class OrderController {
                 "Authorization": `Basic ${btoa(serverKey)}`,
               },
             })
-            promises.push(request)
-
             const response = await request
             const vaNumbers = await this.midtransVaNumber(response, order.metodeBayar)
             if (vaNumbers == null) return
@@ -229,6 +257,10 @@ class OrderController {
         })
       })
   }
+
+  // TODO: api dikirim penjual
+  // TODO: api tracking
+  // TODO: api pesanan diserahkan & tgl batas konfirmasi diterima
 }
 
 module.exports = OrderController
