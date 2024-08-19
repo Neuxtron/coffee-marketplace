@@ -258,9 +258,41 @@ class OrderController {
       })
   }
 
-  // TODO: api dikirim penjual
+  static async nextStatus(req, res) {
+    try {
+      const { id, status: statusRaw } = req.body
+
+      const pesan = await OrderModel.findByPk(id)
+
+      const listTolak = ["pending", "selesai"]
+      if (listTolak.includes(pesan.status)) {
+        return res.status(403).json({
+          status: false,
+          message: "Permintaan ditolak",
+          data: {},
+        })
+      }
+
+      const index = this.tahapStatus.indexOf(pesan.status)
+      const status =  statusRaw ?? this.tahapStatus[index + 1]
+      await pesan.update({ status })
+
+      res.status(200).json({
+        status: true,
+        message: "Berhasil mengupdate status pesanan",
+        data: {},
+      })
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: {},
+      })
+    }
+  }
+
   // TODO: api tracking
-  // TODO: api pesanan diserahkan & tgl batas konfirmasi diterima
 }
 
 module.exports = OrderController

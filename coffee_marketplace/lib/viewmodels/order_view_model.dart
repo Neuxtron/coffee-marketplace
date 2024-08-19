@@ -102,4 +102,27 @@ class OrderViewModel extends ChangeNotifier {
     _status = ServerStatus.error;
     notifyListeners();
   }
+
+  Future<bool> nextStatus(String id, {String? status}) async {
+    final token = AppHelpers.token;
+
+    try {
+      final response = await http.put(
+        Uri.parse("$_endpoint/status/$id"),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode({
+          "id": id,
+          "status": status,
+        }),
+      );
+      log("Next status:\n${response.body}");
+      if (response.statusCode == 200) return true;
+    } catch (e) {
+      log(e.toString());
+    }
+    return false;
+  }
 }
