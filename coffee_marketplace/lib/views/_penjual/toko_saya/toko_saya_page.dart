@@ -1,7 +1,7 @@
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/_penjual/toko_saya/produk_item.dart';
-import 'package:coffee_marketplace/views/_penjual/toko_saya/tambah_produk_section.dart';
+import 'package:coffee_marketplace/views/_penjual/toko_saya/nav_section.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:coffee_marketplace/models/produk_model.dart';
@@ -27,8 +27,6 @@ class _TokoSayaPageState extends State<TokoSayaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: buildAppBar(),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -59,30 +57,9 @@ class _TokoSayaPageState extends State<TokoSayaPage> {
               ],
             ),
           ),
-          const TambahProdukSection(),
+          const NavSection(),
         ],
       ),
-    );
-  }
-
-  AppBar buildAppBar() {
-    return AppBar(
-      elevation: 0,
-      backgroundColor: Colors.white.withOpacity(.01),
-      automaticallyImplyLeading: false,
-      surfaceTintColor: Colors.transparent,
-      actions: [
-        Padding(
-          padding: const EdgeInsets.only(right: 10),
-          child: IconButton(
-            onPressed: () => Navigator.pushNamed(context, "/pengaturan_toko"),
-            icon: const Icon(
-              Icons.settings_outlined,
-              color: Colors.grey,
-            ),
-          ),
-        )
-      ],
     );
   }
 }

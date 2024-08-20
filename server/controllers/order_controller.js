@@ -1,5 +1,8 @@
+const { Op } = require("sequelize")
 const { defaultExclude } = require("../constants")
+const KeranjangModel = require("../models/keranjang_model")
 const OrderModel = require("../models/order_model")
+const ProdukModel = require("../models/produk_model")
 const VariasiModel = require("../models/variasi_model")
 const { midtransBaseUrl } = require("../utils/constants")
 const KeranjangController = require("./keranjang_controller")
@@ -18,7 +21,6 @@ class OrderController {
     "diterima": "Pesanan sudah sampai ke tujuan",
     "selesai": "Pesanan selesai",
   }
-  // IDEA: Tahap status
   static tahapStatus = [
     "pending",
     "settlement",
@@ -258,9 +260,9 @@ class OrderController {
       })
   }
 
-  static async nextStatus(req, res) {
+  static nextStatus = async (req, res) => {
     try {
-      const { id, status: statusRaw } = req.body
+      const { id, status: statusRaw, resi: resiRaw } = req.body
 
       const pesan = await OrderModel.findByPk(id)
 
@@ -275,7 +277,8 @@ class OrderController {
 
       const index = this.tahapStatus.indexOf(pesan.status)
       const status =  statusRaw ?? this.tahapStatus[index + 1]
-      await pesan.update({ status })
+      const resi = resiRaw ?? pesan.resiPengiriman
+      await pesan.update({ status, resiPengiriman: resi })
 
       res.status(200).json({
         status: true,
@@ -289,6 +292,86 @@ class OrderController {
         message: "Terjadi kesalahan, silahkan coba lagi",
         data: {},
       })
+    }
+  }
+
+  static riwayatPesananPenjual = async (req, res) => {
+    try {
+      const { idUser: idPenjual } = req
+  
+      const listIdProduk = []
+      const listProduk = await ProdukModel.findAll({
+        where: { idPenjual },
+        raw: true,
+        attributes: ["id"],
+      })
+      listProduk.forEach(produk => {
+        listIdProduk.push(produk.id)
+      })
+
+      const listIdOrder = []
+      const listKeranjang = await KeranjangModel.findAll({
+        where: {
+          [Op.not]: { idOrder: null },
+          idProduk: listIdProduk,
+        },
+        raw: true,
+        attributes: ["idOrder"],
+      })
+      listKeranjang.forEach(keranjang => {
+        listIdOrder.push(keranjang.idOrder)
+      })
+
+      const exludeStatus = ["pending", "expire", "deny"]
+      const listOrder = await OrderModel.findAll({
+        where: {
+          id: listIdOrder,
+          [Op.not]: { status: exludeStatus }
+        },
+        // raw: true, nest: true,
+        include: [
+          "metodePembayaran",
+          {
+            association: "keranjang",
+            include: [
+              {
+                association: "produk",
+                include: [
+                  "gambar",
+                  "variasi",
+                  {
+                    association: "penjual",
+                    attributes: ["id", "namaToko", "idKecamatanToko"],
+                  },
+                ],
+              },
+              "variasi",
+            ],
+          },
+          "pembeli",
+        ],
+        order: [["createdAt", "DESC"]]
+      })
+
+      const data = listOrder.map(order => {
+        const bayarDetails = this.getBayarDetails(order)
+        const statusMessage = this.statusMessages[order.status]
+
+        return { ...order.get(), bayarDetails, statusMessage }
+      })
+
+      res.status(200).json({
+        status: true,
+        message: "Berhasil mengambil riwayat pesanan penjual",
+        data,
+      })
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: {},
+      }) 
     }
   }
 

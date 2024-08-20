@@ -1,6 +1,7 @@
 import 'package:coffee_marketplace/models/user_model.dart';
 import 'package:coffee_marketplace/utils/app_helpers.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/order_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/pesan_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/profil/logout_section.dart';
@@ -39,6 +40,7 @@ class _ProfilPageState extends State<ProfilPage> {
     });
     context.read<KeranjangViewModel>().onLogout();
     context.read<PesanViewModel>().onLogout();
+    context.read<OrderViewModel>().onLogout();
   }
 
   @override

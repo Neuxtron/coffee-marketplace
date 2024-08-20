@@ -51,12 +51,16 @@ const OrderModel = sequelize.define("orders", {
   batasKonfirmasi: {
     type: DATE,
     allowNull: true,
-  }
+  },
+  resiPengiriman: {
+    type: STRING,
+    allowNull: true,
+  },
 }, {
   freezeTableName: true,
 })
 
-OrderModel.belongsTo(UserModel, { foreignKey: "idUser", onDelete: "CASCADE" })
+OrderModel.belongsTo(UserModel, { as: "pembeli", foreignKey: "idUser", onDelete: "CASCADE" })
 OrderModel.belongsTo(MetodeBayarModel, { as: "metodePembayaran", foreignKey: "metodeBayar", onDelete: "RESTRICT" })
 OrderModel.hasMany(KeranjangModel, { as: "keranjang", foreignKey: "idOrder", onDelete: "RESTRICT" })
 

@@ -80,17 +80,19 @@ class RiwayatItem extends StatelessWidget {
         Container(
           color: AppConstants.secondary,
           alignment: Alignment.centerRight,
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
           child: Row(
             children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      subtitle,
-                      style: const TextStyle(fontSize: 10),
-                    ),
+                    subtitle != ""
+                        ? Text(
+                            subtitle,
+                            style: const TextStyle(fontSize: 10),
+                          )
+                        : const SizedBox(),
                     Text(
                       title,
                     ),

@@ -10,7 +10,9 @@ import 'package:coffee_marketplace/viewmodels/pesan_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/produk_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:coffee_marketplace/views/_auth_check/auth_check.dart';
+import 'package:coffee_marketplace/views/_penjual/detail_pesanan/detail_pesanan_page.dart';
 import 'package:coffee_marketplace/views/_penjual/edit_produk/edit_produk_page.dart';
+import 'package:coffee_marketplace/views/_penjual/riwayat_pesanan/riwayat_pesanan_page.dart';
 import 'package:coffee_marketplace/views/all_pakar/all_pakar_page.dart';
 import 'package:coffee_marketplace/views/chat_room/chat_room_page.dart';
 import 'package:coffee_marketplace/views/checkout/checkout_page.dart';
@@ -89,6 +91,8 @@ class MyApp extends StatelessWidget {
           "/check_otp": (context) => const CheckOtpPage(),
           "/ubah_password_otp": (context) => const UbahPasswordOTPPage(),
           "/riwayat": (context) => const RiwayatPage(),
+          "/pesanan_penjual": (context) => const RiwayatPesananPage(),
+          "/detail_pesanan": (context) => const DetailPesananPage(),
         },
       ),
     );

@@ -14,9 +14,11 @@ class OrderViewModel extends ChangeNotifier {
 
   ServerStatus _status = ServerStatus.normal;
   List<OrderModel> _listRiwayat = [];
+  List<OrderModel> _listPesananPenjual = [];
 
   ServerStatus get status => _status;
   List<OrderModel> get listRiwayat => _listRiwayat;
+  List<OrderModel> get listPesananPenjual => _listPesananPenjual;
 
   List<OrderModel> get listPending {
     return _listRiwayat.where((riwayat) {
@@ -42,6 +44,10 @@ class OrderViewModel extends ChangeNotifier {
       final listStatus = ["selesai", "deny", "cancel", "expire"];
       return listStatus.contains(riwayat.status);
     }).toList();
+  }
+
+  void onLogout() {
+    _listPesananPenjual = [];
   }
 
   Future<OrderModel?> createOrder(PembayaranModel pembayaran) async {
@@ -103,12 +109,41 @@ class OrderViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> nextStatus(String id, {String? status}) async {
+  Future getPesananPenjual() async {
+    final token = AppHelpers.token;
+    _status = ServerStatus.loading;
+    notifyListeners();
+
+    try {
+      final response = await http.get(
+        Uri.parse("$_endpoint/pesanan_penjual"),
+        headers: {"Authorization": "Bearer $token"},
+      );
+      log("Get pesanan penjual:\n${response.body}");
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body)["data"] as List;
+        _listPesananPenjual = data.map((e) => OrderModel.fromJson(e)).toList();
+        _status = ServerStatus.normal;
+        notifyListeners();
+        return;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    _status = ServerStatus.error;
+    notifyListeners();
+  }
+
+  Future<bool> nextStatus(
+    String id, {
+    String? status,
+    String? resiPengiriman,
+  }) async {
     final token = AppHelpers.token;
 
     try {
       final response = await http.put(
-        Uri.parse("$_endpoint/status/$id"),
+        Uri.parse("$_endpoint/status"),
         headers: {
           "Authorization": "Bearer $token",
           "Content-Type": "application/json",
@@ -116,6 +151,7 @@ class OrderViewModel extends ChangeNotifier {
         body: jsonEncode({
           "id": id,
           "status": status,
+          "resi": resiPengiriman,
         }),
       );
       log("Next status:\n${response.body}");

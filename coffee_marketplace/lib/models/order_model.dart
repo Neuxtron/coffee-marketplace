@@ -1,5 +1,6 @@
 import 'package:coffee_marketplace/models/keranjang_model.dart';
 import 'package:coffee_marketplace/models/metode_bayar_model.dart';
+import 'package:coffee_marketplace/models/pembeli_model.dart';
 
 class OrderModel {
   final String id;
@@ -12,6 +13,7 @@ class OrderModel {
   final DateTime expiredAt;
   final List<KeranjangModel> keranjang;
   final DateTime? batasKonfirmasi;
+  final PembeliModel? pembeli;
 
   OrderModel({
     required this.id,
@@ -24,11 +26,13 @@ class OrderModel {
     required this.expiredAt,
     this.keranjang = const [],
     required this.batasKonfirmasi,
+    this.pembeli,
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     final metodeBayar = json["metodePembayaran"];
     final keranjangJson = (json["keranjang"] as List?) ?? [];
+    final pembeli = json["pembeli"];
 
     return OrderModel(
       id: json["id"],
@@ -41,6 +45,7 @@ class OrderModel {
       expiredAt: DateTime.parse(json["expiredAt"]),
       keranjang: keranjangJson.map((e) => KeranjangModel.fromJson(e)).toList(),
       batasKonfirmasi: json["batasKonfirmasi"],
+      pembeli: pembeli != null ? PembeliModel.fromJson(pembeli) : null,
     );
   }
 }
