@@ -13,7 +13,7 @@ class PesanViewModel extends ChangeNotifier {
   final _endpoint = "${AppConstants.baseUrl}/api/pesan";
 
   List<PesanModel> _listPesan = [];
-  List<String> _listKirim = [];
+  final List<String> _listKirim = [];
   List<ChatRoomModel> _listChatRoom = [];
   ServerStatus _status = ServerStatus.normal;
   bool _watchMessages = false;

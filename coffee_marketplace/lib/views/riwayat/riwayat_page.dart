@@ -19,7 +19,6 @@ class RiwayatPage extends StatefulWidget {
 
 class _RiwayatPageState extends State<RiwayatPage> {
   ServerStatus get _status => context.watch<OrderViewModel>().status;
-  OrderViewModel get _viewModelWatch => context.watch<OrderViewModel>();
 
   void login() {
     Navigator.pushNamed(context, "/login").then((_) => setState(() {}));

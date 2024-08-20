@@ -11,7 +11,7 @@ class PengaturanTokoPage extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamedAndRemoveUntil(context, "/", (route) => false);
           },
-          child: Text("Kembali ke marketplace"),
+          child: const Text("Kembali ke marketplace"),
         ),
       ),
     );
