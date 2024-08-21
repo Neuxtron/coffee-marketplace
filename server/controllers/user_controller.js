@@ -12,6 +12,7 @@ class UserController {
 
     UserModel.findOne({
       where: { id },
+      include: ["alamat"],
       attributes: defaultExclude
     })
       .then((user) => {
@@ -56,6 +57,7 @@ class UserController {
 
       UserModel.findOne({
         where: { id },
+        include: ["alamat"],
         attributes: defaultExclude
       })
         .then((userData) => {
@@ -109,6 +111,7 @@ class UserController {
 
       UserModel.findOne({
         where: { id },
+        include: ["alamat"],
         attributes: defaultExclude
       })
         .then((data) => {
@@ -297,8 +300,6 @@ class UserController {
         })
       })
   }
-
-  // TODO: ubah password
 }
 
 module.exports = UserController

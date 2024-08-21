@@ -2,6 +2,7 @@ const { INTEGER, STRING, UUIDV4 } = require("sequelize")
 const sequelize = require("../config/database")
 const bcrypt = require("bcrypt")
 const { saltRounds } = require("../utils/constants")
+const AlamatModel = require("./alamat_model")
 
 const UserModel = sequelize.define("user", {
   id: {
@@ -22,10 +23,6 @@ const UserModel = sequelize.define("user", {
     type: STRING,
     allowNull: false,
   },
-  alamat: {
-    type: STRING,
-    allowNull: false,
-  },
   password: {
     type: STRING,
     allowNull: false,
@@ -34,10 +31,7 @@ const UserModel = sequelize.define("user", {
     type: STRING,
     allowNull: true,
   },
-  idKecamatan: {
-    type: STRING,
-    allowNull: false,
-  },
+  
   saldo: {
     type: INTEGER,
     allowNull: false,
@@ -68,5 +62,7 @@ const UserModel = sequelize.define("user", {
     }
   }
 })
+
+UserModel.hasMany(AlamatModel, { as: "alamat", foreignKey: "idUser", onDelete: "CASCADE" })
 
 module.exports = UserModel

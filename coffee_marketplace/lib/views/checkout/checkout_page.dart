@@ -91,11 +91,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
       totalBerat += keranjang.produk.beratProduk;
     }
 
+    // TODO: id kecamatan
     final kecamatanPembeli =
-        context.read<UserViewModel>().currentUser!.idKecamatan;
-    // TODO: kecamatan semua toko
+        context.read<UserViewModel>().currentUser!.alamat[0].idKecamatan;
+    // OPTIMIZE: kecamatan semua toko
     final kecamatanPenjual = _listCheckout[0].produk.penjual.idKecamatanToko;
-    // TODO: kurir from toko
+    // OPTIMIZE: kurir from toko
     final listKurir = dummyKurir;
 
     context
@@ -120,7 +121,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   void getData() {
-    // TODO: get kecamatan semua toko
+    // OPTIMIZE: get kecamatan semua toko
     Future.wait([
       context.read<UserViewModel>().getProfile(),
       context.read<MetodeBayarViewModel>().getMetodeBayar(),

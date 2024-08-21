@@ -10,6 +10,7 @@ const metodeBayarRoute = require("./metode_bayar_route")
 const pesanRoute = require("./pesan_route")
 const gambarProdukRouter = require("./gambar_produk_route")
 const pengajuanPakarRouter = require("./pengajuan_pakar_route")
+const alamatRouter = require("./alamat_route")
 
 router.use("/kategori", kategoriRouter)
 router.use("/produk", produkRoute)
@@ -20,5 +21,6 @@ router.use("/metode_bayar", metodeBayarRoute)
 router.use("/pesan", pesanRoute)
 router.use("/gambar_produk", gambarProdukRouter)
 router.use("/pengajuan_pakar", pengajuanPakarRouter)
+router.use("/alamat", alamatRouter)
 
 module.exports = router

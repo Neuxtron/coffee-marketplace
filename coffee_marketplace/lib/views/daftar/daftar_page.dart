@@ -1,3 +1,4 @@
+import 'package:coffee_marketplace/models/alamat_model.dart';
 import 'package:coffee_marketplace/models/user_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/server_status.dart';
@@ -52,13 +53,17 @@ class _DaftarPageState extends State<DaftarPage> {
 
   void daftar() {
     if (!(_formKey.currentState?.validate() ?? false)) return;
+
+    final alamat = AlamatModel(
+      idKecamatan: _idKecamatan!,
+      alamat: _alamatController.text.trim(),
+    );
     final user = UserModel(
       nama: _namaController.text.trim(),
       email: _emailController.text.trim(),
       noHp: _noHpController.text,
-      alamat: _alamatController.text.trim(),
+      alamat: [alamat],
       password: _passwordController.text,
-      idKecamatan: _idKecamatan!,
     );
     context.read<UserViewModel>().register(user).then((_) {
       if (context.read<UserViewModel>().status == ServerStatus.normal) {

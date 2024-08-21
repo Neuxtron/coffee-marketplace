@@ -1,6 +1,5 @@
 const GambarProdukModel = require("../models/gambar_produk_model")
 const fs = require("fs")
-const ProdukModel = require("../models/produk_model")
 
 class GambarProdukController {
   static uploadGambarProduk(req, res) {

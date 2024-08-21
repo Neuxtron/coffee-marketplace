@@ -1,6 +1,5 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 class NamaSection extends StatelessWidget {
   final String nama;
@@ -44,19 +43,19 @@ class NamaSection extends StatelessWidget {
                 fontSize: 20,
               ),
             ),
-            Row(
-              children: [
-                SvgPicture.asset("assets/icons/ic_topup.svg"),
-                const SizedBox(width: 5),
-                Text(
-                  saldo,
-                  style: const TextStyle(
-                    fontFamily: "Abhaya Libre",
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     SvgPicture.asset("assets/icons/ic_topup.svg"),
+            //     const SizedBox(width: 5),
+            //     Text(
+            //       saldo,
+            //       style: const TextStyle(
+            //         fontFamily: "Abhaya Libre",
+            //         fontSize: 16,
+            //       ),
+            //     ),
+            //   ],
+            // ),
           ],
         )
       ],
