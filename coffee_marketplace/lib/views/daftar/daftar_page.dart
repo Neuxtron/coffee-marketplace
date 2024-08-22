@@ -4,7 +4,7 @@ import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/server_status.dart';
 import 'package:coffee_marketplace/viewmodels/daerah_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
-import 'package:coffee_marketplace/views/daftar/daerah_dropdown.dart';
+import 'package:coffee_marketplace/views/widgets/daerah_dropdown.dart';
 import 'package:coffee_marketplace/views/daftar/daftar_actions.dart';
 import 'package:coffee_marketplace/views/layouts/auth_layout.dart';
 import 'package:coffee_marketplace/views/widgets/auth_input/auth_input.dart';
@@ -56,6 +56,7 @@ class _DaftarPageState extends State<DaftarPage> {
 
     final alamat = AlamatModel(
       idKecamatan: _idKecamatan!,
+      idProvinsi: _idProvinsi!,
       alamat: _alamatController.text.trim(),
     );
     final user = UserModel(

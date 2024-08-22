@@ -15,6 +15,10 @@ const AlamatModel = sequelize.define("alamat", {
     type: STRING,
     allowNull: false,
   },
+  idProvinsi: {
+    type: STRING,
+    allowNull: false,
+  },
   alamat: {
     type: STRING,
     allowNull: false,

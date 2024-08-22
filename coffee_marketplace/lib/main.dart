@@ -1,4 +1,5 @@
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/viewmodels/alamat_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/daerah_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/kategori_view_model.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
@@ -18,6 +19,7 @@ import 'package:coffee_marketplace/views/chat_room/chat_room_page.dart';
 import 'package:coffee_marketplace/views/checkout/checkout_page.dart';
 import 'package:coffee_marketplace/views/daftar/daftar_page.dart';
 import 'package:coffee_marketplace/views/detail/details_page.dart';
+import 'package:coffee_marketplace/views/edit_alamat/edit_alamat_page.dart';
 import 'package:coffee_marketplace/views/kategori/kategori_page.dart';
 import 'package:coffee_marketplace/views/login/login_page.dart';
 import 'package:coffee_marketplace/views/lupa_password/check_otp_page.dart';
@@ -26,12 +28,14 @@ import 'package:coffee_marketplace/views/lupa_password/ubah_password_otp_page.da
 import 'package:coffee_marketplace/views/mengajukan_pakar/mengajukan_pakar_page.dart';
 import 'package:coffee_marketplace/views/menunggu_pembayaran/menunggu_pembayaran_page.dart';
 import 'package:coffee_marketplace/views/pembayaran/pembayaran_page.dart';
+import 'package:coffee_marketplace/views/pengaturan_akun/pengaturan_akun_page.dart';
 import 'package:coffee_marketplace/views/pengaturan_toko/pengaturan_toko_page.dart';
 import 'package:coffee_marketplace/views/pengiriman/pengiriman_page.dart';
 import 'package:coffee_marketplace/views/pesan/pesan_page.dart';
 import 'package:coffee_marketplace/views/_penjual/tambah_produk/tambah_produk_page.dart';
 import 'package:coffee_marketplace/views/_penjual/toko_saya/toko_saya_page.dart';
 import 'package:coffee_marketplace/views/riwayat/riwayat_page.dart';
+import 'package:coffee_marketplace/views/tambah_alamat/tambah_alamat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -56,6 +60,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PakarViewModel()),
         ChangeNotifierProvider(create: (context) => PesanViewModel()),
         ChangeNotifierProvider(create: (context) => PengajuanPakarViewModel()),
+        ChangeNotifierProvider(create: (context) => AlamatViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -93,6 +98,9 @@ class MyApp extends StatelessWidget {
           "/riwayat": (context) => const RiwayatPage(),
           "/pesanan_penjual": (context) => const RiwayatPesananPage(),
           "/detail_pesanan": (context) => const DetailPesananPage(),
+          "/pengaturan_akun": (context) => const PengaturanAkunPage(),
+          "/tambah_alamat": (context) => const TambahAlamatPage(),
+          "/edit_alamat": (context) => const EditAlamatPage(),
         },
       ),
     );

@@ -7,8 +7,9 @@ import 'package:coffee_marketplace/utils/app_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class ProdukViewModel extends ChangeNotifier {
+class AlamatViewModel extends ChangeNotifier {
   final _endpoint = "${AppConstants.baseUrl}/api/alamat";
+  AlamatModel? selectedAlamat;
 
   Future<bool> tambahAlamat(AlamatModel alamat) async {
     final token = AppHelpers.token;

@@ -12,9 +12,8 @@ class PengaturanSection extends StatelessWidget {
     final role = _context.read<UserViewModel>().currentUser!.role;
 
     final listPengaturan = [
-      // TODO: route
       PengaturanItem(
-        route: "",
+        route: "/pengaturan_akun",
         icon: const Icon(Icons.settings),
         text: "Pengaturan Akun",
       ),
@@ -52,9 +51,17 @@ class PengaturanSection extends StatelessWidget {
     return listPengaturan;
   }
 
+  void onTilePressed(PengaturanItem item) {
+    if (item.replace) {
+      Navigator.pushReplacementNamed(_context, item.route);
+      return;
+    }
+    Navigator.pushNamed(_context, item.route);
+  }
+
   @override
   Widget build(BuildContext context) {
-    PengaturanSection._context = context;
+    _context = context;
 
     return Container(
       clipBehavior: Clip.hardEdge,
@@ -80,13 +87,7 @@ class PengaturanSection extends StatelessWidget {
             final item = _listPengaturan[index];
 
             return ListTile(
-              onTap: () {
-                if (item.replace) {
-                  Navigator.pushReplacementNamed(context, item.route);
-                  return;
-                }
-                Navigator.pushNamed(context, item.route);
-              },
+              onTap: () => onTilePressed(item),
               leading: item.icon,
               trailing: Icon(
                 Icons.keyboard_arrow_right,
