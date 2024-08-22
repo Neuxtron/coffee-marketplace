@@ -17,9 +17,8 @@ class PengaturanSection extends StatelessWidget {
         icon: const Icon(Icons.settings),
         text: "Pengaturan Akun",
       ),
-      // TODO: route
       PengaturanItem(
-        route: "",
+        route: "/ubah_password",
         icon: const Icon(Icons.lock_outline),
         text: "Ubah Password",
       ),

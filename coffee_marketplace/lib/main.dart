@@ -38,6 +38,7 @@ import 'package:coffee_marketplace/views/_penjual/tambah_produk/tambah_produk_pa
 import 'package:coffee_marketplace/views/_penjual/toko_saya/toko_saya_page.dart';
 import 'package:coffee_marketplace/views/riwayat/riwayat_page.dart';
 import 'package:coffee_marketplace/views/tambah_alamat/tambah_alamat_page.dart';
+import 'package:coffee_marketplace/views/ubah_password/ubah_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -105,6 +106,7 @@ class MyApp extends StatelessWidget {
           "/tambah_alamat": (context) => const TambahAlamatPage(),
           "/edit_alamat": (context) => const EditAlamatPage(),
           "/konfirmasi_email": (context) => const KonfirmasiEmailPage(),
+          "/ubah_password": (context) => const UbahPasswordPage(),
         },
       ),
     );

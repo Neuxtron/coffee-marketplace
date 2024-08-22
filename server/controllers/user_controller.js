@@ -309,7 +309,7 @@ class UserController {
         })
       }
 
-      await UserModel.update({ password })
+      await user.update({ password })
 
       res.status(200).json({
         status: true,

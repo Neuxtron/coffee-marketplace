@@ -71,14 +71,14 @@ class _UbahPasswordOTPPageState extends State<UbahPasswordOTPPage> {
                 AuthInput(
                   controller: _passwordController,
                   validator: passwordValidator,
-                  hintText: "Password",
+                  hintText: "Password Baru",
                   isPassword: true,
                   icon: SvgPicture.asset("assets/icons/ic_password.svg"),
                 ),
                 AuthInput(
                   controller: _kPasswordController,
                   validator: passwordValidator,
-                  hintText: "Ulangi Password",
+                  hintText: "Ulangi Password Baru",
                   isPassword: true,
                   icon: SvgPicture.asset("assets/icons/ic_password.svg"),
                 ),
@@ -121,7 +121,7 @@ class _UbahPasswordOTPPageState extends State<UbahPasswordOTPPage> {
       elevation: 0,
       backgroundColor: AppConstants.background,
       title: const Text(
-        "Verifikasi OTP",
+        "Ubah Password",
         style: TextStyle(
           fontFamily: "Abhaya Libre",
           fontWeight: FontWeight.w800,

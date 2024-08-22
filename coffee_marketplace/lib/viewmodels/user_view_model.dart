@@ -275,8 +275,8 @@ class UserViewModel extends ChangeNotifier {
     String? error;
 
     try {
-      final response = await http.post(
-        Uri.parse("$_endpoint/ubah_password_otp"),
+      final response = await http.put(
+        Uri.parse("$_endpoint/ubah_password"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer $_token",
