@@ -269,6 +269,59 @@ class UserViewModel extends ChangeNotifier {
     return error;
   }
 
+  Future<String?> requestKonfirmasiEmail() async {
+    _status = ServerStatus.loading;
+    notifyListeners();
+    String? error;
+
+    try {
+      final response = await http.put(
+        Uri.parse("$_endpoint/request_konfirmasi_email"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $_token",
+        },
+      );
+      log("Request konfirmasi email:\n${response.body}");
+      if (response.statusCode != 200) {
+        error = jsonDecode(response.body)["message"];
+      }
+    } catch (e) {
+      log(e.toString());
+      error = "Terjadi kesalahan, silahkan coba lagi";
+    }
+    _status = ServerStatus.normal;
+    notifyListeners();
+    return error;
+  }
+
+  Future<String?> konfirmasiEmail() async {
+    _status = ServerStatus.loading;
+    notifyListeners();
+    String? error;
+
+    try {
+      final response = await http.put(
+        Uri.parse("$_endpoint/konfirmasi_email"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $_token",
+        },
+      );
+      log("Konfirmasi email:\n${response.body}");
+      if (response.statusCode != 200) {
+        error = jsonDecode(response.body)["message"];
+      }
+    } catch (e) {
+      log(e.toString());
+      error = "Terjadi kesalahan, silahkan coba lagi";
+    }
+
+    _status = ServerStatus.normal;
+    notifyListeners();
+    return error;
+  }
+
   Future authCheck() async {
     final prefs = await SharedPreferences.getInstance();
     final token = prefs.getString("TOKEN");

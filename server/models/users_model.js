@@ -1,4 +1,4 @@
-const { INTEGER, STRING, UUIDV4 } = require("sequelize")
+const { INTEGER, STRING, UUIDV4, BOOLEAN } = require("sequelize")
 const sequelize = require("../config/database")
 const bcrypt = require("bcrypt")
 const { saltRounds } = require("../utils/constants")
@@ -53,6 +53,15 @@ const UserModel = sequelize.define("user", {
   kodeOTP: {
     type: STRING,
     allowNull: true,
+  },
+  kodeKonfirmasiEmail: {
+    type: STRING,
+    allowNull: true,
+  },
+  terkonfirmasi: {
+    type: BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
   },
 }, {
   freezeTableName: true,

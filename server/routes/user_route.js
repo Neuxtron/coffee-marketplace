@@ -11,5 +11,7 @@ router.get("/pakar", UserController.allPakar)
 router.post("/request_ubah_password", UserController.requestUbahPassword)
 router.post("/check_otp", UserController.checkOTP)
 router.post("/ubah_password", UserController.ubahPasswordOTP)
+router.put("/request_konfirmasi_email", UserController.requestKonfirmasiEmail)
+router.put("/konfirmasi_email", UserController.konfirmasiEmail)
 
 module.exports = router

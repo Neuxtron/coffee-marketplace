@@ -11,6 +11,7 @@ class UserModel {
   final String? password;
   final int saldo;
   final String role;
+  final bool? terkonfirmasi;
 
   UserModel({
     this.id,
@@ -21,6 +22,7 @@ class UserModel {
     this.role = "pelanggan",
     this.saldo = 0,
     this.password,
+    this.terkonfirmasi,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -34,6 +36,7 @@ class UserModel {
       alamat: alamat.map((e) => AlamatModel.fromJson(e)).toList(),
       saldo: json["saldo"],
       role: json["role"],
+      terkonfirmasi: json["terkonfirmasi"],
     );
   }
 

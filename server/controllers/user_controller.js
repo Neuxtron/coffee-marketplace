@@ -184,7 +184,7 @@ class UserController {
     const rows = await UserModel.update({ kodeOTP }, {
       where: { email }
     }).catch((err) => {
-      console.log(error)
+      console.log(err)
       res.status(500).json({
         status: false,
         message: "Gagal ubah password: Internal server error",
@@ -205,14 +205,6 @@ class UserController {
     const passwordPengirim = process.env.NODEMAILER_SENDER_PASSWORD
     const hostPengirim = process.env.NODEMAILER_SENDER_HOST
 
-    // const transporter = nodemailer.createTransport({
-    //   service: 'gmail',
-      
-    //   auth: {
-    //     user: emailPengirim,
-    //     pass: passwordPengirim
-    //   }
-    // })
     const transporter = nodemailer.createTransport(
       `smtp://${emailPengirim}:${passwordPengirim}@${hostPengirim}:587`
     );
@@ -299,6 +291,95 @@ class UserController {
           data: {},
         })
       })
+  }
+
+  static requestKonfirmasiEmail = async (req, res) => {
+    try {
+      const { idUser: id } = req
+      const user = await UserModel.findByPk(id)
+
+      if (user.terkonfirmasi) {
+        return res.status(403).json({
+          status: false,
+          message: "Email sudah terkonfirmasi",
+          data: {},
+        })
+      }
+
+      const kode = Math.floor(Math.random() * 1000000)
+      await user.update({ kodeKonfirmasiEmail: kode })
+      
+      const emailPengirim = process.env.NODEMAILER_SENDER_EMAIL
+      const passwordPengirim = process.env.NODEMAILER_SENDER_PASSWORD
+      const hostPengirim = process.env.NODEMAILER_SENDER_HOST
+
+      const transporter = nodemailer.createTransport(
+        `smtp://${emailPengirim}:${passwordPengirim}@${hostPengirim}:587`
+      );
+
+      const mailOptions = {
+        from: emailPengirim,
+        to: email,
+        subject: 'Konfirmasi email Coffee Marketplace',
+        text: `Kode konfirmasi Anda adalah ${kode}`
+      }
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          return res.status(500).json({
+            status: false,
+            message: "Terjadi kesalahan, silahkan coba lagi",
+            data: {},
+          })
+        }
+        return res.status(200).json({
+          status: true,
+          message: "Kode konfirmasi berhasil dikirim",
+          data: {},
+        })
+      });
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: {},
+      })
+    }
+  }
+
+  static konfirmasiEmail = async (req, res) => {
+    try {
+      const { idUser: id } = req
+      const { kodeKonfirmasi: kode } = req.body
+
+      const user = await UserModel.findByPk(id)
+      if (user.kodeKonfirmasiEmail !== kode) {
+        return res.status(403).json({
+          status: false,
+          message: "Kode yang Anda masukkan salah",
+          data: {},
+        })
+      }
+
+      user.kodeKonfirmasiEmail = null
+      user.terkonfirmasi = true
+      await user.save()
+
+      return res.status(200).json({
+        status: true,
+        message: "Email berhasil dikonfirmasi",
+        data: user,
+      })
+    } catch (err) {
+      console.log(err)
+      return res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: {},
+      })
+    }
   }
 }
 
