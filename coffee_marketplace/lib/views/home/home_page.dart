@@ -1,7 +1,9 @@
+import 'package:coffee_marketplace/viewmodels/banner_view_model.dart';
 import 'package:coffee_marketplace/views/home/home_banner.dart';
 import 'package:coffee_marketplace/views/home/home_body.dart';
 import 'package:coffee_marketplace/views/home/search_section.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   final Future Function() getData;
@@ -13,6 +15,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<BannerViewModel>().getBanners();
+  }
 
   @override
   void dispose() {

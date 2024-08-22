@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
+import 'package:coffee_marketplace/viewmodels/banner_view_model.dart';
 import 'package:coffee_marketplace/views/widgets/error_image.dart';
 import 'package:coffee_marketplace/views/widgets/loading_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeBanner extends StatelessWidget {
   final bool isSearching;
@@ -12,15 +14,7 @@ class HomeBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isSearching) return const SizedBox();
 
-    // TODO: banner from api
-    final dummyBanner = [
-      "banner_1.png",
-      "banner_2.png",
-      "banner_3.png",
-      "banner_4.png",
-      "banner_5.png",
-    ];
-    final listBanner = dummyBanner;
+    final listBanner = context.watch<BannerViewModel>().listBanners;
 
     return Container(
       color: AppConstants.secondaryAlt,
