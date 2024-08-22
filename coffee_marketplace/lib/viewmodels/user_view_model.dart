@@ -241,7 +241,7 @@ class UserViewModel extends ChangeNotifier {
     return error;
   }
 
-  Future<String> ubahPassword(String password) async {
+  Future<String> ubahPasswordOTP(String password) async {
     _status = ServerStatus.loading;
     notifyListeners();
     String error = "";
@@ -249,11 +249,42 @@ class UserViewModel extends ChangeNotifier {
     try {
       ubahPasswordModel!.password = password;
       final response = await http.post(
-        Uri.parse("$_endpoint/ubah_password"),
+        Uri.parse("$_endpoint/ubah_password_otp"),
         headers: {
           "Content-Type": "application/json",
         },
         body: ubahPasswordModel!.toJson(),
+      );
+      log("Ubah password otp:\n${response.body}");
+      if (response.statusCode != 200) {
+        error = jsonDecode(response.body)["message"];
+      }
+    } catch (e) {
+      log(e.toString());
+      error = "Terjadi kesalahan, silahkan coba lagi";
+    }
+
+    _status = ServerStatus.normal;
+    notifyListeners();
+    return error;
+  }
+
+  Future<String?> ubahPassword(String passwordLama, String passwordBaru) async {
+    _status = ServerStatus.loading;
+    notifyListeners();
+    String? error;
+
+    try {
+      final response = await http.post(
+        Uri.parse("$_endpoint/ubah_password_otp"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer $_token",
+        },
+        body: jsonEncode({
+          "passwordLama": passwordLama,
+          "password": passwordBaru,
+        }),
       );
       log("Ubah password:\n${response.body}");
       if (response.statusCode != 200) {

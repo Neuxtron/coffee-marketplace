@@ -28,7 +28,7 @@ class _UbahPasswordOTPPageState extends State<UbahPasswordOTPPage> {
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
     final password = _passwordController.text;
-    context.read<UserViewModel>().ubahPassword(password).then(
+    context.read<UserViewModel>().ubahPasswordOTP(password).then(
       (error) {
         if (error.isEmpty) {
           Navigator.pop(context);

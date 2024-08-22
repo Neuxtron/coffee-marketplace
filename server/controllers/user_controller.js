@@ -293,6 +293,39 @@ class UserController {
       })
   }
 
+  static ubahPassword = async (req, res)  => {
+    try {
+      const { idUser: id } = req
+      const { passwordLama, password: passwordRaw } = req.body
+      const password = bcrypt.hashSync(passwordRaw, saltRounds)
+
+      const user = await UserModel.findByPk(id)
+      const validation = bcrypt.compareSync(passwordLama, user.password)
+      if (!validation) {
+        return res.status(403).json({
+          status: false,
+          message: "Password lama salah",
+          data: {},
+        })
+      }
+
+      await UserModel.update({ password })
+
+      res.status(200).json({
+        status: true,
+        message: "Password berhasil diubah",
+        data: {},
+      })
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({
+        status: false,
+        message: "Gagal ubah password: Internal server error",
+        data: {},
+      })
+    }
+  }
+
   static requestKonfirmasiEmail = async (req, res) => {
     try {
       const { idUser: id } = req

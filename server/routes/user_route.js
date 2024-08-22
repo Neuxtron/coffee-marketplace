@@ -10,8 +10,9 @@ router.get("/logout", authentication, UserController.logoutUser)
 router.get("/pakar", UserController.allPakar)
 router.post("/request_ubah_password", UserController.requestUbahPassword)
 router.post("/check_otp", UserController.checkOTP)
-router.post("/ubah_password", UserController.ubahPasswordOTP)
+router.post("/ubah_password_otp", UserController.ubahPasswordOTP)
 router.put("/request_konfirmasi_email", authentication, UserController.requestKonfirmasiEmail)
 router.put("/konfirmasi_email", authentication, UserController.konfirmasiEmail)
+router.put("/ubah_password", authentication, UserController.ubahPassword)
 
 module.exports = router
