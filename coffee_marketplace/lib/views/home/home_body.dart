@@ -9,7 +9,13 @@ import 'package:provider/provider.dart';
 
 class HomeBody extends StatelessWidget {
   final Future Function() getData;
-  const HomeBody({super.key, required this.getData});
+  final String searchText;
+
+  const HomeBody({
+    super.key,
+    required this.getData,
+    required this.searchText,
+  });
 
   static late BuildContext _context;
 
@@ -54,6 +60,10 @@ class HomeBody extends StatelessWidget {
           child: CircularProgressIndicator(),
         ),
       );
+    }
+
+    if (searchText.isNotEmpty) {
+      return AllMenuSection(searchText: searchText);
     }
 
     return const Column(

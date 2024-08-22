@@ -22,6 +22,7 @@ class SearchSection extends StatelessWidget {
               controller: controller,
               style: const TextStyle(fontSize: 14),
               decoration: buildDecoration(),
+              onChanged: (_) => onSearch(),
             ),
           ),
         ),

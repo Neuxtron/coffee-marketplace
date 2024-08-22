@@ -22,16 +22,22 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isSearching = _searchController.text.isNotEmpty;
+    final String searchText = _searchController.text.toLowerCase().trim();
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SearchSection(
             controller: _searchController,
-            onSearch: () {},
+            onSearch: () => setState(() {}),
           ),
-          const HomeBanner(),
-          HomeBody(getData: widget.getData),
+          HomeBanner(isSearching: isSearching),
+          HomeBody(
+            getData: widget.getData,
+            searchText: searchText,
+          ),
         ],
       ),
     );

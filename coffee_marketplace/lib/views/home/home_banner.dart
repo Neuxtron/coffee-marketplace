@@ -5,10 +5,13 @@ import 'package:coffee_marketplace/views/widgets/loading_image.dart';
 import 'package:flutter/material.dart';
 
 class HomeBanner extends StatelessWidget {
-  const HomeBanner({super.key});
+  final bool isSearching;
+  const HomeBanner({super.key, required this.isSearching});
 
   @override
   Widget build(BuildContext context) {
+    if (isSearching) return const SizedBox();
+
     // TODO: banner from api
     final dummyBanner = [
       "banner_1.png",
