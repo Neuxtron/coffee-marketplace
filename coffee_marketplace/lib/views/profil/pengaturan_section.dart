@@ -7,10 +7,10 @@ class PengaturanSection extends StatelessWidget {
   const PengaturanSection({super.key});
 
   static late BuildContext _context;
+  static late String _role;
+  static late bool _terkonfirmasi;
 
   static List<PengaturanItem> get _listPengaturan {
-    final role = _context.read<UserViewModel>().currentUser!.role;
-
     final listPengaturan = [
       PengaturanItem(
         route: "/pengaturan_akun",
@@ -25,7 +25,7 @@ class PengaturanSection extends StatelessWidget {
       ),
     ];
 
-    if (role == "penjual") {
+    if (_role == "penjual") {
       listPengaturan.insert(
         1,
         PengaturanItem(
@@ -37,13 +37,24 @@ class PengaturanSection extends StatelessWidget {
       );
     }
 
-    if (role == "pelanggan") {
+    if (_role == "pelanggan" && _terkonfirmasi) {
       listPengaturan.insert(
         1,
         PengaturanItem(
           route: "/mengajukan_pakar",
           icon: const Icon(Icons.person_2),
-          text: "Mengajukan sebagai pakar",
+          text: "Mengajukan Sebagai Pakar",
+        ),
+      );
+    }
+
+    if (!_terkonfirmasi) {
+      listPengaturan.insert(
+        0,
+        PengaturanItem(
+          route: "/konfirmasi_email",
+          icon: const Icon(Icons.mark_email_read_outlined),
+          text: "Konfirmasi Email",
         ),
       );
     }
@@ -51,17 +62,12 @@ class PengaturanSection extends StatelessWidget {
     return listPengaturan;
   }
 
-  void onTilePressed(PengaturanItem item) {
-    if (item.replace) {
-      Navigator.pushReplacementNamed(_context, item.route);
-      return;
-    }
-    Navigator.pushNamed(_context, item.route);
-  }
-
   @override
   Widget build(BuildContext context) {
     _context = context;
+    final viewModel = _context.watch<UserViewModel>();
+    _role = viewModel.currentUser!.role;
+    _terkonfirmasi = viewModel.currentUser!.terkonfirmasi!;
 
     return Container(
       clipBehavior: Clip.hardEdge,
@@ -86,21 +92,7 @@ class PengaturanSection extends StatelessWidget {
           itemBuilder: (context, index) {
             final item = _listPengaturan[index];
 
-            return ListTile(
-              onTap: () => onTilePressed(item),
-              leading: item.icon,
-              trailing: Icon(
-                Icons.keyboard_arrow_right,
-                color: Colors.grey.shade400,
-              ),
-              title: Text(
-                item.text,
-                style: const TextStyle(
-                  fontFamily: "Abhaya Libre",
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-            );
+            return _PengaturanItem(item: item);
           },
           separatorBuilder: (context, index) {
             return const Divider(
@@ -111,6 +103,43 @@ class PengaturanSection extends StatelessWidget {
               endIndent: 30,
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class _PengaturanItem extends StatefulWidget {
+  final PengaturanItem item;
+  const _PengaturanItem({required this.item});
+
+  @override
+  State<_PengaturanItem> createState() => _PengaturanItemState();
+}
+
+class _PengaturanItemState extends State<_PengaturanItem> {
+  void _onTilePressed() {
+    if (widget.item.replace) {
+      Navigator.pushReplacementNamed(context, widget.item.route);
+      return;
+    }
+    Navigator.pushNamed(context, widget.item.route);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      onTap: _onTilePressed,
+      leading: widget.item.icon,
+      trailing: Icon(
+        Icons.keyboard_arrow_right,
+        color: Colors.grey.shade400,
+      ),
+      title: Text(
+        widget.item.text,
+        style: const TextStyle(
+          fontFamily: "Abhaya Libre",
+          fontWeight: FontWeight.w800,
         ),
       ),
     );

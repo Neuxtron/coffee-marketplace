@@ -2,6 +2,7 @@ import 'package:coffee_marketplace/models/keranjang_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/app_helpers.dart';
 import 'package:coffee_marketplace/viewmodels/keranjang_view_model.dart';
+import 'package:coffee_marketplace/viewmodels/user_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,16 @@ class CheckoutSection extends StatelessWidget {
   }
 
   void checkout(BuildContext context) {
+    final terkonfirmasi =
+        context.read<UserViewModel>().currentUser!.terkonfirmasi!;
+    if (!terkonfirmasi) {
+      Fluttertoast.showToast(
+        msg: "Email Anda belum dikonfirmasi",
+        backgroundColor: Colors.black54,
+      );
+      return;
+    }
+
     if (_listCheckout.isEmpty) {
       Fluttertoast.showToast(
         msg: "Pilih satu produk untuk di checkout",

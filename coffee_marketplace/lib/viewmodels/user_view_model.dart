@@ -269,10 +269,10 @@ class UserViewModel extends ChangeNotifier {
     return error;
   }
 
-  Future<String?> requestKonfirmasiEmail() async {
+  Future<bool> requestKonfirmasiEmail() async {
     _status = ServerStatus.loading;
     notifyListeners();
-    String? error;
+    bool success = true;
 
     try {
       final response = await http.put(
@@ -283,19 +283,17 @@ class UserViewModel extends ChangeNotifier {
         },
       );
       log("Request konfirmasi email:\n${response.body}");
-      if (response.statusCode != 200) {
-        error = jsonDecode(response.body)["message"];
-      }
+      if (response.statusCode != 200) success = false;
     } catch (e) {
       log(e.toString());
-      error = "Terjadi kesalahan, silahkan coba lagi";
+      success = false;
     }
     _status = ServerStatus.normal;
     notifyListeners();
-    return error;
+    return success;
   }
 
-  Future<String?> konfirmasiEmail() async {
+  Future<String?> konfirmasiEmail(String kode) async {
     _status = ServerStatus.loading;
     notifyListeners();
     String? error;
@@ -307,9 +305,12 @@ class UserViewModel extends ChangeNotifier {
           "Content-Type": "application/json",
           "Authorization": "Bearer $_token",
         },
+        body: jsonEncode({"kodeKonfirmasi": kode}),
       );
       log("Konfirmasi email:\n${response.body}");
-      if (response.statusCode != 200) {
+      if (response.statusCode == 200) {
+        getProfile();
+      } else {
         error = jsonDecode(response.body)["message"];
       }
     } catch (e) {

@@ -12,6 +12,7 @@ class InputItem extends StatelessWidget {
   final bool optional;
   final bool obscureText;
   final String? Function(String? value)? validator;
+  final String? errorText;
 
   const InputItem({
     super.key,
@@ -25,6 +26,7 @@ class InputItem extends StatelessWidget {
     this.optional = false,
     this.obscureText = false,
     this.validator,
+    this.errorText,
   });
 
   String? Function(String? value)? get _finalValidator {
@@ -35,7 +37,7 @@ class InputItem extends StatelessWidget {
 
   String? defaultValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return '$label tidak boleh kosong';
+      return errorText ?? '$label tidak boleh kosong';
     }
     return null;
   }
@@ -75,6 +77,7 @@ class InputItem extends StatelessWidget {
       suffixText: suffix,
       fillColor: AppConstants.secondary.withOpacity(.5),
       contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      errorMaxLines: 3,
       enabledBorder: buildBorder(),
       focusedBorder: buildBorder(),
       errorBorder: buildBorder(),

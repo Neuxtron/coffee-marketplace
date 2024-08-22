@@ -308,6 +308,14 @@ class UserController {
 
       const kode = Math.floor(Math.random() * 1000000)
       await user.update({ kodeKonfirmasiEmail: kode })
+
+      // TODO: === remove ===
+      // return res.status(200).json({
+      //   status: true,
+      //   message: "Kode konfirmasi berhasil dikirim",
+      //   data: {},
+      // })
+      // TODO: === remove ===
       
       const emailPengirim = process.env.NODEMAILER_SENDER_EMAIL
       const passwordPengirim = process.env.NODEMAILER_SENDER_PASSWORD
@@ -319,7 +327,7 @@ class UserController {
 
       const mailOptions = {
         from: emailPengirim,
-        to: email,
+        to: user.email,
         subject: 'Konfirmasi email Coffee Marketplace',
         text: `Kode konfirmasi Anda adalah ${kode}`
       }
@@ -370,7 +378,7 @@ class UserController {
       return res.status(200).json({
         status: true,
         message: "Email berhasil dikonfirmasi",
-        data: user,
+        data: {},
       })
     } catch (err) {
       console.log(err)

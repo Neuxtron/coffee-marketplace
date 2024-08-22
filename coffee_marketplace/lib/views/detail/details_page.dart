@@ -59,7 +59,7 @@ class _DetailsPageState extends State<DetailsPage> {
   Widget build(BuildContext context) {
     _produk = ModalRoute.of(context)!.settings.arguments as ProdukModel;
 
-    // TODO: penjual
+    // IDEA: penjual
     return Scaffold(
       appBar: buildAppBar(),
       bottomNavigationBar: _isLoggedIn

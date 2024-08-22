@@ -21,6 +21,7 @@ import 'package:coffee_marketplace/views/daftar/daftar_page.dart';
 import 'package:coffee_marketplace/views/detail/details_page.dart';
 import 'package:coffee_marketplace/views/edit_alamat/edit_alamat_page.dart';
 import 'package:coffee_marketplace/views/kategori/kategori_page.dart';
+import 'package:coffee_marketplace/views/konfirmasi_email/konfirmasi_email_page.dart';
 import 'package:coffee_marketplace/views/login/login_page.dart';
 import 'package:coffee_marketplace/views/lupa_password/check_otp_page.dart';
 import 'package:coffee_marketplace/views/lupa_password/request_ubah_password_page.dart';
@@ -101,6 +102,7 @@ class MyApp extends StatelessWidget {
           "/pengaturan_akun": (context) => const PengaturanAkunPage(),
           "/tambah_alamat": (context) => const TambahAlamatPage(),
           "/edit_alamat": (context) => const EditAlamatPage(),
+          "/konfirmasi_email": (context) => const KonfirmasiEmailPage(),
         },
       ),
     );
