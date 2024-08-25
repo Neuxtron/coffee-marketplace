@@ -210,13 +210,13 @@ class PesanController {
       for (let index = 0; index < listPesan.length; index++) {
         const pesan = listPesan[index];
         const idUser = pesan.pengirim === myId ? pesan.penerima : pesan.pengirim
+        
         if (!listChatRoom.find(room => room.idUser === idUser)) {
           const user = await UserModel.findByPk(idUser)
-          listChatRoom.push({
-            idUser,
-            namaUser: user.nama,
-            role: user.role,
-          })
+          const { role } = user
+          const namaUser = role === "penjual" ? user.namaToko : user.nama
+          
+          listChatRoom.push({ idUser, namaUser, role })
         }
       }
 

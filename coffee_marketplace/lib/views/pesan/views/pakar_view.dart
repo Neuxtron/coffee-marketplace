@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../chat_room_item.dart';
 
-class PakarView extends StatefulWidget {
+class PakarView extends StatelessWidget {
   final bool isPakar;
   final Function() updateState;
 
@@ -14,22 +14,17 @@ class PakarView extends StatefulWidget {
   });
 
   @override
-  State<PakarView> createState() => _PakarViewState();
-}
-
-class _PakarViewState extends State<PakarView> {
-  @override
   Widget build(BuildContext context) {
     final allChatRoom = context.watch<PesanViewModel>().listChatRoom;
     final listChatRoom = allChatRoom.where((room) {
-      if (widget.isPakar) return room.role != "pakar";
+      if (isPakar) return room.role != "pakar";
       return room.role == "pakar";
     }).toList();
 
     return SingleChildScrollView(
       child: Column(
         children: [
-          !widget.isPakar
+          !isPakar
               ? ListTile(
                   onTap: () => Navigator.pushNamed(context, "/all_pakar"),
                   contentPadding: const EdgeInsets.only(left: 25),
@@ -70,7 +65,7 @@ class _PakarViewState extends State<PakarView> {
               final chatRoom = listChatRoom[index];
               return ChatRoomItem(
                 chatRoom: chatRoom,
-                updateState: widget.updateState,
+                updateState: updateState,
               );
             },
           ),
