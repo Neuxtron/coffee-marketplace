@@ -44,8 +44,13 @@ class RiwayatListView extends StatelessWidget {
         return RiwayatItem(
           order: order,
           buttonOnPressed: buttonOnPressed,
-          // IDEA: halaman detail riwayat, list keranjang + riwayat tracking
-          itemOnPressed: itemOnPressed,
+          itemOnPressed: (_) {
+            Navigator.pushNamed(
+              context,
+              "/detail_riwayat",
+              arguments: order,
+            );
+          },
           buttonText: buttonText,
           subtitle: subtitle,
           title: title,

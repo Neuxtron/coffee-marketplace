@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:coffee_marketplace/models/order_model.dart';
 import 'package:coffee_marketplace/models/pembayaran_model.dart';
+import 'package:coffee_marketplace/models/riwayat_pengiriman_model.dart';
 import 'package:coffee_marketplace/utils/app_constants.dart';
 import 'package:coffee_marketplace/utils/app_helpers.dart';
 import 'package:coffee_marketplace/utils/server_status.dart';
@@ -160,5 +161,26 @@ class OrderViewModel extends ChangeNotifier {
       log(e.toString());
     }
     return false;
+  }
+
+  Future<List<RiwayatPengirimanModel>?> getRiwayatPengiriman(String id) async {
+    final token = AppHelpers.token;
+
+    try {
+      final response = await http.get(
+        Uri.parse("$_endpoint/riwayat_pengiriman/$id"),
+        headers: {"Authorization": "Bearer $token"},
+      );
+      log("Get riwayat pengiriman:\n${response.body}");
+      if (response.statusCode == 200) {
+        final riwayat = jsonDecode(response.body)["data"]["riwayat"] as List;
+        final listRiwayatPengiriman =
+            riwayat.map((e) => RiwayatPengirimanModel.fromJson(e)).toList();
+        return listRiwayatPengiriman;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+    return null;
   }
 }

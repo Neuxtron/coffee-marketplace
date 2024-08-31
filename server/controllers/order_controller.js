@@ -4,7 +4,7 @@ const KeranjangModel = require("../models/keranjang_model")
 const OrderModel = require("../models/order_model")
 const ProdukModel = require("../models/produk_model")
 const VariasiModel = require("../models/variasi_model")
-const { midtransBaseUrl } = require("../utils/constants")
+const { midtransBaseUrl, binderByteBaseUrl } = require("../utils/constants")
 const KeranjangController = require("./keranjang_controller")
 const serverKey = process.env.MIDTRANS_SERVER_KEY
 
@@ -215,34 +215,7 @@ class OrderController {
       order: [["createdAt", "DESC"]]
     })
       .then(async (raw) => {
-        const promises = raw.map(async (order) => {
-          if (order.status == "pending") {
-            const request = fetch(`${midtransBaseUrl}/${order.id}/status`, {
-              headers: {
-                "Authorization": `Basic ${btoa(serverKey)}`,
-              },
-            })
-            const response = await request
-            const vaNumbers = await this.midtransVaNumber(response, order.metodeBayar)
-            if (vaNumbers == null) return
-
-            const { status } = vaNumbers
-            order.status = status
-            await order.save()
-          }
-          const bayarDetails = this.getBayarDetails(order)
-          const statusMessage = this.statusMessages[order.status]
-
-          return {
-            ...order.get(),
-            bayarDetails,
-            statusMessage,
-          }
-        })
-
-        const data = (await Promise.allSettled(promises)).map(result => {
-          return result.value
-        })
+        const data = await this.updateStatusFromApi(raw)
         
         res.status(200).json({
           status: true,
@@ -328,7 +301,6 @@ class OrderController {
           id: listIdOrder,
           [Op.not]: { status: exludeStatus }
         },
-        // raw: true, nest: true,
         include: [
           "metodePembayaran",
           {
@@ -353,12 +325,7 @@ class OrderController {
         order: [["createdAt", "DESC"]]
       })
 
-      const data = listOrder.map(order => {
-        const bayarDetails = this.getBayarDetails(order)
-        const statusMessage = this.statusMessages[order.status]
-
-        return { ...order.get(), bayarDetails, statusMessage }
-      })
+      const data = await this.updateStatusFromApi(listOrder)
 
       res.status(200).json({
         status: true,
@@ -375,7 +342,99 @@ class OrderController {
     }
   }
 
-  // TODO: api tracking
+  static riwayatPengiriman = async (req, res) => {
+    try {
+      const { id } = req.params
+      
+      const order = await OrderModel.findByPk(id)
+      const awb = order.resiPengiriman
+      const courier = order.kurir
+      const apiKey = process.env.BINDERBYTE_KEY
+
+      const url = `${binderByteBaseUrl}/track?api_key=${apiKey}&courier=${courier}&awb=${awb}`
+      const response = await fetch(url)
+      const json = await response.json()
+      const jsonData = json["data"]
+      const riwayat = jsonData["history"]
+
+      const data = {
+        ...order.get(),
+        riwayat
+      }
+
+      res.status(200).json({
+        status: true,
+        message: "Berhasil mengambil riwayat pengiriman",
+        data,
+      })
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: {},
+      }) 
+    }
+  }
+
+  static updateStatusFromApi = async (raw) => {
+    const promises = raw.map(async (order) => {
+      if (order.status == "pending") {
+        const request = fetch(`${midtransBaseUrl}/${order.id}/status`, {
+          headers: {
+            "Authorization": `Basic ${btoa(serverKey)}`,
+          },
+        })
+        const response = await request
+        const vaNumbers = await this.midtransVaNumber(response, order.metodeBayar)
+        if (vaNumbers == null) return
+
+        const { status } = vaNumbers
+        order.status = status
+        await order.save()
+      }
+
+      if (order.status === "dikirim") {
+        const apiKey = process.env.BINDERBYTE_KEY
+        const url = `${binderByteBaseUrl}/track?api_key=${apiKey}&courier=${order.kurir}&awb=${order.resiPengiriman}`
+        const response = await fetch(url)
+        const data = (await response.json())["data"]
+
+        if (data["summary"]["status"] === "DELIVERED") {
+          const tanggal = new Date()
+          tanggal.setDate(tanggal.getDate() + 7)
+
+          order.status = "diterima"
+          order.batasKonfirmasi = tanggal
+          await order.save()
+        }
+      }
+
+      if (order.status === "diterima") {
+        const batasKonfirmasi = order.batasKonfirmasi
+        const hariIni = new Date()
+        if (batasKonfirmasi < hariIni) {
+          order.status = "selesai"
+          order.batasKonfirmasi = null
+          await order.save()
+        }
+      }
+      
+      const bayarDetails = this.getBayarDetails(order)
+      const statusMessage = this.statusMessages[order.status]
+      return {
+        ...order.get(),
+        bayarDetails,
+        statusMessage,
+      }
+    })
+
+    const data = (await Promise.allSettled(promises)).map(result => {
+      return result.value
+    })
+
+    return data
+  }
 }
 
 module.exports = OrderController

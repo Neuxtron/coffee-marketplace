@@ -4,7 +4,7 @@ class MetodeBayarModel {
   final String id;
   final String nama;
   final String imgUrl;
-  // TODO: pembayaran kategori
+  // OPTIMIZE: pembayaran kategori
 
   MetodeBayarModel({
     required this.id,

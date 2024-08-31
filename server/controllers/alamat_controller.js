@@ -5,6 +5,7 @@ class AlamatController {
     const { idUser } = req
     const { alamat } = req.body
     alamat.idUser = idUser
+    delete alamat.id
 
     AlamatModel.create(alamat)
       .then((data) => {

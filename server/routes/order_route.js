@@ -7,5 +7,6 @@ router.post("/", authentication, OrderController.createOrder)
 router.get("/pesanan_penjual", authentication, OrderController.riwayatPesananPenjual)
 router.get("/", authentication, OrderController.riwayatOrder)
 router.put("/status", authentication, OrderController.nextStatus)
+router.get("/riwayat_pengiriman/:id", authentication, OrderController.riwayatPengiriman)
 
 module.exports = router

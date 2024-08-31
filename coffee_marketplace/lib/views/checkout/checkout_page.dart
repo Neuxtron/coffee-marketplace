@@ -30,6 +30,7 @@ class CheckoutPage extends StatefulWidget {
 
 class _CheckoutPageState extends State<CheckoutPage> {
   late String _metodeBayar;
+  late KurirModel _kurir;
   late OngkirModel _ongkir;
 
   List<MetodeBayarModel> get _listMetodeBayar =>
@@ -65,6 +66,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       ongkir: _ongkir.ongkir,
       metodeBayar: _metodeBayar,
       listKeranjang: _listCheckout,
+      kurir: _kurir.id,
     );
 
     context.read<OrderViewModel>().createOrder(pembayaran).then(handleOrder);
@@ -91,12 +93,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
       totalBerat += keranjang.produk.beratProduk;
     }
 
-    // TODO: id kecamatan
     final kecamatanPembeli =
         context.read<UserViewModel>().currentUser!.alamat[0].idKecamatan;
     // OPTIMIZE: kecamatan semua toko
     final kecamatanPenjual = _listCheckout[0].produk.penjual.idKecamatanToko;
-    // OPTIMIZE: kurir from toko
     final listKurir = dummyKurir;
 
     context
@@ -109,6 +109,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         )
         .then((response) {
       if (response) {
+        _kurir = context.read<DaerahViewModel>().listKurir[0];
         _ongkir = context.read<DaerahViewModel>().listKurir[0].listOngkir![0];
         return;
       }
@@ -172,7 +173,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
             const AlamatSection(),
             KeranjangSection(listKeranjang: _listCheckout),
             PengirimanSection(
-              onChange: (ongkir) => setState(() => _ongkir = ongkir),
+              onChange: (ongkir, kurir) {
+                setState(() {
+                  _ongkir = ongkir;
+                  _kurir = kurir;
+                });
+              },
             ),
             PembayaranSection(onChange: (idMetode) => _metodeBayar = idMetode),
             DetailsSection(

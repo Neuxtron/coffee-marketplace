@@ -22,6 +22,11 @@ class RiwayatItem extends StatelessWidget {
     required this.buttonText,
   });
 
+  Function()? get _onTap {
+    if (itemOnPressed == null) return null;
+    return () => itemOnPressed!(order);
+  }
+
   @override
   Widget build(BuildContext context) {
     final produk = order.keranjang[0].produk;
@@ -35,7 +40,7 @@ class RiwayatItem extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-          onTap: itemOnPressed != null ? itemOnPressed!(order) : null,
+          onTap: _onTap,
           title: Row(
             children: [
               RoundedImage(

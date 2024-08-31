@@ -36,7 +36,6 @@ class DetailPesananPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             JudulSection(nama: order.pembeli!.nama),
-            // IDEA: chat pembeli
             DetailsSection(
               subtotalProduk: _subtotal,
               ongkir: order.ongkir,
@@ -48,7 +47,6 @@ class DetailPesananPage extends StatelessWidget {
             order.status == "settlement"
                 ? KirimSection(id: order.id)
                 : const SizedBox(),
-            // TODO: riwayat tracking
           ],
         ),
       ),

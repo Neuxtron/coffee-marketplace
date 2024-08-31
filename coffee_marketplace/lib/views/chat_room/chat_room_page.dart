@@ -65,7 +65,7 @@ class ChatRoomPage extends StatelessWidget {
         chatRoom.namaUser,
         style: const TextStyle(fontSize: 18),
       ),
-      // TODO: actions: search chat
+      // OPTIMIZE: actions: search chat
     );
   }
 }

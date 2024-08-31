@@ -102,7 +102,7 @@ class _MainLayoutState extends State<MainLayout> {
         selectedFontSize: 0,
         unselectedFontSize: 0,
         items: const [
-          // TODO: active icons
+          //
           BottomNavigationBarItem(
             label: "Home",
             tooltip: "Home",

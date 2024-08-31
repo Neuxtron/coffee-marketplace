@@ -56,6 +56,10 @@ const OrderModel = sequelize.define("orders", {
     type: STRING,
     allowNull: true,
   },
+  kurir: {
+    type: STRING,
+    allowNull: true,
+  },
 }, {
   freezeTableName: true,
 })

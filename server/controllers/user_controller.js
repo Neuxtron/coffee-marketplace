@@ -38,6 +38,8 @@ class UserController {
       const data = req.body
       const { email } = data
 
+      delete data.alamat[0].id
+
       const existingUser = await UserModel.findOne({
         where: { email }
       })
@@ -50,7 +52,9 @@ class UserController {
         return
       }
   
-      const user = await UserModel.create(data)
+      const user = await UserModel.create(data, {
+        include: ["alamat"]
+      })
       const { id } = user
       const token = jwt.sign({ id }, secret)
       await user.update({ token })

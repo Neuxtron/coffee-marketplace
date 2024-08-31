@@ -9,7 +9,7 @@ import 'package:coffee_marketplace/models/kurir_model.dart';
 import 'package:provider/provider.dart';
 
 class PengirimanSection extends StatefulWidget {
-  final Function(OngkirModel ongkir) onChange;
+  final Function(OngkirModel ongkir, KurirModel kurir) onChange;
 
   const PengirimanSection({super.key, required this.onChange});
 
@@ -30,7 +30,7 @@ class _PengirimanSectionState extends State<PengirimanSection> {
       _selectedKurir = response.kurir;
       _selectedOngkir = response.ongkir;
     });
-    widget.onChange(_selectedOngkir);
+    widget.onChange(_selectedOngkir, _selectedKurir);
   }
 
   void getData() {

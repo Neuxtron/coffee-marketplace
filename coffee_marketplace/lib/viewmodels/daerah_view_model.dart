@@ -16,7 +16,7 @@ class DaerahViewModel extends ChangeNotifier {
   List<DaerahModel> get listProvinsi => _listProvinsi;
   List<DaerahModel> _listKecamatan = [];
   List<DaerahModel> get listKecamatan => _listKecamatan;
-  // TODO: kurir from toko
+  // OPTIMIZE: kurir from toko
   List<KurirModel> _listKurir = [];
   List<KurirModel> get listKurir => _listKurir;
 

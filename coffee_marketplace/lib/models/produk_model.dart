@@ -49,7 +49,7 @@ class ProdukModel {
     );
   }
 
-  // TODO: thumbnail
+  // OPTIMIZE: thumbnail
   String get thumbnail {
     return gambar[0];
   }
