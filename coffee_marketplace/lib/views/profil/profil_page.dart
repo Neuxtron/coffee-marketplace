@@ -9,6 +9,7 @@ import 'package:coffee_marketplace/views/profil/nama_section.dart';
 import 'package:coffee_marketplace/views/profil/pengaturan_section.dart';
 import 'package:coffee_marketplace/views/profil/riwayat_section.dart';
 import 'package:coffee_marketplace/views/widgets/info_builder.dart';
+import 'package:coffee_marketplace/views/widgets/konfirmasi_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,8 +34,21 @@ class _ProfilPageState extends State<ProfilPage> {
     Navigator.pushNamed(context, "/login");
   }
 
+  void requestLogout() async {
+    final konfirmasi = await showDialog(
+      context: context,
+      builder: (context) {
+        return const KonfirmasiModal(
+          text: "Apakah Anda ingin logout?",
+          buttonText: "Logout",
+        );
+      },
+    );
+
+    if (konfirmasi == true) logout();
+  }
+
   void logout() {
-    // TODO: konfirmasi
     context.read<UserViewModel>().logout().then((_) {
       Navigator.pushNamed(context, "/login").then((_) => setState(() {}));
     });
@@ -74,7 +88,7 @@ class _ProfilPageState extends State<ProfilPage> {
             ),
             const RiwayatSection(),
             const PengaturanSection(),
-            LogoutSection(logout: logout),
+            LogoutSection(logout: requestLogout),
           ],
         ),
       ),

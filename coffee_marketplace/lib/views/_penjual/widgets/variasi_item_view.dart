@@ -57,7 +57,7 @@ class _VariasiItemViewState extends State<VariasiItemView> {
           Expanded(
             child: TextField(
               controller: _namaController,
-              // TODO: validator
+              // OPTIMIZE: validator
               style: const TextStyle(fontSize: 14),
               keyboardType: TextInputType.name,
               onChanged: onChanged,
@@ -73,7 +73,7 @@ class _VariasiItemViewState extends State<VariasiItemView> {
               keyboardType: TextInputType.number,
               onChanged: onChanged,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration: buildDecoration("Stok"),
+              decoration: buildDecoration("Stok (0)"),
             ),
           ),
         ],
