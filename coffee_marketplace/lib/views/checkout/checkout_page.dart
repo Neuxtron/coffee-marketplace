@@ -1,3 +1,4 @@
+import 'package:coffee_marketplace/models/alamat_model.dart';
 import 'package:coffee_marketplace/models/keranjang_model.dart';
 import 'package:coffee_marketplace/models/kurir_model.dart';
 import 'package:coffee_marketplace/models/metode_bayar_model.dart';
@@ -32,6 +33,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   late String _metodeBayar;
   late KurirModel _kurir;
   late OngkirModel _ongkir;
+  late AlamatModel _alamat;
 
   List<MetodeBayarModel> get _listMetodeBayar =>
       context.read<MetodeBayarViewModel>().listMetode;
@@ -93,8 +95,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
       totalBerat += keranjang.produk.beratProduk;
     }
 
-    final kecamatanPembeli =
-        context.read<UserViewModel>().currentUser!.alamat[0].idKecamatan;
+    final kecamatanPembeli = _alamat.idKecamatan;
+
     // OPTIMIZE: kecamatan semua toko
     final kecamatanPenjual = _listCheckout[0].produk.penjual.idKecamatanToko;
     final listKurir = dummyKurir;
@@ -129,6 +131,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     ]).then((responses) {
       if (!responses.contains(false)) {
         _metodeBayar = _listMetodeBayar[0].id;
+        _alamat = context.read<UserViewModel>().currentUser!.alamat[0];
         getOngkir();
         return;
       }
@@ -170,7 +173,13 @@ class _CheckoutPageState extends State<CheckoutPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const AlamatSection(),
+            AlamatSection(
+              alamat: _alamat,
+              onChange: (alamat) {
+                _alamat = alamat;
+                getOngkir();
+              },
+            ),
             KeranjangSection(listKeranjang: _listCheckout),
             PengirimanSection(
               onChange: (ongkir, kurir) {

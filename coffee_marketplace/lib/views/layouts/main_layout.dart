@@ -102,7 +102,6 @@ class _MainLayoutState extends State<MainLayout> {
         selectedFontSize: 0,
         unselectedFontSize: 0,
         items: const [
-          //
           BottomNavigationBarItem(
             label: "Home",
             tooltip: "Home",

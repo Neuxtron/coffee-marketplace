@@ -18,7 +18,7 @@ class PembayaranPage extends StatelessWidget {
         children: [
           const Padding(
             padding: EdgeInsets.only(bottom: 30, left: 20, top: 10),
-            child: Text("Pilih jasa pengiriman:"),
+            child: Text("Pilih metode pembayaran:"),
           ),
           Expanded(
             child: ListView.separated(
