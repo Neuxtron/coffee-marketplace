@@ -3,7 +3,9 @@ const fs = require("fs")
 class BannerController {
   static getBanners(req, res) {
     try {
-      const data = fs.readdirSync("images/banner/")
+      const path = process.cwd() + "/images/banner/"
+      console.log(path)
+      const data = fs.readdirSync(path)
 
       res.status(200).json({
         status: true,

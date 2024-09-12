@@ -14,11 +14,12 @@ class BannerViewModel extends ChangeNotifier {
   Future getBanners() async {
     try {
       final response = await http.get(Uri.parse(_endpoint));
-      log("Get banners:\n${response.body}");
+      log("Get banners (${response.statusCode}):\n${response.body}");
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)["data"] as List;
         _listBanners = data.map((e) => e.toString()).toList();
         notifyListeners();
+        return;
       }
     } catch (e) {
       log(e.toString());

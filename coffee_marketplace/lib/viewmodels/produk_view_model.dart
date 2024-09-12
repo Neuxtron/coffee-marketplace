@@ -44,14 +44,17 @@ class ProdukViewModel extends ChangeNotifier {
 
     try {
       final response = await http.get(Uri.parse(_endpoint));
-      log("Get produk:\n${response.body}");
+      log("Get produk (${response.statusCode}):\n${response.body}");
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)["data"] as List;
         _listProduk = data.map((e) => ProdukModel.fromJson(e)).toList();
 
         _status = ServerStatus.normal;
         notifyListeners();
+        return;
       }
+      _status = ServerStatus.error;
+      notifyListeners();
     } catch (e) {
       log(e.toString());
       _status = ServerStatus.error;

@@ -22,14 +22,17 @@ class KategoriViewModel extends ChangeNotifier {
 
     try {
       final response = await http.get(Uri.parse(_endpoint));
-      log("Get kategori:\n${response.body}");
+      log("Get kategori (${response.statusCode}):\n${response.body}");
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)["data"] as List;
         _listKategori = data.map((e) => KategoriModel.fromJson(e)).toList();
 
         _status = ServerStatus.normal;
         notifyListeners();
+        return;
       }
+      _status = ServerStatus.error;
+      notifyListeners();
     } catch (e) {
       log(e.toString());
       _status = ServerStatus.error;
