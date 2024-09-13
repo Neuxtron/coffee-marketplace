@@ -180,6 +180,7 @@ class PesanViewModel extends ChangeNotifier {
         }
       } else {
         log(response.body);
+        _watchMessages = false;
       }
     } catch (e) {
       log(e.toString());

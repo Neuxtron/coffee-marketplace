@@ -37,10 +37,10 @@ class ProdukViewModel extends ChangeNotifier {
     });
   }
 
-  Future getProduk() async {
+  Future getProduk({bool notify = true}) async {
     if (_status == ServerStatus.loading) return;
     _status = ServerStatus.loading;
-    notifyListeners();
+    if (notify) notifyListeners();
 
     try {
       final response = await http.get(Uri.parse(_endpoint));
@@ -54,11 +54,11 @@ class ProdukViewModel extends ChangeNotifier {
         return;
       }
       _status = ServerStatus.error;
-      notifyListeners();
+      if (notify) notifyListeners();
     } catch (e) {
       log(e.toString());
       _status = ServerStatus.error;
-      notifyListeners();
+      if (notify) notifyListeners();
     }
   }
 

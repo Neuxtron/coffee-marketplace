@@ -16,9 +16,9 @@ class KategoriViewModel extends ChangeNotifier {
   ServerStatus _status = ServerStatus.normal;
   ServerStatus get status => _status;
 
-  Future getKategori() async {
+  Future getKategori({bool notify = true}) async {
     _status = ServerStatus.loading;
-    notifyListeners();
+    if (notify) notifyListeners();
 
     try {
       final response = await http.get(Uri.parse(_endpoint));
@@ -32,11 +32,11 @@ class KategoriViewModel extends ChangeNotifier {
         return;
       }
       _status = ServerStatus.error;
-      notifyListeners();
+      if (notify) notifyListeners();
     } catch (e) {
       log(e.toString());
       _status = ServerStatus.error;
-      notifyListeners();
+      if (notify) notifyListeners();
     }
   }
 }

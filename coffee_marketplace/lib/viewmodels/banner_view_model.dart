@@ -21,6 +21,7 @@ class BannerViewModel extends ChangeNotifier {
         notifyListeners();
         return;
       }
+      getBanners();
     } catch (e) {
       log(e.toString());
     }

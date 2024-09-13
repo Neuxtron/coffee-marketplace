@@ -4,7 +4,6 @@ class BannerController {
   static getBanners(req, res) {
     try {
       const path = process.cwd() + "/images/banner/"
-      console.log(path)
       const data = fs.readdirSync(path)
 
       res.status(200).json({

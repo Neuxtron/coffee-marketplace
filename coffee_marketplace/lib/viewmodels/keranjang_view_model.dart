@@ -44,9 +44,9 @@ class KeranjangViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future getKeranjang() async {
+  Future getKeranjang({bool notify = true}) async {
     _status = ServerStatus.loading;
-    notifyListeners();
+    if (notify) notifyListeners();
     final token = AppHelpers.token!;
 
     try {
@@ -64,12 +64,12 @@ class KeranjangViewModel extends ChangeNotifier {
         notifyListeners();
       } else {
         _status = ServerStatus.error;
-        notifyListeners();
+        if (notify) notifyListeners();
       }
     } catch (e) {
       log(e.toString());
       _status = ServerStatus.error;
-      notifyListeners();
+      if (notify) notifyListeners();
     }
   }
 

@@ -168,7 +168,7 @@ class OrderController {
 
     if (!validCodes.includes(jsonData["status_code"])) {
       console.log(jsonData)
-      return null
+      throw new Error(jsonData["status_message"])
     }
 
     if (metodeBayar === "permata") {
@@ -187,50 +187,56 @@ class OrderController {
     return { billKey, billerCode, vaNumber, expiredAt, status }
   }
 
-  static riwayatOrder = (req, res) => {
-    const { idUser } = req
+  static riwayatOrder = async (req, res) => {
+    try {
+      const { idUser } = req
+  
+      const raw = await OrderModel.findAll({
+        where: { idUser },
+        include: [
+          "metodePembayaran",
+          {
+            association: "keranjang",
+            include: [
+              {
+                association: "produk",
+                include: [
+                  "gambar",
+                  "variasi",
+                  {
+                    association: "penjual",
+                    attributes: ["id", "namaToko", "idKecamatanToko"],
+                  },
+                ],
+              },
+              "variasi",
+            ],
+          }
+        ],
+        order: [["createdAt", "DESC"]]
+      })
 
-    OrderModel.findAll({
-      where: { idUser },
-      include: [
-        "metodePembayaran",
-        {
-          association: "keranjang",
-          include: [
-            {
-              association: "produk",
-              include: [
-                "gambar",
-                "variasi",
-                {
-                  association: "penjual",
-                  attributes: ["id", "namaToko", "idKecamatanToko"],
-                },
-              ],
-            },
-            "variasi",
-          ],
-        }
-      ],
-      order: [["createdAt", "DESC"]]
-    })
-      .then(async (raw) => {
-        const data = await this.updateStatusFromApi(raw)
-        
-        res.status(200).json({
-          status: true,
-          message: "Berhasil mengambil riwayat order",
-          data,
+      const data = await this.updateStatusFromApi(raw)
+        .catch((err) => {
+          return res.status(500).json({
+            status: false,
+            message: err,
+            data: {},
+          })
         })
+      res.status(200).json({
+        status: true,
+        message: "Berhasil mengambil riwayat order",
+        data,
       })
-      .catch((err) => {
-        console.log(err)
-        res.status(500).json({
-          status: false,
-          message: "Terjadi kesalahan, silahkan coba lagi",
-          data: {},
-        })
+    } catch (err) {
+      console.log(err)
+      res.status(500).json({
+        status: false,
+        message: "Terjadi kesalahan, silahkan coba lagi",
+        data: {},
       })
+    }
   }
 
   static nextStatus = async (req, res) => {
@@ -326,7 +332,6 @@ class OrderController {
       })
 
       const data = await this.updateStatusFromApi(listOrder)
-
       res.status(200).json({
         status: true,
         message: "Berhasil mengambil riwayat pesanan penjual",
@@ -386,19 +391,20 @@ class OrderController {
           },
         })
         const response = await request
-        const vaNumbers = await this.midtransVaNumber(response, order.metodeBayar)
-        if (vaNumbers == null) return
-
-        const { status } = vaNumbers
-        order.status = status
-        await order.save()
+          const vaNumbers = await this.midtransVaNumber(response, order.metodeBayar)
+          if (vaNumbers == null) return null
+  
+          const { status } = vaNumbers
+          order.status = status
+          await order.save()
       }
 
       if (order.status === "dikirim") {
         const apiKey = process.env.BINDERBYTE_KEY
         const url = `${binderByteBaseUrl}/track?api_key=${apiKey}&courier=${order.kurir}&awb=${order.resiPengiriman}`
         const response = await fetch(url)
-        const data = (await response.json())["data"]
+        const json = await response.json()
+        const data = json["data"]
 
         if (data["summary"]["status"] === "DELIVERED") {
           const tanggal = new Date()
@@ -430,9 +436,11 @@ class OrderController {
     })
 
     const data = (await Promise.allSettled(promises)).map(result => {
+      if (result.status === "rejected") {
+        throw new Error(result.reason)
+      }
       return result.value
     })
-
     return data
   }
 }

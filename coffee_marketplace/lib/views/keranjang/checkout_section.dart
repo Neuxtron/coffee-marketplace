@@ -44,7 +44,7 @@ class CheckoutSection extends StatelessWidget {
       context,
       "/checkout",
     ).then((_) {
-      context.read<KeranjangViewModel>().getKeranjang();
+      context.read<KeranjangViewModel>().getKeranjang(notify: true);
     });
   }
 

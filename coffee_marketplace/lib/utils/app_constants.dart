@@ -7,5 +7,6 @@ class AppConstants {
   static const background = Color(0xFFFAEED1);
 
   static String get baseUrl => "https://coffee-marketplace-nu.vercel.app";
+  // static String get baseUrl => "http://192.168.18.14:5000";
   static String get rajaOngkirKey => "edbdb41bd34ae51a9ed93e36a3a60312";
 }

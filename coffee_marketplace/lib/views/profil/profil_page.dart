@@ -60,7 +60,9 @@ class _ProfilPageState extends State<ProfilPage> {
   @override
   void initState() {
     super.initState();
-    if (AppHelpers.token != null) context.read<UserViewModel>().getProfile();
+    if (AppHelpers.token != null) {
+      context.read<UserViewModel>().getProfile(notify: false);
+    }
   }
 
   @override

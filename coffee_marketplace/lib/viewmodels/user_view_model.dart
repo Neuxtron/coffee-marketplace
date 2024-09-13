@@ -97,11 +97,11 @@ class UserViewModel extends ChangeNotifier {
     }
   }
 
-  Future<bool?> getProfile() async {
+  Future<bool?> getProfile({bool notify = true}) async {
     if (_status == ServerStatus.loading) return null;
     _status = ServerStatus.loading;
     _error = "";
-    notifyListeners();
+    if (notify) notifyListeners();
 
     try {
       final response = await http.get(
@@ -114,7 +114,8 @@ class UserViewModel extends ChangeNotifier {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body)["data"];
         _currentUser = UserModel.fromJson(data);
-      } else {
+      }
+      if (response.statusCode == 401) {
         logout();
       }
       _status = ServerStatus.normal;
@@ -124,7 +125,7 @@ class UserViewModel extends ChangeNotifier {
       log(e.toString());
       _status = ServerStatus.error;
       _error = "Terjadi kesalahan, silahkan coba lagi";
-      notifyListeners();
+      if (notify) notifyListeners();
     }
 
     return false;
