@@ -88,6 +88,8 @@ class _MainLayoutState extends State<MainLayout> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: if loading, setState every second
+
     return Scaffold(
       body: _pages[_currentIndex],
       appBar: _appBars[_currentIndex],

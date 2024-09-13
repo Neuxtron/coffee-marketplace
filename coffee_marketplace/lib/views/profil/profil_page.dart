@@ -67,6 +67,8 @@ class _ProfilPageState extends State<ProfilPage> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: show loading
+
     if (!_loggedIn) {
       return Center(
         child: InfoBuilder(
